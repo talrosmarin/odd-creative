@@ -21,6 +21,7 @@
   color-scheme:light;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 html{direction:rtl}
@@ -53,9 +54,9 @@ header.over::after{opacity:0}
 .menu{position:fixed;inset:0;z-index:40;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;padding:env(safe-area-inset-top,0px) 20px 28px;display:flex;flex-direction:column}
 .menu .bar{margin-bottom:24px}
 .menu nav{display:flex;flex-direction:column;max-width:1120px;width:100%;margin:0 auto}
-.menu a.item{font-family:var(--display);font-size:clamp(32px,6vw,56px);font-weight:700;text-decoration:none;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.28);letter-spacing:-.01em}
-.menu a.item:hover{opacity:.75}
-.menu a.item.cat{text-decoration:underline;text-underline-offset:8px;text-decoration-thickness:2px}
+.menu a.mitem{font-family:var(--display);font-size:clamp(32px,6vw,56px);font-weight:700;text-decoration:none;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.28);letter-spacing:-.01em}
+.menu a.mitem:hover{opacity:.75}
+.menu a.mitem.cat{text-decoration:underline;text-underline-offset:8px;text-decoration-thickness:2px}
 .menu .social{margin:auto auto 0;display:flex;gap:10px;max-width:1120px;width:100%}
 .menu .btn{border-color:#fff;color:#fff}
 .menu .btn.solid{background:#fff;border-color:#fff;color:var(--purple)}
@@ -186,12 +187,12 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
     <span></span>
   </div>
   <nav aria-label="תפריט ראשי">
-    <a class="item en" href="#services">Services</a>
-    <a class="item en" href="#projects">Projects</a>
-    <a class="item en" href="#business">Business</a>
-    <a class="item en" href="#about">About</a>
-    <a class="item en" href="#contact">Contact</a>
-    <a class="item cat en" href="#catalog">Catalog →</a>
+    <a class="mitem en" href="#services">Services</a>
+    <a class="mitem en" href="#projects">Projects</a>
+    <a class="mitem en" href="#business">Business</a>
+    <a class="mitem en" href="#about">About</a>
+    <a class="mitem en" href="#contact">Contact</a>
+    <a class="mitem cat en" href="#catalog">Catalog →</a>
   </nav>
   <div class="social">
     <a class="btn solid" href="https://wa.me/972500000000">וואטסאפ</a>
