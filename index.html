@@ -409,7 +409,7 @@ const projects=[
 const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"Corporate"};
 const pg=document.getElementById('projGrid');
 function drawProjects(f){
-  pg.innerHTML=projects.filter(p=>f==="all"||p.c===f).map(p=>`<div class="proj"><div class="ph">תמונה: ${p.t}</div><span class="tag en">${tagName[p.c]}</span><h3 dir="auto">${p.t}</h3><p class="muted" style="font-size:14px">${p.d}</p></div>`).join('');
+  pg.innerHTML=projects.filter(p=>f==="all"||p.c===f).map(p=>`<div class="proj"><div class="ph">תמונה: ${p.t}</div><span class="tag en">${tagName[p.c]}</span><h3 ${/^[A-Za-z]/.test(p.t)?'class="en"':''}>${p.t}</h3><p class="muted" style="font-size:14px">${p.d}</p></div>`).join('');
 }
 drawProjects("all");
 document.querySelectorAll('[data-f]').forEach(b=>b.addEventListener('click',()=>{
