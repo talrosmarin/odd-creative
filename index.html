@@ -11,13 +11,14 @@
 <title>ODD Creative Wireframe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800&family=Assistant:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=panchang@400,500,600,700,800&display=swap">
 <style>
 /* Layout: wireframe on paper — one long homepage with anchor sections + a catalog view behind #catalog. Single light look on purpose (design comes later). */
 :root{
   --paper:#f3f2ef; --card:#ffffff; --ink:#1d1c1a; --muted:#6c6a64; --line:#d9d6cf;
   --ph:#e4e1da; --ph-ink:#8b877e; --purple:#5e2b8c; --pink:#d9739f; --grad:linear-gradient(90deg,var(--purple),var(--pink)); --accent:#7b3a9e; --accent-ink:#ffffff; --tint:#f1e6f4; --ok:#2f6b3a; --ok-bg:#e3efe3;
-  --display:"Rubik", "Arial Hebrew", Arial, sans-serif; --body:"Assistant", "Arial Hebrew", Arial, sans-serif;
+  --display:"Panchang", "Arial Black", Arial, sans-serif; --body:"Assistant", "Arial Hebrew", Arial, sans-serif;
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -30,6 +31,11 @@ body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:
 h1,h2,h3{font-family:var(--body);text-wrap:balance;margin:0;line-height:1.15}
 h2{font-size:clamp(28px,4vw,40px);font-weight:800}
 .en{direction:ltr;text-align:right;unicode-bidi:isolate;font-family:var(--display)}
+h2.en{font-size:clamp(22px,3.4vw,34px);font-weight:700;letter-spacing:-.01em}
+h3.en{font-size:16px;font-weight:600}
+.eyebrow.en{font-size:11px;letter-spacing:.14em}
+.chip,.badge,.logos span{font-family:var(--display);font-weight:500;letter-spacing:.02em}
+.chip{font-size:12px}
 h3{font-size:20px;font-weight:700}
 h3.en{font-weight:500}
 p{margin:0}
@@ -55,7 +61,7 @@ header.over::after{opacity:0}
 .menu{position:fixed;inset:0;z-index:40;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;padding:env(safe-area-inset-top,0px) 20px 28px;display:flex;flex-direction:column}
 .menu .bar{margin-bottom:24px;width:100%}
 .menu nav{display:flex;flex-direction:column;max-width:1120px;width:100%;margin:0 auto}
-.menu a.mitem{font-family:var(--body);font-size:clamp(32px,6vw,56px);font-weight:700;text-decoration:none;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.28);letter-spacing:-.01em}
+.menu a.mitem{font-family:var(--display);font-size:clamp(24px,4.6vw,44px);font-weight:700;text-decoration:none;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.28);letter-spacing:-.01em}
 .menu a.mitem:hover{opacity:.75}
 .menu a.mitem.cat{text-decoration:underline;text-underline-offset:8px;text-decoration-thickness:2px}
 .menu .social{margin:auto auto 0;display:flex;gap:10px;max-width:1120px;width:100%}
@@ -76,7 +82,7 @@ section{padding-block:72px;border-bottom:1px solid var(--line);scroll-margin-top
 .hero-media{position:absolute;inset:0;border-radius:0;background:#3b3935 repeating-linear-gradient(135deg,transparent 0 18px,rgba(255,255,255,.04) 18px 19px);color:rgba(255,255,255,.55);font-size:15px;align-items:flex-start;padding-top:140px}
 .hero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(46,16,72,.75),rgba(46,16,72,0) 60%,rgba(0,0,0,.35))}
 .hero-text{position:relative;z-index:1;width:100%;display:flex;flex-direction:column;gap:18px;padding-block:0 56px}
-.hero h1{font-family:var(--display);font-size:clamp(44px,8.5vw,112px);font-weight:800;letter-spacing:-.035em;line-height:.95;direction:ltr;text-align:right}
+.hero h1{font-family:var(--display);font-size:clamp(30px,6.4vw,84px);font-weight:800;letter-spacing:-.02em;line-height:1.05;direction:ltr;text-align:right}
 .hero .lead{font-size:19px;max-width:560px}
 .hero .btn{border-color:#fff;color:#fff}
 .hero .btn.solid{border-color:transparent;color:var(--accent-ink)}
@@ -378,7 +384,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 <footer>
   <div class="wrap">
-    <span dir="ltr">ODD CREATIVE · Let's create something ODD</span>
+    <span class="en">ODD CREATIVE · Let's create something ODD</span>
     <span>אירועים • מותגים • חללים</span>
   </div>
 </footer>
