@@ -529,6 +529,7 @@ document.getElementById('form').addEventListener('submit',e=>{e.preventDefault()
   requestAnimationFrame(()=>intro.classList.add('play'));
   let done=false, t1, t2;
   function finish(){ if(done) return; done=true; clearTimeout(t1); clearTimeout(t2);
+    intro.querySelectorAll('.g1>*,.g2>*').forEach(el=>{el.style.animation='none';el.style.opacity=1;el.style.transform='none'});
     window.scrollTo(0,0);
     const to=document.querySelector('header .logo .mark').getBoundingClientRect();
     const from=svg.getBoundingClientRect();
@@ -537,7 +538,9 @@ document.getElementById('form').addEventListener('submit',e=>{e.preventDefault()
     intro.classList.add('out');
     t2=setTimeout(()=>{ document.body.classList.remove('intro-on'); intro.remove(); },820);
   }
-  t1=setTimeout(finish,2300);
+  const last=intro.querySelector('.g2>:last-child');
+  last.addEventListener('animationend',()=>{ t1=setTimeout(finish,350); },{once:true});
+  t2=setTimeout(finish,4000);
   intro.addEventListener('click',()=>{ intro.querySelectorAll('.g1>*,.g2>*').forEach(el=>{el.style.animation='none';el.style.opacity=1;el.style.transform='none'}); finish(); });
   document.addEventListener('keydown',e=>{ if(e.key==='Escape'||e.key==='Enter'||e.key===' ') intro.click(); },{once:true});
 })();
