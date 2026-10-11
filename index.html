@@ -159,6 +159,11 @@ input,select,textarea{font:inherit;font-weight:400;padding:11px 12px;border:1px 
 
 footer{padding-block:36px;font-size:14px;color:var(--muted)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+.legal-links{flex-basis:100%;font-size:13px}
+.legal-links a{color:inherit}
+.legal .wrap{max-width:760px;display:flex;flex-direction:column;gap:12px}
+.legal h3{font-size:19px;margin-top:12px}
+.legal ul{margin:0;padding-inline-start:20px}
 
 .wa{position:fixed;left:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:30;background:#1f8f4e;color:#fff;border-radius:999px;padding:14px 18px;font-family:var(--body);font-weight:500;text-decoration:none;display:flex;gap:8px;align-items:center;box-shadow:0 6px 20px rgba(0,0,0,.18)}
 .wa svg{width:20px;height:20px}
@@ -425,6 +430,48 @@ footer .en{order:2}
   </section>
 </main>
 
+<main class="page" id="page-privacy" hidden>
+  <div class="wrap back"><a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a></div>
+  <section class="legal">
+    <div class="wrap">
+      <h2>מדיניות פרטיות</h2>
+      <p class="muted">עודכן לאחרונה: [תאריך]</p>
+      <p>האתר שייך ל-ODD CREATIVE ([שם העסק הרשמי / ח.פ או ע.מ]). אנחנו מכבדים את הפרטיות שלכם, וכאן מוסבר איזה מידע נאסף באתר ומה עושים איתו.</p>
+      <h3>איזה מידע נאסף</h3>
+      <p>כשאתם ממלאים את טופס יצירת הקשר או שולחים לנו הודעה בוואטסאפ, אנחנו מקבלים את הפרטים שבחרתם לשתף: שם, טלפון, סוג האירוע, תאריך, מיקום ותוכן ההודעה.</p>
+      <h3>למה משתמשים במידע</h3>
+      <p>רק כדי לחזור אליכם, להכין הצעה ולתאם את העבודה.</p>
+      <h3>עם מי משתפים</h3>
+      <p>אנחנו לא מוכרים ולא מעבירים את הפרטים שלכם לאחרים. ההודעות עוברות דרך וואטסאפ, והאתר משתמש בשירותים חיצוניים לאחסון האתר ולטעינת גופנים. השירותים האלה עשויים לקבל מידע טכני בסיסי, כמו כתובת IP.</p>
+      <h3>עוגיות (Cookies)</h3>
+      <p>האתר לא משתמש בעוגיות לפרסום או למעקב.</p>
+      <h3>הזכויות שלכם</h3>
+      <p>אפשר לבקש לראות, לתקן או למחוק את הפרטים שלכם. פנו אלינו: [מייל] · [טלפון].</p>
+    </div>
+  </section>
+</main>
+
+<main class="page" id="page-accessibility" hidden>
+  <div class="wrap back"><a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a></div>
+  <section class="legal">
+    <div class="wrap">
+      <h2>הצהרת נגישות</h2>
+      <p class="muted">עודכן לאחרונה: [תאריך]</p>
+      <p>ב-ODD CREATIVE חשוב לנו שכל אחד יוכל להשתמש באתר. אנחנו פועלים להתאים את האתר לתקן הישראלי ת"י 5568, ברמה AA של הנחיות WCAG.</p>
+      <h3>מה עשינו באתר</h3>
+      <ul>
+        <li>אפשר לגלוש בכל האתר גם עם המקלדת.</li>
+        <li>לכפתורים ולתמונות יש תיאור טקסט לקוראי מסך.</li>
+        <li>מבנה כותרות ברור ושפה פשוטה.</li>
+        <li>ניגודיות צבעים שמקלה על הקריאה.</li>
+        <li>מי שהגדיר במכשיר "הפחתת תנועה" לא יראה אנימציות.</li>
+      </ul>
+      <h3>נתקלתם בבעיה?</h3>
+      <p>אם משהו באתר לא נגיש לכם, נשמח לשמוע ולתקן.<br>רכז/ת הנגישות: [שם] · [טלפון] · [מייל]</p>
+    </div>
+  </section>
+</main>
+
 <main id="catalogView" hidden>
   <div class="wrap cat-head">
     <a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a>
@@ -454,6 +501,7 @@ footer .en{order:2}
   <div class="wrap">
     <span class="en">ODD CREATIVE · Let's create something ODD</span>
     <span>אירועים • מותגים • חללים</span>
+    <nav class="legal-links" aria-label="מידע משפטי"><a href="#privacy">מדיניות פרטיות</a> · <a href="#accessibility">הצהרת נגישות</a></nav>
   </div>
 </footer>
 
@@ -530,7 +578,7 @@ document.querySelectorAll('[data-c]').forEach(b=>b.addEventListener('click',()=>
 drawItems();drawReq();
 
 const home=document.getElementById('home'),cat=document.getElementById('catalogView');
-const views={about:'page-about',services:'page-services',projects:'page-projects',faq:'page-faq',catalog:'catalogView'};
+const views={about:'page-about',services:'page-services',projects:'page-projects',faq:'page-faq',catalog:'catalogView',privacy:'page-privacy',accessibility:'page-accessibility'};
 let lastView=null;
 function route(){
   const key=location.hash.slice(1), vid=views[key]||'home';
