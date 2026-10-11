@@ -244,11 +244,10 @@ footer .en{order:2}
     <span></span>
   </div>
   <nav aria-label="תפריט ראשי">
-    <a class="mitem en" href="#about">About</a>
-    <a class="mitem en" href="#services">Services</a>
-    <a class="mitem en" href="#projects">Projects</a>
+    <a class="mitem en" href="#top">Home</a>
     <a class="mitem en" href="#catalog">Catalog</a>
-    <a class="mitem en" href="#faq">FAQ</a>
+    <a class="mitem en" href="#about">About</a>
+    <a class="mitem en" href="#contact">Contact</a>
   </nav>
   <div class="social">
     <a class="btn solid" href="https://wa.me/972500000000">וואטסאפ</a>
@@ -286,41 +285,22 @@ footer .en{order:2}
     </div>
   </section>
 
-  <section id="contact">
+  <section id="faq">
     <div class="wrap">
       <div class="sec-head">
-        <span class="eyebrow en">Contact</span>
-        <h2 class="en">Let's talk</h2>
-        <p class="muted">ספרו לנו על האירוע, ונחזור אליכם.</p>
+        <span class="eyebrow en">FAQ</span>
+        <h2 class="en">Good questions</h2>
       </div>
-      <div class="contact">
-        <form id="form" novalidate>
-          <div class="full">
-            <span style="font-size:14px;font-weight:500">מי אתם?</span>
-            <div class="seg" style="margin-top:6px">
-              <label><input type="radio" name="who" id="who-p" checked> אירוע פרטי</label>
-              <label><input type="radio" name="who" id="who-b"> עסק</label>
-            </div>
-          </div>
-          <label>שם<input id="f-name" type="text" placeholder="השם שלך"></label>
-          <label>טלפון<input id="f-phone" type="tel" placeholder="050-0000000"></label>
-          <label>סוג אירוע
-            <select id="f-type"><option>חתונה</option><option>מסיבה</option><option>השקה / אירוע מותג</option><option>אירוע חברה</option><option>פסטיבל</option><option>אחר</option></select>
-          </label>
-          <label>תאריך<input id="f-date" type="date"></label>
-          <label class="full">מיקום<input id="f-loc" type="text" placeholder="עיר / שם המקום"></label>
-          <label class="full">ספרו לנו על הרעיון<textarea id="f-msg" rows="3" placeholder="מה אתם מדמיינים?"></textarea></label>
-          <div class="full"><button class="btn solid" type="submit">שליחה</button></div>
-          <div class="full ok" id="sent" hidden>בגרסה הסופית הפרטים יישלחו לוואטסאפ של ODD.</div>
-        </form>
-        <div class="direct">
-          <div class="box"><span class="eyebrow en">WhatsApp</span><span class="num">050-000-0000</span><span class="muted" style="font-size:13px">מספר זמני <span class="fill">מהלקוח</span></span></div>
-          <div class="box"><span class="eyebrow en">Instagram</span><a class="num" href="https://www.instagram.com/odd__creative/">@odd__creative</a></div>
-          <div class="ph" style="aspect-ratio:16/9">תמונה: Premiere-Inspired Event</div>
-        </div>
+      <div class="faq">
+        <details><summary>באיזה אזורים אתם עובדים?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
+        <details><summary>כמה זמן מראש צריך להזמין?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
+        <details><summary>אפשר לשכור אלמנט, או שהכל נבנה מחדש?</summary><p>גם וגם. יש אלמנטים להשכרה בקטלוג, ואפשר להזמין משהו שנבנה במיוחד.</p></details>
+        <details><summary>אתם גם מעצבים, או רק בונים?</summary><p>גם וגם. מהרעיון ועד הביצוע.</p></details>
+        <details><summary>אפשר למתג אלמנט עם הלוגו שלנו?</summary><p>כן. תשובה מלאה <span class="fill">מהלקוח</span></p></details>
       </div>
     </div>
   </section>
+
 </main>
 
 <main class="page" id="page-about" hidden>
@@ -392,40 +372,17 @@ footer .en{order:2}
   </section>
 </main>
 
-<main class="page" id="page-projects" hidden>
+<main class="page" id="page-contact" hidden>
   <div class="wrap back"><a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a></div>
-  <section class="sec-projects">
+  <section class="sec-contact">
     <div class="wrap">
       <div class="sec-head">
-        <span class="eyebrow en">Projects</span>
-        <h2 class="en">Our work</h2>
+        <h2 class="en">Contact</h2>
+        <p class="muted">ספרו לנו על האירוע, ונחזור אליכם.</p>
       </div>
-      <div class="filters" role="group" aria-label="סינון פרויקטים">
-        <button class="chip" data-f="all" aria-pressed="true">All</button>
-        <button class="chip" data-f="wed" aria-pressed="false">Weddings</button>
-        <button class="chip" data-f="brand" aria-pressed="false">Brands</button>
-        <button class="chip" data-f="party" aria-pressed="false">Parties &amp; Festivals</button>
-        <button class="chip" data-f="corp" aria-pressed="false">Corporate</button>
-      </div>
-      <div class="grid3" id="projGrid"></div>
-    </div>
-  </section>
-</main>
-
-<main class="page" id="page-faq" hidden>
-  <div class="wrap back"><a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a></div>
-  <section class="sec-faq">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow en">FAQ</span>
-        <h2 class="en">Good questions</h2>
-      </div>
-      <div class="faq">
-        <details><summary>באיזה אזורים אתם עובדים?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
-        <details><summary>כמה זמן מראש צריך להזמין?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
-        <details><summary>אפשר לשכור אלמנט, או שהכל נבנה מחדש?</summary><p>גם וגם. יש אלמנטים להשכרה בקטלוג, ואפשר להזמין משהו שנבנה במיוחד.</p></details>
-        <details><summary>אתם גם מעצבים, או רק בונים?</summary><p>גם וגם. מהרעיון ועד הביצוע.</p></details>
-        <details><summary>אפשר למתג אלמנט עם הלוגו שלנו?</summary><p>כן. תשובה מלאה <span class="fill">מהלקוח</span></p></details>
+      <div class="row">
+        <a class="btn solid" href="https://wa.me/972500000000">וואטסאפ</a>
+        <a class="btn" href="https://www.instagram.com/odd__creative/">אינסטגרם</a>
       </div>
     </div>
   </section>
@@ -556,15 +513,6 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
   window.addEventListener('scroll',()=>{lastScroll=performance.now();},{passive:true});
   shown=scrollAngle(); draw(); requestAnimationFrame(tick);
 })();
-const pg=document.getElementById('projGrid');
-function drawProjects(f){
-  pg.innerHTML=projects.filter(p=>f==="all"||p.c===f).map(p=>`<div class="proj"><div class="ph">תמונה: ${p.t}</div><span class="tag en">${tagName[p.c]}</span><h3 ${/^[A-Za-z]/.test(p.t)?'class="en"':''}>${p.t}</h3><p class="muted" style="font-size:14px">${p.d}</p></div>`).join('');
-}
-drawProjects("all");
-document.querySelectorAll('[data-f]').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('[data-f]').forEach(x=>x.setAttribute('aria-pressed',x===b));
-  drawProjects(b.dataset.f);
-}));
 
 const items=[
   {id:1,n:"שער קשתות טרקוטה",m:"מידות לדוגמה: 4×3 מ׳ · אפשר למתג",k:"rent"},
@@ -611,7 +559,7 @@ document.querySelectorAll('[data-c]').forEach(b=>b.addEventListener('click',()=>
 drawItems();drawReq();
 
 const home=document.getElementById('home'),cat=document.getElementById('catalogView');
-const views={about:'page-about',services:'page-services',projects:'page-projects',faq:'page-faq',catalog:'catalogView',privacy:'page-privacy',accessibility:'page-accessibility'};
+const views={about:'page-about',services:'page-services',catalog:'catalogView',contact:'page-contact',privacy:'page-privacy',accessibility:'page-accessibility'};
 let lastView=null;
 function route(){
   const key=location.hash.slice(1), vid=views[key]||'home';
@@ -635,7 +583,6 @@ document.getElementById('close').addEventListener('click',()=>setMenu(false));
 menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
 document.addEventListener('keydown',e=>{if(e.key==="Escape")setMenu(false)});
 
-document.getElementById('form').addEventListener('submit',e=>{e.preventDefault();document.getElementById('sent').hidden=false;});
 
 
 </script>
