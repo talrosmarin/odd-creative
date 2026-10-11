@@ -603,6 +603,14 @@ function hdrState(){const top=!home.hidden&&window.scrollY<window.innerHeight*0.
   for(let i=0;i<=600;i++){ const p=line.getPointAtLength(L*i/600); if(p.y>565){knotEnd=i/600;break;}
     bx0=Math.min(bx0,p.x);bx1=Math.max(bx1,p.x);by0=Math.min(by0,p.y);by1=Math.max(by1,p.y); }
   let scrollEnd=1, ready=false;
+  // the tail eases toward the scroll position (like a soft spring), so fast scrolling still looks smooth instead of jumping
+  let target=0, shown=0, raf=0;
+  function ease(){
+    shown+=(target-shown)*0.12;
+    if(Math.abs(target-shown)<0.0005) shown=target;
+    tail.style.strokeDashoffset=String(1-shown);
+    raf=shown===target?0:requestAnimationFrame(ease);
+  }
   const title=intro.querySelector('h1');
   function build(){
     const hb=home.getBoundingClientRect(), lb=logo.getBoundingClientRect(), W=hb.width;
@@ -628,7 +636,7 @@ function hdrState(){const top=!home.hidden&&window.scrollY<window.innerHeight*0.
     cue.style.visibility=y>40?'hidden':'';
     if(!ready) return;
     const pr=Math.min(1,Math.max(0,y/scrollEnd));
-    tail.style.strokeDashoffset=String(1-pr);
+    target=pr; if(!raf) raf=requestAnimationFrame(ease);
   }
   build();
   let rt; window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{build();onScroll();},120)});
