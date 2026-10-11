@@ -42,8 +42,6 @@ p{margin:0}
 a{color:inherit}
 .muted{color:var(--muted)}
 .eyebrow{font-family:var(--body);font-size:13px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
-.note{background:var(--grad);color:#fff;font-size:13px;text-align:center;padding:8px 16px}
-.note b{font-weight:500}
 
 header{position:fixed;top:0;left:0;right:0;z-index:20;padding-top:env(safe-area-inset-top,0px);background:var(--paper);color:var(--ink);border-bottom:1px solid var(--line);transition:background .3s,color .3s,border-color .3s}
 header.over{background:transparent;color:#fff;border-color:transparent}
@@ -83,6 +81,11 @@ section{padding-block:72px;border-bottom:1px solid var(--line);scroll-margin-top
 .hero-logo{position:relative;z-index:2}
 .hero-logo .lg{display:block;width:min(48vw,330px);height:auto;overflow:visible}
 #home{position:relative}
+/* first section under the hero: same cream, the doodle runs behind the text */
+.intro{background:var(--cream);border-bottom:0;padding-block:24px 96px}
+.intro-text{position:relative;z-index:2;display:flex;flex-direction:column;gap:18px}
+.intro h1{font-family:var(--display);font-size:clamp(34px,6.4vw,84px);font-weight:800;letter-spacing:-.02em;line-height:1.05;direction:ltr}
+.intro .lead{font-size:19px;max-width:560px;margin:0}
 .doodle{position:absolute;top:0;left:0;width:100%;z-index:1;pointer-events:none;overflow:hidden}
 .doodle path{fill:none;stroke:#efd3e4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
 #home>section{position:relative}
@@ -237,7 +240,16 @@ footer .en{order:2}
     <div class="hero-logo"><svg class="lg" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="url(#oddGrad)" stroke-linejoin="round" ><defs><linearGradient id="oddGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="600" y2="0"><stop offset="0" stop-color="#5e2b8c"/><stop offset="1" stop-color="#b0559a"/></linearGradient></defs><g class="g1" stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g class="g2" stroke-width="18"><path pathLength="1" d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path pathLength="1" d="M97 197V137H140Q153 137 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path pathLength="1" d="M234 135H177V190H234M177 162.5H228"/><path pathLength="1" d="M250 197L279 137H291L320 197M264 174H306"/><path pathLength="1" d="M336 135H402M369 135V197"/><path pathLength="1" d="M419 128V197"/><path pathLength="1" d="M443 128L477 189L511 128"/><path pathLength="1" d="M592 135H535V190H592M535 162.5H586"/></g></svg></div>
     <a class="scroll-cue" href="#about" aria-label="גללו למטה"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
   </div>
-  <div class="note"><b>שלד האתר (Wireframe)</b> · מבנה ותוכן בלבד · העיצוב, התמונות והטקסטים הסופיים יגיעו בשלב הבא</div>
+  <section id="intro" class="intro">
+    <div class="wrap intro-text">
+      <h1 class="en">Let's create<br>something ODD</h1>
+      <p class="lead">עיצוב ובנייה של חללים, אלמנטים וחוויות. לאירועים, למותגים ולחללים.</p>
+      <div class="row">
+        <a class="btn solid" href="#contact">דברו איתנו</a>
+        <a class="btn" href="#catalog">לקטלוג</a>
+      </div>
+    </div>
+  </section>
 
   <section id="about">
     <div class="wrap about">
@@ -488,11 +500,11 @@ function route(){
 const hdr=document.getElementById('hdr');
 function hdrState(){const top=!home.hidden&&window.scrollY<window.innerHeight*0.7;hdr.classList.remove('over');hdr.classList.toggle('hide',top);document.body.classList.toggle('at-top',top);}
 (function(){
-  // doodle: the scribble from the "stroke follows scroll" reference; its knot of loops sits behind the logo and draws on load, the long line draws as you scroll down into "About"
+  // doodle: the scribble from the "stroke follows scroll" reference; its knot of loops sits behind the logo and draws on load, the long line draws as you scroll down behind "Let's create something ODD"
   const home=document.getElementById('home'), hero=document.getElementById('top');
   const svg=home.querySelector('.doodle'), g=svg.querySelector('g'), line=svg.querySelector('.d-line');
   const logo=hero.querySelector('.hero-logo .lg'), cue=hero.querySelector('.scroll-cue');
-  const about=document.getElementById('about');
+  const intro=document.getElementById('intro');
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // where the knot of loops ends (as a share of the whole line) and its box, in the drawing's own units
   const L=line.getTotalLength(); let knotEnd=0, bx0=1e9,bx1=-1e9,by0=1e9,by1=-1e9;
@@ -506,7 +518,7 @@ function hdrState(){const top=!home.hidden&&window.scrollY<window.innerHeight*0.
     const tx=cx-(bx0+bx1)/2*k, ty=cy-(by0+by1)/2*k;
     g.setAttribute('transform','translate('+tx.toFixed(1)+' '+ty.toFixed(1)+') scale('+k.toFixed(4)+')');
     line.setAttribute('stroke-width',(Math.max(2.5,Math.min(4,W/360))/k).toFixed(2)); // thin and pale, like a texture behind the logo
-    const H=Math.ceil(about.offsetTop+about.offsetHeight);
+    const H=Math.ceil(intro.offsetTop+intro.offsetHeight);
     svg.setAttribute('height',H); svg.setAttribute('viewBox','0 0 '+W.toFixed(0)+' '+H);
     scrollEnd=Math.max(1, hb.top+window.scrollY + Math.min(H, ty+2600*k) - window.innerHeight*0.6);
   }
