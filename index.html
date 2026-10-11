@@ -80,6 +80,7 @@ section{padding-block:72px;border-bottom:1px solid var(--line);scroll-margin-top
 
 .hero{position:relative;height:min(88vh,780px);min-height:520px;display:flex;align-items:flex-end;color:#fff;overflow:hidden}
 .hero-media{position:absolute;inset:0;border-radius:0;background:#3b3935 repeating-linear-gradient(135deg,transparent 0 18px,rgba(255,255,255,.04) 18px 19px);color:rgba(255,255,255,.55);font-size:15px;align-items:flex-start;padding-top:140px}
+.hero-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .hero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(46,16,72,.75),rgba(46,16,72,0) 60%,rgba(0,0,0,.35))}
 .hero-text{position:relative;z-index:1;width:100%;display:flex;flex-direction:column;gap:18px;padding-block:0 56px}
 .hero h1{font-family:var(--display);font-size:clamp(30px,6.4vw,84px);font-weight:800;letter-spacing:-.02em;line-height:1.05;direction:ltr;text-align:right}
@@ -223,7 +224,7 @@ footer .en{order:2}
 
 <main id="home">
   <div class="hero" id="top">
-    <div class="ph hero-media">וידאו פתיחה במסך מלא — רצף קצר מהאירועים (LOST TEMPLE, דיסקו ירוק, Garmin, Premiere)</div>
+    <div class="hero-media"><video src="video/odd-hero.mp4" poster="img/hero-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video></div>
     <div class="wrap hero-text">
       <h1>Let's create<br>something ODD</h1>
       <p class="lead">עיצוב ובנייה של חללים, אלמנטים וחוויות. לאירועים, למותגים ולחללים.</p>
