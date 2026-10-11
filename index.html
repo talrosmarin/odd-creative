@@ -109,12 +109,15 @@ header{transition:transform .45s ease,opacity .45s ease,background .3s,color .3s
 .ring .card p{font-size:13px;opacity:.85;margin:0}
 @media (max-width:700px){.ring{--cw:180px;--ch:240px;--r:300px}}
 /* client names (later: their logos) slide by without stopping; two copies so the loop never shows a gap */
-.marquee{direction:ltr;overflow:hidden;padding-block:40px 8px;-webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent)}
+.marquee{direction:ltr;overflow:hidden;padding-block:28px 8px;-webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent)}
 .marquee-track{display:flex;width:max-content;animation:marquee 28s linear infinite}
 .marquee-set{display:flex;align-items:center;gap:56px;padding-right:56px}
 .marquee-set span{font-family:var(--display);font-weight:500;font-size:clamp(15px,2vw,22px);letter-spacing:.04em;color:var(--muted);white-space:nowrap}
 .marquee:hover .marquee-track{animation-play-state:paused}
 @keyframes marquee{to{transform:translateX(-50%)}}
+.ring-head{position:absolute;top:calc(84px + env(safe-area-inset-top,0px));left:0;right:0;margin:0 auto;z-index:2}
+.clients-head{margin-top:24px;margin-bottom:0}
+.wrap.ring-head,.wrap.clients-head{max-width:1120px} /* .sec-head drops max-width, keep these lined up with the page edge */
 @media (prefers-reduced-motion:reduce){.marquee-track{animation:none}}
 .row{display:flex;flex-wrap:wrap;gap:12px}
 
@@ -274,8 +277,16 @@ footer .en{order:2}
   <section id="work" class="work" aria-label="עבודות נבחרות">
     <div class="ring-stage">
       <div class="ring-sticky">
+        <div class="wrap sec-head ring-head">
+          <span class="eyebrow en">Projects</span>
+          <h2 class="en">Our work</h2>
+        </div>
         <div class="ring" id="ring"></div>
       </div>
+    </div>
+    <div class="wrap sec-head clients-head">
+      <span class="eyebrow en">Clients</span>
+      <h2 class="en">Brands we worked with</h2>
     </div>
     <div class="marquee" aria-label="לקוחות">
       <div class="marquee-track">
