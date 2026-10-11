@@ -222,6 +222,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 .bar .burger,.bar .close{grid-column:3;grid-row:1;justify-self:end}
 .bar .logo{grid-column:2;grid-row:1}
 .burger{align-items:flex-end}
+/* request list from the catalog, top right; the number shows how many elements were picked */
+.req-link{grid-column:1;grid-row:1;justify-self:start;position:relative;color:inherit;display:flex;width:48px;height:48px;align-items:center;justify-content:flex-start}
+.req-count{position:absolute;top:2px;right:-10px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:var(--grad);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--body)}
 .close{text-align:end}
 .en,.hero h1{text-align:left}
 .sec-head{max-width:none}
@@ -241,7 +244,7 @@ footer .en{order:2}
   <div class="wrap bar">
     <button class="burger" id="burger" aria-label="פתיחת תפריט" aria-expanded="false"><i></i><i></i></button>
     <a class="logo" href="#top"><svg class="mark" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="currentColor" stroke-linejoin="round"><g stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g stroke-width="18"><path d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path d="M97 197V137H140Q153 135 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path d="M234 135H177V190H234M177 162.5H228"/><path d="M250 197L279 137H291L320 197M264 174H306"/><path d="M336 135H402M369 135V197"/><path d="M419 128V197"/><path d="M443 128L477 189L511 128"/><path d="M592 135H535V190H592M535 162.5H586"/></g></svg></a>
-    <span></span>
+    <a class="req-link" href="#catalog" aria-label="רשימת הבקשה שלי מהקטלוג"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4.5V3h6v1.5M8.5 10h7M8.5 14h7M8.5 18h4"/></svg><span class="req-count" id="reqCount" hidden>0</span></a>
   </div>
 </header>
 
@@ -554,6 +557,7 @@ function drawItems(){
   }).join('');
 }
 function drawReq(){
+  const rc=document.getElementById('reqCount'); rc.textContent=req.size; rc.hidden=req.size===0;
   const list=document.getElementById('reqList');
   list.innerHTML=[...req.values()].map(i=>`<li><span>${i.n}</span><button data-rm="${i.id}" aria-label="הסרה">×</button></li>`).join('');
   document.getElementById('reqEmpty').hidden=req.size>0;
