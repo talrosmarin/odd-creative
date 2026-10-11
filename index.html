@@ -96,9 +96,18 @@ header{transition:transform .45s ease,opacity .45s ease,background .3s,color .3s
 .page .back{padding-top:28px}
 .page section:last-child{border-bottom:0}
 /* home: big photos + client logos, no extra text */
-.work{border-bottom:0;padding-top:56px}
-.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.gallery .ph{aspect-ratio:4/5}
+.work{border-bottom:0;padding-top:0}
+/* circular 3D gallery (from the "circular gallery" reference): the ring turns as you scroll through this part, and slowly on its own when you stop */
+.ring-stage{height:260vh;position:relative}
+.ring-sticky{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center;justify-content:center;perspective:2000px}
+.ring{position:relative;width:var(--cw);height:var(--ch);transform-style:preserve-3d;--cw:300px;--ch:400px;--r:600px}
+.ring .card{position:absolute;inset:0;border-radius:14px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 18px 40px rgba(40,20,60,.18);transition:opacity .3s linear}
+.ring .card .ph{position:absolute;inset:0;border-radius:0;align-items:flex-start;padding-top:40%}
+.ring .card .cap{position:absolute;left:0;right:0;bottom:0;padding:16px;background:linear-gradient(to top,rgba(30,12,48,.8),rgba(30,12,48,0));color:#fff;display:flex;flex-direction:column;gap:4px}
+.ring .card h3{font-size:18px;font-weight:700}
+.ring .card h3.en{font-size:15px;font-weight:500;text-align:left}
+.ring .card p{font-size:13px;opacity:.85;margin:0}
+@media (max-width:700px){.ring{--cw:180px;--ch:240px;--r:300px}}
 .work .logos{margin-top:40px;justify-content:center}
 .work .logos span{font-size:12px;padding:10px 16px}
 .row{display:flex;flex-wrap:wrap;gap:12px}
@@ -184,7 +193,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 @media (max-width:860px){
   .about,.contact,.cat-layout{grid-template-columns:1fr}
-  .grid3,.biz,.items,.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid3,.biz,.items{grid-template-columns:repeat(2,minmax(0,1fr))}
   .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
   .req{position:static}
 }
@@ -258,15 +267,12 @@ footer .en{order:2}
 
 
   <section id="work" class="work" aria-label="עבודות נבחרות">
-    <div class="wrap">
-      <div class="gallery">
-        <div class="ph">תמונה: LOST TEMPLE</div>
-        <div class="ph">תמונה: Garmin FENIX 9</div>
-        <div class="ph">תמונה: Dan &amp; Amit</div>
-        <div class="ph">תמונה: Premiere-Inspired Event</div>
-        <div class="ph">תמונה: ADAMO</div>
-        <div class="ph">תמונה: Candid</div>
+    <div class="ring-stage">
+      <div class="ring-sticky">
+        <div class="ring" id="ring"></div>
       </div>
+    </div>
+    <div class="wrap">
       <div class="logos" aria-label="לקוחות">
         <span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span>
       </div>
@@ -511,6 +517,38 @@ const projects=[
   {t:"MAKE SENSE",d:"קופסאות תאורה בחיפוי מראה",c:"brand"}
 ];
 const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"Corporate"};
+
+(function(){
+  // circular gallery: cards stand around a circle; scrolling through #work turns it, and when you stop it keeps turning slowly
+  const ring=document.getElementById('ring'), stage=document.querySelector('.ring-stage');
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  ring.innerHTML=projects.map(p=>`<div class="card" role="group" aria-label="${p.t}"><div class="ph">תמונה: ${p.t}</div><div class="cap"><h3 ${/^[A-Za-z]/.test(p.t)?'class="en"':''}>${p.t}</h3><p>${p.d}</p></div></div>`).join('');
+  const cards=[...ring.children], step=360/cards.length;
+  let shown=0, drift=0, lastScroll=0, last=performance.now();
+  function scrollAngle(){
+    const r=stage.getBoundingClientRect(), span=stage.offsetHeight-window.innerHeight;
+    return Math.min(1,Math.max(0,-r.top/span))*360;
+  }
+  function draw(){
+    ring.style.transform='rotateY('+(-shown).toFixed(2)+'deg)';
+    const rad=getComputedStyle(ring).getPropertyValue('--r');
+    cards.forEach((c,i)=>{
+      const a=i*step; c.style.transform='rotateY('+a+'deg) translateZ('+rad+')';
+      const rel=((a-shown)%360+360)%360, off=rel>180?360-rel:rel;
+      c.style.opacity=Math.max(0.3,1-off/180).toFixed(2);
+    });
+  }
+  function tick(now){
+    const dt=Math.min(64,now-last); last=now;
+    if(!reduce && now-lastScroll>150) drift+=dt*0.0015; // slow turn on its own, about 1.5 degrees a second
+    const target=scrollAngle()+drift;
+    shown+=(target-shown)*0.1; // ease toward the scroll position so fast scrolling stays smooth
+    if(!document.getElementById('home').hidden) draw();
+    requestAnimationFrame(tick);
+  }
+  window.addEventListener('scroll',()=>{lastScroll=performance.now();},{passive:true});
+  shown=scrollAngle(); draw(); requestAnimationFrame(tick);
+})();
 const pg=document.getElementById('projGrid');
 function drawProjects(f){
   pg.innerHTML=projects.filter(p=>f==="all"||p.c===f).map(p=>`<div class="proj"><div class="ph">תמונה: ${p.t}</div><span class="tag en">${tagName[p.c]}</span><h3 ${/^[A-Za-z]/.test(p.t)?'class="en"':''}>${p.t}</h3><p class="muted" style="font-size:14px">${p.d}</p></div>`).join('');
