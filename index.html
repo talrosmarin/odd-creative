@@ -108,8 +108,14 @@ header{transition:transform .45s ease,opacity .45s ease,background .3s,color .3s
 .ring .card h3.en{font-size:15px;font-weight:500;text-align:left}
 .ring .card p{font-size:13px;opacity:.85;margin:0}
 @media (max-width:700px){.ring{--cw:180px;--ch:240px;--r:300px}}
-.work .logos{margin-top:40px;justify-content:center}
-.work .logos span{font-size:12px;padding:10px 16px}
+/* client names (later: their logos) slide by without stopping; two copies so the loop never shows a gap */
+.marquee{direction:ltr;overflow:hidden;padding-block:40px 8px;-webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent)}
+.marquee-track{display:flex;width:max-content;animation:marquee 28s linear infinite}
+.marquee-set{display:flex;align-items:center;gap:56px;padding-right:56px}
+.marquee-set span{font-family:var(--display);font-weight:500;font-size:clamp(15px,2vw,22px);letter-spacing:.04em;color:var(--muted);white-space:nowrap}
+.marquee:hover .marquee-track{animation-play-state:paused}
+@keyframes marquee{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.marquee-track{animation:none}}
 .row{display:flex;flex-wrap:wrap;gap:12px}
 
 .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:center}
@@ -272,9 +278,10 @@ footer .en{order:2}
         <div class="ring" id="ring"></div>
       </div>
     </div>
-    <div class="wrap">
-      <div class="logos" aria-label="לקוחות">
-        <span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span>
+    <div class="marquee" aria-label="לקוחות">
+      <div class="marquee-track">
+        <div class="marquee-set"><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span></div>
+        <div class="marquee-set" aria-hidden="true"><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span></div>
       </div>
     </div>
   </section>
