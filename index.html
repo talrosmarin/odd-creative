@@ -84,7 +84,7 @@ section{padding-block:72px;border-bottom:1px solid var(--line);scroll-margin-top
 .hero-logo .lg{display:block;width:min(48vw,330px);height:auto;overflow:visible}
 #home{position:relative}
 .doodle{position:absolute;top:0;left:0;width:100%;z-index:1;pointer-events:none;overflow:hidden}
-.doodle path{fill:none;stroke:#e3a6cf;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
+.doodle path{fill:none;stroke:#efd3e4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
 #home>section{position:relative}
 .scroll-cue{position:absolute;z-index:2;bottom:calc(28px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);color:#5e2b8c;opacity:0;animation:cueIn .6s 2s ease forwards, cueBob 2s 2.6s ease-in-out infinite}
 @keyframes cueIn{to{opacity:.7}}
@@ -505,7 +505,7 @@ function hdrState(){const top=!home.hidden&&window.scrollY<window.innerHeight*0.
     const k=Math.min(W*0.96, Math.max(lb.width*2.1, 340))/(bx1-bx0);
     const tx=cx-(bx0+bx1)/2*k, ty=cy-(by0+by1)/2*k;
     g.setAttribute('transform','translate('+tx.toFixed(1)+' '+ty.toFixed(1)+') scale('+k.toFixed(4)+')');
-    line.setAttribute('stroke-width',(Math.max(5,Math.min(9,W/160))/k).toFixed(2));
+    line.setAttribute('stroke-width',(Math.max(2.5,Math.min(4,W/360))/k).toFixed(2)); // thin and pale, like a texture behind the logo
     const H=Math.ceil(about.offsetTop+about.offsetHeight);
     svg.setAttribute('height',H); svg.setAttribute('viewBox','0 0 '+W.toFixed(0)+' '+H);
     scrollEnd=Math.max(1, hb.top+window.scrollY + Math.min(H, ty+2600*k) - window.innerHeight*0.6);
