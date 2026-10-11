@@ -76,27 +76,21 @@ header.over::after{opacity:0}
 section{padding-block:72px;border-bottom:1px solid var(--line);scroll-margin-top:76px}
 .sec-head{display:flex;flex-direction:column;gap:10px;margin-bottom:32px;max-width:640px}
 
-/* hero: a smooth modern cream page, the purple logo sits still in the middle; a doodle line draws itself around it and keeps going down into the next section as you scroll */
-.hero{position:relative;height:100svh;min-height:480px;background:var(--cream);display:grid;place-items:center}
-.hero-logo{position:relative;z-index:2}
-.hero-logo .lg{display:block;width:min(48vw,330px);height:auto;overflow:visible}
-#home{position:relative}
-/* first section under the hero: same cream, the doodle runs behind the text */
-.intro{background:var(--cream);border-bottom:0;padding-block:max(140px,22vh) 96px}
-.intro-text{position:relative;z-index:2;display:flex;flex-direction:column;gap:10px;margin-top:clamp(110px,10vw,150px)} /* text sits below where the doodle ends, so the line never touches the title */
+/* hero: the workshop video, full screen, under a see-through header */
+.hero{position:relative;height:100svh;min-height:480px;overflow:hidden;background:#3b3935}
+.hero-media{position:absolute;inset:0}
+.hero-media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.hero-media::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.35),rgba(0,0,0,0) 30%,rgba(0,0,0,0) 75%,rgba(0,0,0,.25))}
+/* first section under the video */
+.intro{background:var(--cream);border-bottom:0;padding-block:88px}
+.intro-text{display:flex;flex-direction:column;gap:10px}
 .intro h1{font-family:var(--display);font-size:clamp(34px,6.4vw,84px);font-weight:800;letter-spacing:-.02em;line-height:1.05;direction:ltr}
 .intro .lead{font-size:19px;max-width:560px;margin:0;text-align:left;align-self:flex-end} /* sits right under the English title, same left edge */
-.doodle{position:absolute;top:0;left:0;width:100%;z-index:1;pointer-events:none;overflow:hidden}
-.doodle path{fill:none;stroke:#efd3e4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1}
-#home>section{position:relative}
-.scroll-cue{position:absolute;z-index:2;bottom:calc(28px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);color:#5e2b8c;opacity:0;animation:cueIn .6s 2s ease forwards, cueBob 2s 2.6s ease-in-out infinite}
+.scroll-cue{position:absolute;z-index:2;bottom:calc(28px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);color:#fff;opacity:0;animation:cueIn .6s 1s ease forwards, cueBob 2s 1.6s ease-in-out infinite}
 @keyframes cueIn{to{opacity:.7}}
 @keyframes cueBob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,6px)}}
 @media (prefers-reduced-motion:reduce){.scroll-cue{opacity:.7;animation:none}}
-header.hide{transform:translateY(-110%);opacity:0;pointer-events:none}
 header{transition:transform .45s ease,opacity .45s ease,background .3s,color .3s,border-color .3s}
-body.at-top .wa{opacity:0;pointer-events:none}
-.wa{transition:opacity .4s}
 #catalogView,.page{padding-top:calc(76px + env(safe-area-inset-top,0px))}
 .page .back{padding-top:28px}
 .page section:last-child{border-bottom:0}
@@ -219,7 +213,7 @@ footer .en{order:2}
 </head>
 <body>
 
-<header id="hdr" class="hide">
+<header id="hdr" class="over">
   <div class="wrap bar">
     <button class="burger" id="burger" aria-label="פתיחת תפריט" aria-expanded="false"><i></i><i></i></button>
     <a class="logo" href="#top"><svg class="mark" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="currentColor" stroke-linejoin="round"><g stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g stroke-width="18"><path d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path d="M97 197V137H140Q153 135 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path d="M234 135H177V190H234M177 162.5H228"/><path d="M250 197L279 137H291L320 197M264 174H306"/><path d="M336 135H402M369 135V197"/><path d="M419 128V197"/><path d="M443 128L477 189L511 128"/><path d="M592 135H535V190H592M535 162.5H586"/></g></svg></a>
@@ -247,9 +241,8 @@ footer .en{order:2}
 </div>
 
 <main id="home">
-  <svg class="doodle" aria-hidden="true"><g><path class="d-line" pathLength="1" d="M876.605 394.131C788.982 335.917 696.198 358.139 691.836 416.303C685.453 501.424 853.722 498.43 941.95 409.714C1016.1 335.156 1008.64 186.907 906.167 142.846C807.014 100.212 712.699 198.494 789.049 245.127C889.053 306.207 986.062 116.979 840.548 43.3233C743.932 -5.58141 678.027 57.1682 672.279 112.188C666.53 167.208 712.538 172.943 736.353 163.088C760.167 153.234 764.14 120.924 746.651 93.3868C717.461 47.4252 638.894 77.8642 601.018 116.979C568.164 150.908 557 201.079 576.467 246.924C593.342 286.664 630.24 310.55 671.68 302.614C756.114 286.446 729.747 206.546 681.86 186.442C630.54 164.898 492 209.318 495.026 287.644C496.837 334.494 518.402 366.466 582.455 367.287C680.013 368.538 771.538 299.456 898.634 292.434C1007.02 286.446 1192.67 309.384 1242.36 382.258C1266.99 418.39 1273.65 443.108 1247.75 474.477C1217.32 511.33 1149.4 511.259 1096.84 466.093C1044.29 420.928 1029.14 380.576 1033.97 324.172C1038.31 273.428 1069.55 228.986 1117.2 216.384C1152.2 207.128 1188.29 213.629 1194.45 245.127C1201.49 281.062 1132.22 280.104 1100.44 272.673C1065.32 264.464 1044.22 234.837 1032.77 201.413C1019.29 162.061 1029.71 131.126 1056.44 100.965C1086.19 67.4032 1143.96 54.5526 1175.78 86.1513C1207.02 117.17 1186.81 143.379 1156.22 166.691C1112.57 199.959 1052.57 186.238 999.784 155.164C957.312 130.164 899.171 63.7054 931.284 26.3214C952.068 2.12513 996.288 3.87363 1007.22 43.58C1018.15 83.2749 1003.56 122.644 975.969 163.376C948.377 204.107 907.272 255.122 913.558 321.045C919.727 385.734 990.968 497.068 1063.84 503.35C1111.46 507.456 1166.79 511.984 1175.68 464.527C1191.52 379.956 1101.26 334.985 1030.29 377.017C971.109 412.064 956.297 483.647 953.797 561.655C947.587 755.413 1197.56 941.828 936.039 1140.66C745.771 1285.32 321.926 950.737 134.536 1202.19C-6.68295 1391.68 -53.4837 1655.38 131.935 1760.5C478.381 1956.91 1124.19 1515 1201.28 1997.83C1273.66 2451.23 100.805 1864.7 303.794 2668.89"/></g><path class="d-tail" pathLength="1"/></svg>
   <div class="hero" id="top">
-    <div class="hero-logo"><svg class="lg" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="url(#oddGrad)" stroke-linejoin="round" ><defs><linearGradient id="oddGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="600" y2="0"><stop offset="0" stop-color="#5e2b8c"/><stop offset="1" stop-color="#b0559a"/></linearGradient></defs><g class="g1" stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g class="g2" stroke-width="18"><path pathLength="1" d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path pathLength="1" d="M97 197V137H140Q153 137 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path pathLength="1" d="M234 135H177V190H234M177 162.5H228"/><path pathLength="1" d="M250 197L279 137H291L320 197M264 174H306"/><path pathLength="1" d="M336 135H402M369 135V197"/><path pathLength="1" d="M419 128V197"/><path pathLength="1" d="M443 128L477 189L511 128"/><path pathLength="1" d="M592 135H535V190H592M535 162.5H586"/></g></svg></div>
+    <div class="hero-media"><video poster="img/hero-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"><source src="video/odd-hero-mobile.mp4" type="video/mp4" media="(max-width: 700px)"><source src="video/odd-hero.mp4" type="video/mp4"></video></div>
     <a class="scroll-cue" href="#intro" aria-label="גללו למטה"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
   </div>
   <section id="intro" class="intro">
@@ -582,65 +575,12 @@ function route(){
   if(vid!=='home'){ window.scrollTo(0,0); }
   else if(key&&key!=='top'){ const el=document.getElementById(key); if(el) el.scrollIntoView(); }
   else if(lastView&&lastView!=='home'){ window.scrollTo(0,0); }
-  if(vid==='home'&&lastView!=='home') window.dispatchEvent(new Event('resize')); // redraw the doodle once the home page is visible
   lastView=vid;
 }
 const hdr=document.getElementById('hdr');
-function hdrState(){const top=!home.hidden&&window.scrollY<window.innerHeight*0.7;hdr.classList.remove('over');hdr.classList.toggle('hide',top);document.body.classList.toggle('at-top',top);}
-(function(){
-  // doodle: the scribble from the "stroke follows scroll" reference; its knot of loops sits behind the logo and draws on load, the long line draws as you scroll down behind "Let's create something ODD"
-  const home=document.getElementById('home'), hero=document.getElementById('top');
-  const svg=home.querySelector('.doodle'), g=svg.querySelector('g'), line=svg.querySelector('.d-line'), tail=svg.querySelector('.d-tail');
-  const logo=hero.querySelector('.hero-logo .lg'), cue=hero.querySelector('.scroll-cue');
-  const intro=document.getElementById('intro');
-  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // where the knot of loops ends (as a share of the whole line) and its box, in the drawing's own units
-  const L=line.getTotalLength(); let knotEnd=0, bx0=1e9,bx1=-1e9,by0=1e9,by1=-1e9;
-  for(let i=0;i<=600;i++){ const p=line.getPointAtLength(L*i/600); if(p.y>565){knotEnd=i/600;break;}
-    bx0=Math.min(bx0,p.x);bx1=Math.max(bx1,p.x);by0=Math.min(by0,p.y);by1=Math.max(by1,p.y); }
-  let scrollEnd=1, ready=false;
-  // the tail eases toward the scroll position (like a soft spring), so fast scrolling still looks smooth instead of jumping
-  let target=0, shown=0, raf=0;
-  function ease(){
-    shown+=(target-shown)*0.12;
-    if(Math.abs(target-shown)<0.0005) shown=target;
-    tail.style.strokeDashoffset=String(1-shown);
-    raf=shown===target?0:requestAnimationFrame(ease);
-  }
-  const title=intro.querySelector('h1');
-  function build(){
-    const hb=home.getBoundingClientRect(), lb=logo.getBoundingClientRect(), W=hb.width;
-    const cx=lb.left-hb.left+lb.width/2, cy=lb.top-hb.top+lb.height/2;
-    const k=Math.min(W*0.96, Math.max(lb.width*2.1, 340))/(bx1-bx0);
-    const tx=cx-(bx0+bx1)/2*k, ty=cy-(by0+by1)/2*k;
-    g.setAttribute('transform','translate('+tx.toFixed(1)+' '+ty.toFixed(1)+') scale('+k.toFixed(4)+')');
-    const sw=Math.max(2.5,Math.min(4,W/360)); // thin and pale, like a texture behind the logo
-    line.setAttribute('stroke-width',(sw/k).toFixed(2)); tail.setAttribute('stroke-width',sw.toFixed(2));
-    const H=Math.ceil(intro.offsetTop+intro.offsetHeight);
-    svg.setAttribute('height',H); svg.setAttribute('viewBox','0 0 '+W.toFixed(0)+' '+H);
-    // from the knot, one smooth swoop down that stops beside the "Let's create something ODD" title
-    const tb=title.getBoundingClientRect(), drop=parseFloat(getComputedStyle(title.parentNode).marginTop)||0, titleY=tb.top-hb.top+tb.height/2-drop; // where the line ends: same spot as before the text moved down
-    const p0=line.getPointAtLength(L*knotEnd), x0=p0.x*k+tx, y0=p0.y*k+ty, d=titleY-y0, f=n=>n.toFixed(1);
-    tail.setAttribute('d','M'+f(x0)+' '+f(y0)+
-      ' C'+f(x0)+' '+f(y0+.3*d)+' '+f(W*.86)+' '+f(y0+.45*d)+' '+f(W*.55)+' '+f(y0+.6*d)+
-      ' C'+f(W*.22)+' '+f(y0+.74*d)+' '+f(W*.1)+' '+f(y0+.9*d)+' '+f(W*.4)+' '+f(y0+.93*d)+
-      ' C'+f(W*.7)+' '+f(y0+.96*d)+' '+f(W*.95)+' '+f(titleY-.06*d)+' '+f(W-26)+' '+f(titleY));
-    scrollEnd=Math.max(1, hb.top+window.scrollY + titleY - window.innerHeight*0.6);
-  }
-  function onScroll(){
-    const y=window.scrollY;
-    cue.style.visibility=y>40?'hidden':'';
-    if(!ready) return;
-    const pr=Math.min(1,Math.max(0,y/scrollEnd));
-    target=pr; if(!raf) raf=requestAnimationFrame(ease);
-  }
-  build();
-  let rt; window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{build();onScroll();},120)});
-  window.addEventListener('scroll',onScroll,{passive:true});
-  if(reduce){ ready=true; line.style.strokeDashoffset=String(1-knotEnd); tail.style.strokeDashoffset='0'; return; }
-  setTimeout(()=>{ line.style.transition='stroke-dashoffset 2.2s cubic-bezier(.45,0,.25,1)'; line.style.strokeDashoffset=String(1-knotEnd); },250);
-  setTimeout(()=>{ ready=true; onScroll(); },2500);
-})();
+function hdrState(){hdr.classList.toggle('over',!home.hidden&&window.scrollY<window.innerHeight*0.6);} // see-through header over the video
+const cue=document.querySelector('.hero .scroll-cue');
+window.addEventListener('scroll',()=>{cue.style.visibility=window.scrollY>40?'hidden':'';},{passive:true});
 window.addEventListener('scroll',hdrState,{passive:true});
 window.addEventListener('hashchange',()=>{route();hdrState();});route();hdrState();
 
