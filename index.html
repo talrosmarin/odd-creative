@@ -191,10 +191,10 @@ footer .en{order:2}
 .chip,.badge,.logos span{font-family:var(--display);font-weight:500}
 .chip{font-size:12px}
 
-/* intro: logo "bend" animation on every page load, then it flies into the header logo (click to skip) */
-#intro{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(26,20,32,.92);transition:background .7s ease;cursor:pointer}
-#intro.out{background:rgba(26,20,32,0);pointer-events:none}
-#intro .lg{width:min(62vw,440px);height:auto;overflow:visible;transform-origin:0 0;transition:transform .8s cubic-bezier(.7,0,.2,1)}
+/* intro: smooth cream page, the purple logo does the "bend" animation at its real size and spot in the header, then the page fades into the site */
+#intro{position:fixed;inset:0;z-index:60;background:#f4eee4;transition:opacity .8s ease;cursor:pointer}
+#intro.out{opacity:0;pointer-events:none}
+#intro .lg{position:absolute;height:auto;overflow:visible}
 #intro .lg *{transform-box:fill-box}
 #intro .g1>*,#intro .g2>*{opacity:0}
 #intro.play .g1>:nth-child(1){transform-origin:left center;animation:oddBend 1s cubic-bezier(.3,1.5,.5,1) forwards}
@@ -204,15 +204,13 @@ footer .en{order:2}
 @keyframes oddBend{from{opacity:1;transform:scaleX(.19)}to{opacity:1;transform:scaleX(1)}}
 @keyframes oddPop{from{opacity:1;transform:scale(0)}to{opacity:1;transform:scale(1)}}
 @keyframes oddRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-#intro .skip{position:absolute;bottom:calc(24px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);color:rgba(255,255,255,.55);font-size:13px;font-family:var(--body);transition:opacity .3s}
-#intro.out .skip{opacity:0}
 body.intro-on header .logo{opacity:0}
-header .logo{transition:opacity .2s}
+header .logo{transition:opacity .8s ease}
 </style>
 </head>
 <body>
 
-<div id="intro" hidden role="presentation"><svg class="lg" viewBox="-2 -2 600 204" fill="none" stroke="#fff" stroke-linejoin="round" aria-hidden="true"><g class="g1" stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g class="g2" stroke-width="18"><path d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path d="M97 197V137H140Q153 137 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path d="M234 135H177V190H234M177 162.5H228"/><path d="M250 197L279 137H291L320 197M264 174H306"/><path d="M336 135H402M369 135V197"/><path d="M419 128V197"/><path d="M443 128L477 189L511 128"/><path d="M592 135H535V190H592M535 162.5H586"/></g></svg><span class="skip">לחצו כדי לדלג</span></div>
+<div id="intro" hidden role="presentation"><svg class="lg" viewBox="-2 -2 600 204" fill="none" stroke="url(#oddGrad)" stroke-linejoin="round" aria-hidden="true"><defs><linearGradient id="oddGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="600" y2="0"><stop offset="0" stop-color="#5e2b8c"/><stop offset="1" stop-color="#b0559a"/></linearGradient></defs><g class="g1" stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g class="g2" stroke-width="18"><path d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path d="M97 197V137H140Q153 137 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path d="M234 135H177V190H234M177 162.5H228"/><path d="M250 197L279 137H291L320 197M264 174H306"/><path d="M336 135H402M369 135V197"/><path d="M419 128V197"/><path d="M443 128L477 189L511 128"/><path d="M592 135H535V190H592M535 162.5H586"/></g></svg></div>
 
 <header id="hdr" class="over">
   <div class="wrap bar">
@@ -519,27 +517,26 @@ document.getElementById('form').addEventListener('submit',e=>{e.preventDefault()
 (function(){
   const intro=document.getElementById('intro');
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!intro||reduce||location.hash==='#catalog') return;
+  if(!intro||reduce||location.hash==='#catalog'){ if(intro) intro.remove(); return; }
+  window.scrollTo(0,0);
   const svg=intro.querySelector('.lg');
+  const mark=document.querySelector('header .logo .mark');
+  function place(){ const r=mark.getBoundingClientRect(); svg.style.left=r.left+'px'; svg.style.top=r.top+'px'; svg.style.width=r.width+'px'; }
+  place(); window.addEventListener('resize',place);
   intro.querySelectorAll('.g2>*').forEach((p,i)=>p.style.animationDelay=(1.15+i*.05)+'s');
   intro.hidden=false; document.body.classList.add('intro-on');
   requestAnimationFrame(()=>intro.classList.add('play'));
   let done=false, t1, t2;
   function finish(){ if(done) return; done=true; clearTimeout(t1); clearTimeout(t2);
     intro.querySelectorAll('.g1>*,.g2>*').forEach(el=>{el.style.animation='none';el.style.opacity=1;el.style.transform='none'});
-    window.scrollTo(0,0);
-    const to=document.querySelector('header .logo .mark').getBoundingClientRect();
-    const from=svg.getBoundingClientRect();
-    const sc=to.width/from.width;
-    svg.style.transform='translate('+(to.left-from.left)+'px,'+(to.top-from.top)+'px) scale('+sc+')';
-    intro.classList.add('out');
-    t2=setTimeout(()=>{ document.body.classList.remove('intro-on'); intro.remove(); },820);
+    intro.classList.add('out'); document.body.classList.remove('intro-on');
+    setTimeout(()=>{ window.removeEventListener('resize',place); intro.remove(); },850);
   }
   const last=intro.querySelector('.g2>:last-child');
-  last.addEventListener('animationend',()=>{ t1=setTimeout(finish,350); },{once:true});
-  t2=setTimeout(finish,4000);
-  intro.addEventListener('click',()=>{ intro.querySelectorAll('.g1>*,.g2>*').forEach(el=>{el.style.animation='none';el.style.opacity=1;el.style.transform='none'}); finish(); });
-  document.addEventListener('keydown',e=>{ if(e.key==='Escape'||e.key==='Enter'||e.key===' ') intro.click(); },{once:true});
+  last.addEventListener('animationend',()=>{ t1=setTimeout(finish,700); },{once:true});
+  t2=setTimeout(finish,4200);
+  intro.addEventListener('click',finish);
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'||e.key==='Enter'||e.key===' ') finish(); });
 })();
 </script>
 </body>
