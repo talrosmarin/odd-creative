@@ -191,7 +191,7 @@ footer .en{order:2}
 .chip,.badge,.logos span{font-family:var(--display);font-weight:500}
 .chip{font-size:12px}
 
-/* intro: logo "bend" animation, then it flies into the header logo (first visit only, click to skip) */
+/* intro: logo "bend" animation on every page load, then it flies into the header logo (click to skip) */
 #intro{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:rgba(26,20,32,.92);transition:background .7s ease;cursor:pointer}
 #intro.out{background:rgba(26,20,32,0);pointer-events:none}
 #intro .lg{width:min(62vw,440px);height:auto;overflow:visible;transform-origin:0 0;transition:transform .8s cubic-bezier(.7,0,.2,1)}
@@ -518,11 +518,8 @@ document.getElementById('form').addEventListener('submit',e=>{e.preventDefault()
 
 (function(){
   const intro=document.getElementById('intro');
-  let seen=false; try{seen=localStorage.getItem('oddIntroSeen')==='1'}catch(e){}
-  const force=/[?&]intro\b/.test(location.search);
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!intro||reduce||(seen&&!force)||location.hash==='#catalog') return;
-  try{localStorage.setItem('oddIntroSeen','1')}catch(e){}
+  if(!intro||reduce||location.hash==='#catalog') return;
   const svg=intro.querySelector('.lg');
   intro.querySelectorAll('.g2>*').forEach((p,i)=>p.style.animationDelay=(1.15+i*.05)+'s');
   intro.hidden=false; document.body.classList.add('intro-on');
