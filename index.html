@@ -87,6 +87,7 @@ section{padding-block:72px;border-bottom:1px solid var(--line);scroll-margin-top
 .hero.play .g1>:nth-child(2),.hero.play .g1>:nth-child(3){transform-origin:center bottom;animation:oddPop .55s cubic-bezier(.3,1.8,.5,1) forwards}
 .hero.play .g1>:nth-child(2){animation-delay:1.05s}.hero.play .g1>:nth-child(3){animation-delay:1.18s}
 .hero.play .g2>*{animation:oddRise .5s ease-out forwards}
+.hero.play .g2>:nth-child(1){animation-delay:1.45s}.hero.play .g2>:nth-child(2){animation-delay:1.51s}.hero.play .g2>:nth-child(3){animation-delay:1.57s}.hero.play .g2>:nth-child(4){animation-delay:1.63s}.hero.play .g2>:nth-child(5){animation-delay:1.69s}.hero.play .g2>:nth-child(6){animation-delay:1.75s}.hero.play .g2>:nth-child(7){animation-delay:1.81s}.hero.play .g2>:nth-child(8){animation-delay:1.87s}
 @keyframes oddBend{from{opacity:1;transform:scaleX(.19)}to{opacity:1;transform:scaleX(1)}}
 @keyframes oddPop{from{opacity:1;transform:scale(0)}to{opacity:1;transform:scale(1)}}
 @keyframes oddRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
@@ -490,7 +491,7 @@ function route(){
 }
 const hdr=document.getElementById('hdr');
 function hdrState(){const top=!home.hidden&&window.scrollY<window.innerHeight*0.7;hdr.classList.remove('over');hdr.classList.toggle('hide',top);document.body.classList.toggle('at-top',top);}
-requestAnimationFrame(()=>document.getElementById('top').classList.add('play'));
+setTimeout(()=>document.getElementById('top').classList.add('play'),60);
 window.addEventListener('scroll',hdrState,{passive:true});
 window.addEventListener('hashchange',()=>{route();hdrState();});route();hdrState();
 
