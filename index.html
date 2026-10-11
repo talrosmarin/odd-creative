@@ -97,7 +97,15 @@ header.hide{transform:translateY(-110%);opacity:0;pointer-events:none}
 header{transition:transform .45s ease,opacity .45s ease,background .3s,color .3s,border-color .3s}
 body.at-top .wa{opacity:0;pointer-events:none}
 .wa{transition:opacity .4s}
-#catalogView{padding-top:calc(76px + env(safe-area-inset-top,0px))}
+#catalogView,.page{padding-top:calc(76px + env(safe-area-inset-top,0px))}
+.page .back{padding-top:28px}
+.page section:last-child{border-bottom:0}
+/* home: big photos + client logos, no extra text */
+.work{border-bottom:0;padding-top:40px}
+.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.gallery .ph{aspect-ratio:4/5}
+.work .logos{margin-top:40px;justify-content:center}
+.work .logos span{font-size:12px;padding:10px 16px}
 .row{display:flex;flex-wrap:wrap;gap:12px}
 
 .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:center}
@@ -176,7 +184,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 @media (max-width:860px){
   .about,.contact,.cat-layout{grid-template-columns:1fr}
-  .grid3,.biz,.items{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid3,.biz,.items,.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
   .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
   .req{position:static}
 }
@@ -209,7 +217,7 @@ footer .en{order:2}
 <header id="hdr" class="hide">
   <div class="wrap bar">
     <button class="burger" id="burger" aria-label="פתיחת תפריט" aria-expanded="false"><i></i><i></i></button>
-    <a class="logo" href="#top"><svg class="mark" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="currentColor" stroke-linejoin="round"><g stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g stroke-width="18"><path d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path d="M97 197V137H140Q153 135 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path d="M234 135H177V190H234M177 162.5H228"/><path d="M250 197L279 137H291L320 197M264 174H306"/><path d="M336 135H402M369 135V197"/><path d="M419 128V197"/><path d="M443 128L477 189L511 128"/><path d="M592 135H535V190H592M535 162.5H586"/></g><path class="d-tail" pathLength="1"/></svg></a>
+    <a class="logo" href="#top"><svg class="mark" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="currentColor" stroke-linejoin="round"><g stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g stroke-width="18"><path d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path d="M97 197V137H140Q153 135 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path d="M234 135H177V190H234M177 162.5H228"/><path d="M250 197L279 137H291L320 197M264 174H306"/><path d="M336 135H402M369 135V197"/><path d="M419 128V197"/><path d="M443 128L477 189L511 128"/><path d="M592 135H535V190H592M535 162.5H586"/></g></svg></a>
     <span></span>
   </div>
 </header>
@@ -217,16 +225,15 @@ footer .en{order:2}
 <div class="menu" id="menu" hidden>
   <div class="wrap bar" style="padding-inline:0">
     <button class="close" id="close" aria-label="סגירת תפריט">×</button>
-    <span class="logo"><svg class="mark" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="currentColor" stroke-linejoin="round"><g stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g stroke-width="18"><path d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path d="M97 197V137H140Q153 135 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path d="M234 135H177V190H234M177 162.5H228"/><path d="M250 197L279 137H291L320 197M264 174H306"/><path d="M336 135H402M369 135V197"/><path d="M419 128V197"/><path d="M443 128L477 189L511 128"/><path d="M592 135H535V190H592M535 162.5H586"/></g><path class="d-tail" pathLength="1"/></svg></span>
+    <span class="logo"><svg class="mark" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="currentColor" stroke-linejoin="round"><g stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g stroke-width="18"><path d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path d="M97 197V137H140Q153 135 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path d="M234 135H177V190H234M177 162.5H228"/><path d="M250 197L279 137H291L320 197M264 174H306"/><path d="M336 135H402M369 135V197"/><path d="M419 128V197"/><path d="M443 128L477 189L511 128"/><path d="M592 135H535V190H592M535 162.5H586"/></g></svg></span>
     <span></span>
   </div>
   <nav aria-label="תפריט ראשי">
+    <a class="mitem en" href="#about">About</a>
     <a class="mitem en" href="#services">Services</a>
     <a class="mitem en" href="#projects">Projects</a>
-    <a class="mitem en" href="#business">Business</a>
-    <a class="mitem en" href="#about">About</a>
-    <a class="mitem en" href="#contact">Contact</a>
-    <a class="mitem cat en" href="#catalog">Catalog →</a>
+    <a class="mitem en" href="#catalog">Catalog</a>
+    <a class="mitem en" href="#faq">FAQ</a>
   </nav>
   <div class="social">
     <a class="btn solid" href="https://wa.me/972500000000">וואטסאפ</a>
@@ -237,8 +244,8 @@ footer .en{order:2}
 <main id="home">
   <svg class="doodle" aria-hidden="true"><g><path class="d-line" pathLength="1" d="M876.605 394.131C788.982 335.917 696.198 358.139 691.836 416.303C685.453 501.424 853.722 498.43 941.95 409.714C1016.1 335.156 1008.64 186.907 906.167 142.846C807.014 100.212 712.699 198.494 789.049 245.127C889.053 306.207 986.062 116.979 840.548 43.3233C743.932 -5.58141 678.027 57.1682 672.279 112.188C666.53 167.208 712.538 172.943 736.353 163.088C760.167 153.234 764.14 120.924 746.651 93.3868C717.461 47.4252 638.894 77.8642 601.018 116.979C568.164 150.908 557 201.079 576.467 246.924C593.342 286.664 630.24 310.55 671.68 302.614C756.114 286.446 729.747 206.546 681.86 186.442C630.54 164.898 492 209.318 495.026 287.644C496.837 334.494 518.402 366.466 582.455 367.287C680.013 368.538 771.538 299.456 898.634 292.434C1007.02 286.446 1192.67 309.384 1242.36 382.258C1266.99 418.39 1273.65 443.108 1247.75 474.477C1217.32 511.33 1149.4 511.259 1096.84 466.093C1044.29 420.928 1029.14 380.576 1033.97 324.172C1038.31 273.428 1069.55 228.986 1117.2 216.384C1152.2 207.128 1188.29 213.629 1194.45 245.127C1201.49 281.062 1132.22 280.104 1100.44 272.673C1065.32 264.464 1044.22 234.837 1032.77 201.413C1019.29 162.061 1029.71 131.126 1056.44 100.965C1086.19 67.4032 1143.96 54.5526 1175.78 86.1513C1207.02 117.17 1186.81 143.379 1156.22 166.691C1112.57 199.959 1052.57 186.238 999.784 155.164C957.312 130.164 899.171 63.7054 931.284 26.3214C952.068 2.12513 996.288 3.87363 1007.22 43.58C1018.15 83.2749 1003.56 122.644 975.969 163.376C948.377 204.107 907.272 255.122 913.558 321.045C919.727 385.734 990.968 497.068 1063.84 503.35C1111.46 507.456 1166.79 511.984 1175.68 464.527C1191.52 379.956 1101.26 334.985 1030.29 377.017C971.109 412.064 956.297 483.647 953.797 561.655C947.587 755.413 1197.56 941.828 936.039 1140.66C745.771 1285.32 321.926 950.737 134.536 1202.19C-6.68295 1391.68 -53.4837 1655.38 131.935 1760.5C478.381 1956.91 1124.19 1515 1201.28 1997.83C1273.66 2451.23 100.805 1864.7 303.794 2668.89"/></g><path class="d-tail" pathLength="1"/></svg>
   <div class="hero" id="top">
-    <div class="hero-logo"><svg class="lg" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="url(#oddGrad)" stroke-linejoin="round" ><defs><linearGradient id="oddGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="600" y2="0"><stop offset="0" stop-color="#5e2b8c"/><stop offset="1" stop-color="#b0559a"/></linearGradient></defs><g class="g1" stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g class="g2" stroke-width="18"><path pathLength="1" d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path pathLength="1" d="M97 197V137H140Q153 137 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path pathLength="1" d="M234 135H177V190H234M177 162.5H228"/><path pathLength="1" d="M250 197L279 137H291L320 197M264 174H306"/><path pathLength="1" d="M336 135H402M369 135V197"/><path pathLength="1" d="M419 128V197"/><path pathLength="1" d="M443 128L477 189L511 128"/><path pathLength="1" d="M592 135H535V190H592M535 162.5H586"/></g><path class="d-tail" pathLength="1"/></svg></div>
-    <a class="scroll-cue" href="#about" aria-label="גללו למטה"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+    <div class="hero-logo"><svg class="lg" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="url(#oddGrad)" stroke-linejoin="round" ><defs><linearGradient id="oddGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="600" y2="0"><stop offset="0" stop-color="#5e2b8c"/><stop offset="1" stop-color="#b0559a"/></linearGradient></defs><g class="g1" stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g class="g2" stroke-width="18"><path pathLength="1" d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path pathLength="1" d="M97 197V137H140Q153 137 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path pathLength="1" d="M234 135H177V190H234M177 162.5H228"/><path pathLength="1" d="M250 197L279 137H291L320 197M264 174H306"/><path pathLength="1" d="M336 135H402M369 135V197"/><path pathLength="1" d="M419 128V197"/><path pathLength="1" d="M443 128L477 189L511 128"/><path pathLength="1" d="M592 135H535V190H592M535 162.5H586"/></g></svg></div>
+    <a class="scroll-cue" href="#intro" aria-label="גללו למטה"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
   </div>
   <section id="intro" class="intro">
     <div class="wrap intro-text">
@@ -251,101 +258,24 @@ footer .en{order:2}
     </div>
   </section>
 
-  <section id="about">
-    <div class="wrap about">
-      <div class="about-text">
-        <span class="eyebrow en">About</span>
-        <h2 class="en">From idea to execution</h2>
-        <p>מהרעיון ועד הביצוע. אנחנו מעצבים, מתכננים ובונים הכל בסדנה שלנו. כל אירוע מקבל קונספט משלו.</p>
-        <p class="muted">כאן יבוא טקסט קצר על המייסדים והסדנה <span class="fill">מהלקוח</span></p>
-        <div class="bts">
-          <div class="ph">BTS 1</div><div class="ph">BTS 2</div><div class="ph">BTS 3</div>
-        </div>
-      </div>
-      <div class="ph">תמונה מהסדנה</div>
-    </div>
-  </section>
 
-  <section id="services">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow en">Services</span>
-        <h2 class="en">What we do</h2>
-      </div>
-      <div class="grid3">
-        <div class="svc"><div class="ph">במת חתונה — קשתות טרקוטה</div><h3 class="en">Stages &amp; Sets</h3><p class="muted">עיצוב במה שמותאם בדיוק לאירוע. חתונות, מסיבות ופסטיבלים.</p></div>
-        <div class="svc"><div class="ph">שער ADAMO — החרמון</div><h3 class="en">Entrance Gates</h3><p class="muted">הדבר הראשון שהאורחים רואים כשהם מגיעים.</p></div>
-        <div class="svc"><div class="ph">Candid — פתיחת סניף</div><h3 class="en">Full Space Design</h3><p class="muted">מהכניסה ועד הבמה.</p></div>
-        <div class="svc"><div class="ph">בר Bali</div><h3 class="en">Branded Elements</h3><p class="muted">לוקחים את השפה של מותג והופכים אותה לאלמנט פיזי.</p></div>
-        <div class="svc"><div class="ph">קיר Rock &amp; Roll</div><h3 class="en">Photo Walls &amp; Installations</h3><p class="muted">קירות צילום ומיצגים שהאורחים לא מפסיקים לצלם.</p></div>
-        <div class="svc"><div class="ph">קופסאות MAKE SENSE</div><h3 class="en">Signage &amp; Light</h3><p class="muted">קופסאות תאורה, שלטים ואלמנטים מוארים.</p></div>
-      </div>
-    </div>
-  </section>
 
-  <section id="projects">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow en">Projects</span>
-        <h2 class="en">Our work</h2>
-      </div>
-      <div class="filters" role="group" aria-label="סינון פרויקטים">
-        <button class="chip" data-f="all" aria-pressed="true">All</button>
-        <button class="chip" data-f="wed" aria-pressed="false">Weddings</button>
-        <button class="chip" data-f="brand" aria-pressed="false">Brands</button>
-        <button class="chip" data-f="party" aria-pressed="false">Parties &amp; Festivals</button>
-        <button class="chip" data-f="corp" aria-pressed="false">Corporate</button>
-      </div>
-      <div class="grid3" id="projGrid"></div>
-    </div>
-  </section>
 
-  <section id="business">
+
+
+
+  <section id="work" class="work" aria-label="עבודות נבחרות">
     <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow en">Business</span>
-        <h2 class="en">Brands, companies &amp; producers</h2>
-      </div>
-      <div class="biz">
-        <div class="svc"><h3 class="en">For Brands</h3><p class="muted">השקות, פתיחת סניפים וחנויות. השפה של המותג הופכת לאלמנט פיזי.</p><ul><li>Garmin — השקת FENIX 9</li><li>Our Mantra — iPod ענק</li><li>Bali — בר ממותג</li></ul></div>
-        <div class="svc"><h3 class="en">For Companies</h3><p class="muted">אירועי חברה שמרגישים אחרת.</p><ul><li>ADMAVEN — המשרדים הפכו ללוקיישן טרופי</li><li>Candid — אירוע פתיחת סניף</li></ul></div>
-        <div class="svc"><h3 class="en">For Producers</h3><p class="muted">שותף קבוע לתפאורה, או אלמנט אחד לאירוע.</p><ul><li>אדם הפקות</li><li>bliss.prod</li></ul></div>
+      <div class="gallery">
+        <div class="ph">תמונה: LOST TEMPLE</div>
+        <div class="ph">תמונה: Garmin FENIX 9</div>
+        <div class="ph">תמונה: Dan &amp; Amit</div>
+        <div class="ph">תמונה: Premiere-Inspired Event</div>
+        <div class="ph">תמונה: ADAMO</div>
+        <div class="ph">תמונה: Candid</div>
       </div>
       <div class="logos" aria-label="לקוחות">
         <span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span>
-      </div>
-      <div class="row" style="margin-top:28px"><a class="btn solid" href="#contact">בואו נדבר</a></div>
-    </div>
-  </section>
-
-  <section id="process">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow en">How it works</span>
-        <h2 class="en">Design. Plan. Build.</h2>
-        <p class="muted">עיצוב, תכנון וייצור – הכל אצלנו ב־ODD.</p>
-      </div>
-      <div class="steps">
-        <div class="step"><b class="en">Step 1</b><h3 class="en">Idea</h3><p class="muted">שיחה על האירוע, המקום והאווירה.</p></div>
-        <div class="step"><b class="en">Step 2</b><h3 class="en">Design</h3><p class="muted">קונספט והדמיה של מה שנבנה.</p></div>
-        <div class="step"><b class="en">Step 3</b><h3 class="en">Build</h3><p class="muted">מייצרים את האלמנטים בסדנה שלנו.</p></div>
-        <div class="step"><b class="en">Step 4</b><h3 class="en">Install</h3><p class="muted">מגיעים, מקימים ומפרקים בסוף.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="faq">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow en">FAQ</span>
-        <h2 class="en">Good questions</h2>
-      </div>
-      <div class="faq">
-        <details><summary>באיזה אזורים אתם עובדים?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
-        <details><summary>כמה זמן מראש צריך להזמין?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
-        <details><summary>אפשר לשכור אלמנט, או שהכל נבנה מחדש?</summary><p>גם וגם. יש אלמנטים להשכרה בקטלוג, ואפשר להזמין משהו שנבנה במיוחד.</p></details>
-        <details><summary>אתם גם מעצבים, או רק בונים?</summary><p>גם וגם. מהרעיון ועד הביצוע.</p></details>
-        <details><summary>אפשר למתג אלמנט עם הלוגו שלנו?</summary><p>כן. תשובה מלאה <span class="fill">מהלקוח</span></p></details>
       </div>
     </div>
   </section>
@@ -382,6 +312,114 @@ footer .en{order:2}
           <div class="box"><span class="eyebrow en">Instagram</span><a class="num" href="https://www.instagram.com/odd__creative/">@odd__creative</a></div>
           <div class="ph" style="aspect-ratio:16/9">תמונה: Premiere-Inspired Event</div>
         </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<main class="page" id="page-about" hidden>
+  <div class="wrap back"><a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a></div>
+  <section class="sec-about">
+    <div class="wrap about">
+      <div class="about-text">
+        <span class="eyebrow en">About</span>
+        <h2 class="en">From idea to execution</h2>
+        <p>מהרעיון ועד הביצוע. אנחנו מעצבים, מתכננים ובונים הכל בסדנה שלנו. כל אירוע מקבל קונספט משלו.</p>
+        <p class="muted">כאן יבוא טקסט קצר על המייסדים והסדנה <span class="fill">מהלקוח</span></p>
+        <div class="bts">
+          <div class="ph">BTS 1</div><div class="ph">BTS 2</div><div class="ph">BTS 3</div>
+        </div>
+      </div>
+      <div class="ph">תמונה מהסדנה</div>
+    </div>
+  </section>
+
+  <section class="sec-process">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow en">How it works</span>
+        <h2 class="en">Design. Plan. Build.</h2>
+        <p class="muted">עיצוב, תכנון וייצור – הכל אצלנו ב־ODD.</p>
+      </div>
+      <div class="steps">
+        <div class="step"><b class="en">Step 1</b><h3 class="en">Idea</h3><p class="muted">שיחה על האירוע, המקום והאווירה.</p></div>
+        <div class="step"><b class="en">Step 2</b><h3 class="en">Design</h3><p class="muted">קונספט והדמיה של מה שנבנה.</p></div>
+        <div class="step"><b class="en">Step 3</b><h3 class="en">Build</h3><p class="muted">מייצרים את האלמנטים בסדנה שלנו.</p></div>
+        <div class="step"><b class="en">Step 4</b><h3 class="en">Install</h3><p class="muted">מגיעים, מקימים ומפרקים בסוף.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<main class="page" id="page-services" hidden>
+  <div class="wrap back"><a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a></div>
+  <section class="sec-services">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow en">Services</span>
+        <h2 class="en">What we do</h2>
+      </div>
+      <div class="grid3">
+        <div class="svc"><div class="ph">במת חתונה — קשתות טרקוטה</div><h3 class="en">Stages &amp; Sets</h3><p class="muted">עיצוב במה שמותאם בדיוק לאירוע. חתונות, מסיבות ופסטיבלים.</p></div>
+        <div class="svc"><div class="ph">שער ADAMO — החרמון</div><h3 class="en">Entrance Gates</h3><p class="muted">הדבר הראשון שהאורחים רואים כשהם מגיעים.</p></div>
+        <div class="svc"><div class="ph">Candid — פתיחת סניף</div><h3 class="en">Full Space Design</h3><p class="muted">מהכניסה ועד הבמה.</p></div>
+        <div class="svc"><div class="ph">בר Bali</div><h3 class="en">Branded Elements</h3><p class="muted">לוקחים את השפה של מותג והופכים אותה לאלמנט פיזי.</p></div>
+        <div class="svc"><div class="ph">קיר Rock &amp; Roll</div><h3 class="en">Photo Walls &amp; Installations</h3><p class="muted">קירות צילום ומיצגים שהאורחים לא מפסיקים לצלם.</p></div>
+        <div class="svc"><div class="ph">קופסאות MAKE SENSE</div><h3 class="en">Signage &amp; Light</h3><p class="muted">קופסאות תאורה, שלטים ואלמנטים מוארים.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec-business">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow en">Business</span>
+        <h2 class="en">Brands, companies &amp; producers</h2>
+      </div>
+      <div class="biz">
+        <div class="svc"><h3 class="en">For Brands</h3><p class="muted">השקות, פתיחת סניפים וחנויות. השפה של המותג הופכת לאלמנט פיזי.</p><ul><li>Garmin — השקת FENIX 9</li><li>Our Mantra — iPod ענק</li><li>Bali — בר ממותג</li></ul></div>
+        <div class="svc"><h3 class="en">For Companies</h3><p class="muted">אירועי חברה שמרגישים אחרת.</p><ul><li>ADMAVEN — המשרדים הפכו ללוקיישן טרופי</li><li>Candid — אירוע פתיחת סניף</li></ul></div>
+        <div class="svc"><h3 class="en">For Producers</h3><p class="muted">שותף קבוע לתפאורה, או אלמנט אחד לאירוע.</p><ul><li>אדם הפקות</li><li>bliss.prod</li></ul></div>
+      </div>
+      <div class="row" style="margin-top:28px"><a class="btn solid" href="#contact">בואו נדבר</a></div>
+    </div>
+  </section>
+</main>
+
+<main class="page" id="page-projects" hidden>
+  <div class="wrap back"><a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a></div>
+  <section class="sec-projects">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow en">Projects</span>
+        <h2 class="en">Our work</h2>
+      </div>
+      <div class="filters" role="group" aria-label="סינון פרויקטים">
+        <button class="chip" data-f="all" aria-pressed="true">All</button>
+        <button class="chip" data-f="wed" aria-pressed="false">Weddings</button>
+        <button class="chip" data-f="brand" aria-pressed="false">Brands</button>
+        <button class="chip" data-f="party" aria-pressed="false">Parties &amp; Festivals</button>
+        <button class="chip" data-f="corp" aria-pressed="false">Corporate</button>
+      </div>
+      <div class="grid3" id="projGrid"></div>
+    </div>
+  </section>
+</main>
+
+<main class="page" id="page-faq" hidden>
+  <div class="wrap back"><a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a></div>
+  <section class="sec-faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow en">FAQ</span>
+        <h2 class="en">Good questions</h2>
+      </div>
+      <div class="faq">
+        <details><summary>באיזה אזורים אתם עובדים?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
+        <details><summary>כמה זמן מראש צריך להזמין?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
+        <details><summary>אפשר לשכור אלמנט, או שהכל נבנה מחדש?</summary><p>גם וגם. יש אלמנטים להשכרה בקטלוג, ואפשר להזמין משהו שנבנה במיוחד.</p></details>
+        <details><summary>אתם גם מעצבים, או רק בונים?</summary><p>גם וגם. מהרעיון ועד הביצוע.</p></details>
+        <details><summary>אפשר למתג אלמנט עם הלוגו שלנו?</summary><p>כן. תשובה מלאה <span class="fill">מהלקוח</span></p></details>
       </div>
     </div>
   </section>
@@ -492,10 +530,16 @@ document.querySelectorAll('[data-c]').forEach(b=>b.addEventListener('click',()=>
 drawItems();drawReq();
 
 const home=document.getElementById('home'),cat=document.getElementById('catalogView');
+const views={about:'page-about',services:'page-services',projects:'page-projects',faq:'page-faq',catalog:'catalogView'};
+let lastView=null;
 function route(){
-  const isCat=location.hash==="#catalog";
-  home.hidden=isCat;cat.hidden=!isCat;
-  if(isCat) window.scrollTo(0,0);
+  const key=location.hash.slice(1), vid=views[key]||'home';
+  document.querySelectorAll('main').forEach(m=>{m.hidden=m.id!==vid;});
+  if(vid!=='home'){ window.scrollTo(0,0); }
+  else if(key&&key!=='top'){ const el=document.getElementById(key); if(el) el.scrollIntoView(); }
+  else if(lastView&&lastView!=='home'){ window.scrollTo(0,0); }
+  if(vid==='home'&&lastView!=='home') window.dispatchEvent(new Event('resize')); // redraw the doodle once the home page is visible
+  lastView=vid;
 }
 const hdr=document.getElementById('hdr');
 function hdrState(){const top=!home.hidden&&window.scrollY<window.innerHeight*0.7;hdr.classList.remove('over');hdr.classList.toggle('hide',top);document.body.classList.toggle('at-top',top);}
