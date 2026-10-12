@@ -182,8 +182,10 @@ main > section + section::before{content:"";position:absolute;left:0;right:0;top
 #home > #work,#home > #clients{background:#140a1f;color:#fff}
 #home > #intro{padding-block:64px}
 #home > section:not(.film):not(#work):not(#clients) .sec-head h2{background:linear-gradient(90deg,var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;width:fit-content}
-#home > section .sec-head h2.en{align-self:flex-end;margin-left:0;margin-right:auto}
-#home > section .sec-head p{align-self:flex-end;text-align:left;margin-left:0;margin-right:auto}
+/* every page: headings, small titles and the lines under them sit on the left edge */
+.sec-head,.about-text,.cat-head{align-items:flex-end}
+.sec-head > *,.about-text > :not(.bts),.cat-head > :not(.filters),.legal h2,.legal h3,.legal h2 + p.muted,.back{text-align:left;align-self:flex-end;margin-left:0;margin-right:auto}
+.sec-head h2,.about-text h2,.cat-head h2{width:fit-content}
 #work .sec-head h2,#clients .sec-head h2{color:#fff}
 #work .eyebrow,#clients .eyebrow{color:rgba(255,255,255,.72)}
 #work .muted,#clients .muted{color:rgba(255,255,255,.78)}
