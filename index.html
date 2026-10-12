@@ -516,9 +516,19 @@ footer .en{order:2}
 
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
 <script>
+// refresh: on the home page (or with the menu open) start again on the opening screen;
+// on any other page (catalog, about, contact, my request…) stay on that page, at its top
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+(function(){
+  const pages=['about','services','catalog','request','contact','privacy','accessibility'];
+  let menuWasOpen=false; try{ menuWasOpen=sessionStorage.getItem('odd-menu')==='1'; sessionStorage.removeItem('odd-menu'); }catch(e){}
+  const onPage=pages.includes(location.hash.slice(1));
+  if(location.hash&&(!onPage||menuWasOpen)) history.replaceState(null,'',location.pathname+location.search);
+})();
+window.scrollTo(0,0);
 // smooth "buttery" scrolling on computers; phones keep their own native scroll, and "reduce motion" gets normal scrolling
 const lenis=(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&window.Lenis)?new Lenis({autoRaf:true}):null;
-function jumpTo(y){ lenis?lenis.scrollTo(y,{immediate:true,force:true}):window.scrollTo(0,y); }
+function jumpTo(y){ if(lenis) lenis.scrollTo(y,{immediate:true,force:true}); window.scrollTo({top:y,behavior:'instant'}); } // native jump too, in case Lenis hasn't caught up with the page yet
 const projects=[
   {t:"LOST TEMPLE",d:"במה · חמת גדר",c:"party"},
   {t:"Dan & Amit",d:"חתונה · דיסקו ירוק במטע זיתים",c:"wed"},
@@ -634,9 +644,12 @@ const cue=document.querySelector('.hero .scroll-cue');
 window.addEventListener('scroll',()=>{cue.style.visibility=window.scrollY>40?'hidden':'';},{passive:true});
 window.addEventListener('scroll',hdrState,{passive:true});
 window.addEventListener('hashchange',()=>{route();hdrState();});route();hdrState();
+// the logo at the top (and "Home" in the menu) always goes back to the opening screen, from anywhere
+function goHome(e){ e.preventDefault(); if(typeof setMenu==='function') setMenu(false); if(location.hash&&location.hash!=='#top'){ location.hash='#top'; } jumpTo(0); }
+document.querySelectorAll('header .logo, #menu a[href="#top"]').forEach(a=>a.addEventListener('click',goHome));
 
 const menu=document.getElementById('menu'),burger=document.getElementById('burger');
-function setMenu(open){menu.hidden=!open;burger.setAttribute('aria-expanded',open);document.body.style.overflow=open?'hidden':'';if(lenis)open?lenis.stop():lenis.start();}
+function setMenu(open){try{sessionStorage.setItem('odd-menu',open?'1':'0');}catch(e){}menu.hidden=!open;burger.setAttribute('aria-expanded',open);document.body.style.overflow=open?'hidden':'';if(lenis)open?lenis.stop():lenis.start();}
 burger.addEventListener('click',()=>setMenu(true));
 document.getElementById('close').addEventListener('click',()=>setMenu(false));
 menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
