@@ -194,7 +194,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 /* catalog view */
 .cat-head{padding-block:40px 24px;display:flex;flex-direction:column;gap:14px}
-.cat-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start;padding-bottom:72px}
+.cat-layout{padding-bottom:72px}
 .items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .item{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
 .item .ph{border-radius:0;aspect-ratio:4/3}
@@ -205,17 +205,25 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 .item .meta{font-size:13px;color:var(--muted)}
 .item button{margin-top:auto}
 .item button.added{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.req{position:sticky;top:84px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px}
-.req ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.req li{display:flex;justify-content:space-between;gap:8px;font-size:14px;border-bottom:1px solid var(--line);padding-bottom:8px}
-.req li button{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px}
+/* request list page: everything picked in the catalog, then one button that sends it all on WhatsApp */
+.req-page{max-width:720px}
+.req-items{list-style:none;margin:0 0 28px;padding:0;display:flex;flex-direction:column}
+.req-items li{display:grid;grid-template-columns:64px minmax(0,1fr) 44px;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.req-items .ph{aspect-ratio:1;border-radius:10px;padding:4px;font-size:10px}
+.req-items b{display:block;font-weight:700}
+.req-items .meta{font-size:13px;color:var(--muted)}
+.req-items button{width:44px;height:44px;background:none;border:1px solid var(--line);border-radius:999px;color:var(--muted);cursor:pointer;font-size:18px}
+.req-empty{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+.req-send{display:flex;flex-direction:column;gap:10px}
+.req-send .btn{justify-content:center;width:100%;max-width:420px}
+@keyframes countPop{from{transform:scale(.85)}to{transform:scale(1)}}
+.req-count.pop{animation:countPop .2s cubic-bezier(.23,1,.32,1)}
 .empty{font-size:14px;color:var(--muted)}
 
 @media (max-width:860px){
   .about,.contact,.cat-layout{grid-template-columns:1fr}
   .grid3,.biz,.items{grid-template-columns:repeat(2,minmax(0,1fr))}
   .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .req{position:static}
 }
 @media (max-width:520px){
   .grid3,.biz,.items,.steps{grid-template-columns:1fr}
@@ -250,7 +258,7 @@ footer .en{order:2}
   <div class="wrap bar">
     <button class="burger" id="burger" aria-label="פתיחת תפריט" aria-expanded="false"><i></i><i></i></button>
     <a class="logo" href="#top"><svg class="mark" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="currentColor" stroke-linejoin="round"><g stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g stroke-width="18"><path d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path d="M97 197V137H140Q153 135 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path d="M234 135H177V190H234M177 162.5H228"/><path d="M250 197L279 137H291L320 197M264 174H306"/><path d="M336 135H402M369 135V197"/><path d="M419 128V197"/><path d="M443 128L477 189L511 128"/><path d="M592 135H535V190H592M535 162.5H586"/></g></svg></a>
-    <a class="req-link" href="#catalog" aria-label="רשימת הבקשה שלי מהקטלוג"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4.5V3h6v1.5M8.5 10h7M8.5 14h7M8.5 18h4"/></svg><span class="req-count" id="reqCount" hidden>0</span></a>
+    <a class="req-link" href="#request" aria-label="רשימת הבקשה שלי"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4.5V3h6v1.5M8.5 10h7M8.5 14h7M8.5 18h4"/></svg><span class="req-count" id="reqCount" hidden>0</span></a>
   </div>
 </header>
 
@@ -415,6 +423,24 @@ footer .en{order:2}
   </section>
 </main>
 
+<main class="page" id="page-request" hidden>
+  <div class="wrap back"><a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a></div>
+  <section class="sec-request">
+    <div class="wrap req-page">
+      <div class="sec-head"><h2 class="en">My request</h2></div>
+      <ul class="req-items" id="reqList"></ul>
+      <div class="req-empty" id="reqEmpty">
+        <p class="muted">עוד לא בחרתם אלמנטים.</p>
+        <a class="btn" href="#catalog">לקטלוג</a>
+      </div>
+      <div class="req-send" id="reqSendBox" hidden>
+        <a class="btn solid" id="reqSend" href="https://wa.me/972500000000">שליחה בוואטסאפ</a>
+        <span class="muted" style="font-size:13px">ההודעה תכלול את רשימת האלמנטים.</span>
+      </div>
+    </div>
+  </section>
+</main>
+
 <main class="page" id="page-privacy" hidden>
   <div class="wrap back"><a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a></div>
   <section class="legal">
@@ -472,13 +498,6 @@ footer .en{order:2}
   </div>
   <div class="wrap cat-layout">
     <div class="items" id="items"></div>
-    <aside class="req" aria-label="הבקשה שלי">
-      <h3 class="en">My request</h3>
-      <ul id="reqList"></ul>
-      <p class="empty" id="reqEmpty">עוד לא בחרתם אלמנטים.</p>
-      <a class="btn solid" id="reqSend" href="https://wa.me/972500000000" style="justify-content:center">שליחה בוואטסאפ</a>
-      <span class="muted" style="font-size:12px">ההודעה תכלול את רשימת האלמנטים.</span>
-    </aside>
   </div>
 </main>
 
@@ -557,6 +576,9 @@ const items=[
   {id:9,n:"שער שבטי — LOST TEMPLE",m:"דוגמה למה שבנינו",k:"custom"}
 ];
 const req=new Map();
+// the list is kept in this browser, so it is still there after a refresh or when coming back later
+try{ JSON.parse(localStorage.getItem('odd-request')||'[]').forEach(id=>{const it=items.find(x=>x.id===id); if(it) req.set(id,it);}); }catch(e){}
+function saveReq(){ try{ localStorage.setItem('odd-request',JSON.stringify([...req.keys()])); }catch(e){} }
 const itemsEl=document.getElementById('items');
 let catF="all";
 function drawItems(){
@@ -566,13 +588,18 @@ function drawItems(){
     return `<div class="item"><div class="ph">תמונה: ${i.n}</div><div class="in"><span class="badge ${i.k}">${i.k==="rent"?"For Rent":"Custom Made"}</span><h3>${i.n}</h3><span class="meta">${i.m}</span><button class="btn ${on?'added':''}" data-id="${i.id}" style="justify-content:center">${label}</button></div></div>`;
   }).join('');
 }
+let lastCount=null;
 function drawReq(){
   const rc=document.getElementById('reqCount'); rc.textContent=req.size; rc.hidden=req.size===0;
+  if(lastCount!==null&&req.size>lastCount){ rc.classList.remove('pop'); void rc.offsetWidth; rc.classList.add('pop'); } // small "pop" so you see it was added
+  lastCount=req.size;
   const list=document.getElementById('reqList');
-  list.innerHTML=[...req.values()].map(i=>`<li><span>${i.n}</span><button data-rm="${i.id}" aria-label="הסרה">×</button></li>`).join('');
+  list.innerHTML=[...req.values()].map(i=>`<li><div class="ph">תמונה</div><div><b>${i.n}</b><span class="meta">${i.m}</span></div><button data-rm="${i.id}" aria-label="הסרה">×</button></li>`).join('');
   document.getElementById('reqEmpty').hidden=req.size>0;
+  document.getElementById('reqSendBox').hidden=req.size===0;
   const txt="היי ODD, אשמח להצעה על:\n"+[...req.values()].map(i=>"• "+i.n).join("\n");
-  document.getElementById('reqSend').href="https://wa.me/972500000000?text="+encodeURIComponent(req.size?txt:"היי ODD, אשמח לשמוע עוד");
+  document.getElementById('reqSend').href="https://wa.me/972500000000?text="+encodeURIComponent(txt);
+  saveReq();
 }
 itemsEl.addEventListener('click',e=>{
   const b=e.target.closest('[data-id]'); if(!b) return;
@@ -591,7 +618,7 @@ document.querySelectorAll('[data-c]').forEach(b=>b.addEventListener('click',()=>
 drawItems();drawReq();
 
 const home=document.getElementById('home'),cat=document.getElementById('catalogView');
-const views={about:'page-about',services:'page-services',catalog:'catalogView',contact:'page-contact',privacy:'page-privacy',accessibility:'page-accessibility'};
+const views={about:'page-about',services:'page-services',catalog:'catalogView',request:'page-request',contact:'page-contact',privacy:'page-privacy',accessibility:'page-accessibility'};
 let lastView=null;
 function route(){
   const key=location.hash.slice(1), vid=views[key]||'home';
