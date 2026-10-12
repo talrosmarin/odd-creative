@@ -319,7 +319,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 </head>
 <body>
 
-<header id="hdr">
+<header id="hdr" class="over">
   <div class="wrap bar">
     <button class="burger" id="burger" aria-label="פתיחת תפריט" aria-expanded="false"><i></i><i></i></button>
     <a class="logo" href="#top"><svg class="mark" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="currentColor" stroke-linejoin="round"><g stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g stroke-width="18"><path d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path d="M97 197V137H140Q153 135 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path d="M234 135H177V190H234M177 162.5H228"/><path d="M250 197L279 137H291L320 197M264 174H306"/><path d="M336 135H402M369 135V197"/><path d="M419 128V197"/><path d="M443 128L477 189L511 128"/><path d="M592 135H535V190H592M535 162.5H586"/></g></svg></a>
@@ -839,7 +839,7 @@ function route(){
   lastView=vid;
 }
 const hdr=document.getElementById('hdr');
-function hdrState(){hdr.classList.remove('hide','over');} // solid light header everywhere, also over the opening video (trial 2026-10-12; see-through version in landing-page-backups/2026-10-12_index-header-see-through-CURRENT.html)
+function hdrState(){hdr.classList.remove('hide');hdr.classList.toggle('over',!home.hidden&&window.scrollY<window.innerHeight*0.6);} // see-through header over the opening video
 (function(){
   // doodle: the scribble from the "stroke follows scroll" reference; its knot of loops sits behind the logo and draws on load, the long line draws as you scroll down behind "Let's create something ODD"
   const home=document.getElementById('home'), hero=document.getElementById('top');
