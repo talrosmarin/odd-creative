@@ -142,6 +142,10 @@ header{transition:transform .45s ease,opacity .45s ease,background .3s,color .3s
 #catalogView,.page{padding-top:calc(76px + env(safe-area-inset-top,0px))}
 .page .back{padding-top:28px}
 .page section:last-child{border-bottom:0}
+/* thin purple gradient line between sections, same as the line under the header */
+main > section:has(+ section){border-bottom:0}
+main > section + section{position:relative}
+main > section + section::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--grad);z-index:3;pointer-events:none}
 /* home: big photos + client logos, no extra text */
 .work{padding-top:72px}
 .clients{border-bottom:0;padding-top:72px}
