@@ -102,15 +102,11 @@ section{padding-block:72px;border-bottom:1px solid var(--line);scroll-margin-top
 .hero .lead{font-size:19px;max-width:560px;margin:0;text-align:left;align-self:flex-end}
 /* two quick buttons on the video, centered, where the title used to sit: catalog + WhatsApp */
 .hero-ctas{position:relative;z-index:2;width:100%;display:flex;direction:ltr;justify-content:center;gap:18px;flex-wrap:wrap;padding-block:0 calc(92px + env(safe-area-inset-bottom,0px))}
-/* liquid metal buttons: a moving chrome shader (paper-design/shaders) shows as a 2px ring around a black pill */
-.lm-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;width:142px;height:46px;border-radius:100px;overflow:hidden;isolation:isolate;text-decoration:none;color:#fff;font-size:12px;font-weight:400;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;box-shadow:0 0 0 1px rgba(0,0,0,.3),0 36px 14px rgba(0,0,0,.02),0 20px 12px rgba(0,0,0,.08),0 9px 9px rgba(0,0,0,.12),0 2px 5px rgba(0,0,0,.15);transition:box-shadow .15s cubic-bezier(.4,0,.2,1),transform .15s cubic-bezier(.4,0,.2,1)}
-.lm-metal{position:absolute;inset:0;border-radius:inherit;overflow:hidden;padding:2px;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);background:linear-gradient(135deg,#f4f4f6,#3a3a3a 30%,#e6e6ea 55%,#2a2a2a 80%,#cfcfd4)}
-.lm-metal canvas{position:absolute!important;inset:0;width:100%!important;height:100%!important;display:block}
-.lm-label{position:relative;z-index:2;text-shadow:0 1px 2px rgba(0,0,0,.5);pointer-events:none}
-@media (hover:hover) and (pointer:fine){.lm-btn:hover{box-shadow:0 0 0 1px rgba(0,0,0,.4),0 12px 6px rgba(0,0,0,.05),0 8px 5px rgba(0,0,0,.1),0 4px 4px rgba(0,0,0,.15),0 1px 2px rgba(0,0,0,.2)}}
-.lm-btn:active{transform:translateY(1px) scale(.98);box-shadow:0 0 0 1px rgba(0,0,0,.5),0 1px 2px rgba(0,0,0,.3)}
-.lm-ripple{position:absolute;z-index:3;width:20px;height:20px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.4),rgba(255,255,255,0) 70%);transform:translate(-50%,-50%) scale(0);animation:lm-ripple .6s ease-out forwards}
-@keyframes lm-ripple{0%{transform:translate(-50%,-50%) scale(0);opacity:.6}100%{transform:translate(-50%,-50%) scale(4);opacity:0}}
+/* hero buttons: see-through pills with a thin white ring */
+.lm-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;width:142px;height:46px;border-radius:100px;border:1.5px solid rgba(255,255,255,.85);background:transparent;text-decoration:none;color:#fff;font-size:12px;font-weight:400;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;transition:transform .15s cubic-bezier(.4,0,.2,1),background-color .15s}
+.lm-label{text-shadow:0 1px 2px rgba(0,0,0,.5);pointer-events:none}
+@media (hover:hover) and (pointer:fine){.lm-btn:hover{background:rgba(255,255,255,.08)}}
+.lm-btn:active{transform:translateY(1px) scale(.98)}
 /* "Let's create something ODD." now a normal section heading right under the video, same size as "Our work" */
 #intro.intro{background:var(--paper);border-bottom:0;padding-block:64px 0}
 #intro .intro-line{text-align:left;margin:0 auto 0 0} /* left edge, under the English heading */
@@ -370,8 +366,8 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
   <div class="hero" id="top">
     <video class="hero-photo" src="video/odd-hero-desert.mp4" poster="img/hero-desert-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
     <div class="wrap hero-ctas">
-      <a class="en lm-btn" href="https://wa.me/972500000000" target="_blank" rel="noopener"><span class="lm-metal" aria-hidden="true"></span><span class="lm-label">Let's talk</span></a>
-      <a class="en lm-btn" href="#catalog"><span class="lm-metal" aria-hidden="true"></span><span class="lm-label">Catalog</span></a>
+      <a class="en lm-btn" href="https://wa.me/972500000000" target="_blank" rel="noopener"><span class="lm-label">Let's talk</span></a>
+      <a class="en lm-btn" href="#catalog"><span class="lm-label">Catalog</span></a>
     </div>
     <a class="scroll-cue" href="#intro" aria-label="גללו למטה"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
   </div>
@@ -646,29 +642,6 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 </footer>
 <script type="importmap">
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
-</script>
-<script type="module">
-// Liquid metal ring on the hero buttons. If the shader can't load, the static silver gradient stays.
-const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-document.querySelectorAll('.lm-btn').forEach(b => b.addEventListener('pointerdown', e => {
-  const r = b.getBoundingClientRect(), d = document.createElement('span');
-  d.className = 'lm-ripple'; d.style.left = (e.clientX - r.left) + 'px'; d.style.top = (e.clientY - r.top) + 'px';
-  b.appendChild(d); setTimeout(() => d.remove(), 600);
-}));
-try {
-  const { ShaderMount, liquidMetalFragmentShader } = await import('https://cdn.jsdelivr.net/npm/@paper-design/shaders@0.0.81/+esm');
-  const u = { u_colorBack: [0, 0, 0, 0], u_colorTint: [1, 1, 1, 1], u_repetition: 4, u_softness: .5, u_shiftRed: .3, u_shiftBlue: .3,
-    u_distortion: 0, u_contour: 0, u_angle: 45, u_shape: 0, u_isImage: false,
-    u_fit: 0, u_scale: 1, u_rotation: 0, u_offsetX: .1, u_offsetY: -.1, u_originX: .5, u_originY: .5, u_worldWidth: 0, u_worldHeight: 0 };
-  document.querySelectorAll('.lm-btn').forEach(b => {
-    const rest = still ? 0 : .6, m = new ShaderMount(b.querySelector('.lm-metal'), liquidMetalFragmentShader, u, undefined, rest);
-    if (still) return;
-    let over = false;
-    b.addEventListener('pointerenter', () => { over = true; m.setSpeed(1); });
-    b.addEventListener('pointerleave', () => { over = false; m.setSpeed(rest); });
-    b.addEventListener('pointerdown', () => { m.setSpeed(2.4); setTimeout(() => m.setSpeed(over ? 1 : rest), 300); });
-  });
-} catch (err) { /* keep the static ring */ }
 </script>
 <script type="module">
 // 3D ODD logo in the footer: each 18px stroke of the wordmark becomes a chrome tube, spinning slowly.
