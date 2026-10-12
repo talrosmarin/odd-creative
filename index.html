@@ -108,9 +108,10 @@ header{transition:transform .45s ease,opacity .45s ease,background .3s,color .3s
 .page section:last-child{border-bottom:0}
 /* home: big photos + client logos, no extra text */
 .work{border-bottom:0;padding-top:0}
-/* circular 3D gallery (from the "circular gallery" reference): the ring turns as you scroll through this part, and slowly on its own when you stop */
-.ring-stage{height:260vh;position:relative}
-.ring-sticky{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center;justify-content:center;perspective:2000px}
+/* circular 3D gallery (from the "circular gallery" reference): turns on its own; swipe or drag sideways to spin it (scrolling the page no longer turns it) */
+.ring-stage{position:relative}
+.ring-sticky{position:relative;height:clamp(560px,100svh,820px);overflow:hidden;display:flex;align-items:center;justify-content:center;perspective:2000px;padding-top:110px;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.ring-sticky.dragging{cursor:grabbing}
 .ring{position:relative;width:var(--cw);height:var(--ch);transform-style:preserve-3d;--cw:300px;--ch:400px;--r:600px}
 .ring .card{position:absolute;inset:0;border-radius:14px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 18px 40px rgba(40,20,60,.18);transition:opacity .3s linear}
 .ring .card .ph{position:absolute;inset:0;border-radius:0;align-items:flex-start;padding-top:40%}
@@ -118,7 +119,7 @@ header{transition:transform .45s ease,opacity .45s ease,background .3s,color .3s
 .ring .card h3{font-size:18px;font-weight:700}
 .ring .card h3.en{font-size:15px;font-weight:500;text-align:left}
 .ring .card p{font-size:13px;opacity:.85;margin:0}
-@media (max-width:700px){.ring{--cw:180px;--ch:240px;--r:300px}}
+@media (max-width:700px){.ring{--cw:180px;--ch:240px;--r:300px}.ring-sticky{height:480px;padding-top:90px}}
 /* client names (later: their logos) slide by without stopping; two copies so the loop never shows a gap */
 .marquee{direction:ltr;overflow:hidden;padding-block:28px 8px;-webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent)}
 .marquee-track{display:flex;width:max-content;animation:marquee 28s linear infinite}
@@ -126,7 +127,7 @@ header{transition:transform .45s ease,opacity .45s ease,background .3s,color .3s
 .marquee-set span{font-family:var(--display);font-weight:500;font-size:clamp(15px,2vw,22px);letter-spacing:.04em;color:var(--muted);white-space:nowrap}
 .marquee:hover .marquee-track{animation-play-state:paused}
 @keyframes marquee{to{transform:translateX(-50%)}}
-.ring-head{position:absolute;top:calc(84px + env(safe-area-inset-top,0px));left:0;right:0;margin:0 auto;z-index:2}
+.ring-head{position:absolute;top:48px;left:0;right:0;margin:0 auto;z-index:2}
 .clients-head{margin-top:24px;margin-bottom:0}
 .wrap.ring-head,.wrap.clients-head{max-width:1120px} /* .sec-head drops max-width, keep these lined up with the page edge */
 @media (prefers-reduced-motion:reduce){.marquee-track{animation:none}}
@@ -543,35 +544,36 @@ const projects=[
 const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"Corporate"};
 
 (function(){
-  // circular gallery: cards stand around a circle; scrolling through #work turns it, and when you stop it keeps turning slowly
-  const ring=document.getElementById('ring'), stage=document.querySelector('.ring-stage');
+  // circular gallery: turns slowly on its own; swipe / drag sideways (or a sideways trackpad swipe) spins it, with a little momentum after you let go
+  const ring=document.getElementById('ring'), stage=document.querySelector('.ring-sticky');
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   ring.innerHTML=projects.map(p=>`<div class="card" role="group" aria-label="${p.t}"><div class="ph">תמונה: ${p.t}</div><div class="cap"><h3 ${/^[A-Za-z]/.test(p.t)?'class="en"':''}>${p.t}</h3><p>${p.d}</p></div></div>`).join('');
   const cards=[...ring.children], step=360/cards.length;
-  let shown=0, drift=0, lastScroll=0, last=performance.now();
-  function scrollAngle(){
-    const r=stage.getBoundingClientRect(), span=stage.offsetHeight-window.innerHeight;
-    return Math.min(1,Math.max(0,-r.top/span))*360;
-  }
+  const AUTO=reduce?0:0.008; // degrees per ms when nobody touches it (~8° a second)
+  let shown=0, vel=AUTO, drag=null, last=performance.now(), visible=false, rad=600;
+  function measure(){ rad=parseFloat(getComputedStyle(ring).getPropertyValue('--r'))||600;
+    cards.forEach((c,i)=>{ c.style.transform='rotateY('+(i*step)+'deg) translateZ('+rad+'px)'; }); }
   function draw(){
     ring.style.transform='rotateY('+(-shown).toFixed(2)+'deg)';
-    const rad=getComputedStyle(ring).getPropertyValue('--r');
-    cards.forEach((c,i)=>{
-      const a=i*step; c.style.transform='rotateY('+a+'deg) translateZ('+rad+')';
-      const rel=((a-shown)%360+360)%360, off=rel>180?360-rel:rel;
-      c.style.opacity=Math.max(0.3,1-off/180).toFixed(2);
-    });
+    cards.forEach((c,i)=>{ const rel=((i*step-shown)%360+360)%360, off=rel>180?360-rel:rel;
+      c.style.opacity=Math.max(0.3,1-off/180).toFixed(2); });
   }
+  const degPerPx=()=>57.3/rad; // so the front card follows the finger 1:1
   function tick(now){
     const dt=Math.min(64,now-last); last=now;
-    if(!reduce && now-lastScroll>150) drift+=dt*0.0015; // slow turn on its own, about 1.5 degrees a second
-    const target=scrollAngle()+drift;
-    shown+=(target-shown)*(lenis?0.25:0.1); // ease toward the scroll position; lighter when Lenis already smooths the scroll
-    if(!document.getElementById('home').hidden) draw();
+    if(!drag){ shown+=vel*dt; vel+=(AUTO-vel)*Math.min(1,dt*0.003); } // momentum fades back to the slow auto turn
+    if(visible&&!document.getElementById('home').hidden) draw();
     requestAnimationFrame(tick);
   }
-  window.addEventListener('scroll',()=>{lastScroll=performance.now();},{passive:true});
-  shown=scrollAngle(); draw(); requestAnimationFrame(tick);
+  stage.addEventListener('pointerdown',e=>{ if(e.button!==0) return; drag={x:e.clientX,t:performance.now(),v:0}; try{stage.setPointerCapture(e.pointerId);}catch(err){} stage.classList.add('dragging'); });
+  stage.addEventListener('pointermove',e=>{ if(!drag) return; const now=performance.now(), dx=e.clientX-drag.x;
+    shown-=dx*degPerPx(); drag.v=(-dx*degPerPx())/Math.max(1,now-drag.t); drag.x=e.clientX; drag.t=now; draw(); });
+  function release(){ if(!drag) return; const fresh=performance.now()-drag.t<80; vel=fresh?Math.max(-0.6,Math.min(0.6,drag.v)):AUTO; drag=null; stage.classList.remove('dragging'); } // a flick keeps spinning; holding still then letting go doesn't
+  stage.addEventListener('pointerup',release); stage.addEventListener('pointercancel',release);
+  stage.addEventListener('wheel',e=>{ if(Math.abs(e.deltaX)>Math.abs(e.deltaY)){ e.preventDefault(); shown+=e.deltaX*degPerPx(); vel=AUTO; draw(); } },{passive:false});
+  new IntersectionObserver(es=>{ visible=es[0].isIntersecting; },{rootMargin:'100px'}).observe(stage); // only animate while it's on screen
+  window.addEventListener('resize',()=>{ measure(); draw(); });
+  measure(); draw(); requestAnimationFrame(tick);
 })();
 
 const items=[
