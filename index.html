@@ -71,6 +71,8 @@ header.over::after{opacity:0}
 .menu a.mitem{display:flex;align-items:flex-start;gap:10px;font-family:var(--display);font-size:clamp(28px,5vw,40px);font-weight:300;text-transform:uppercase;text-decoration:none;color:#111;padding:clamp(14px,2.6vw,26px) 0;border-bottom:1px solid rgba(0,0,0,.3);letter-spacing:.01em;direction:ltr}
 .menu a.mitem span{display:inline-block;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
 .menu a.mitem b{display:inline-block;font-weight:inherit;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+/* menu words in the brand gradient, same as the 01–04 numbers (purple on top, pink at the bottom). Each letter gets it, since the letters move one by one */
+.menu a.mitem span,.menu a.mitem b{background:linear-gradient(180deg,var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
 @media (hover:hover) and (pointer:fine){
   .menu a.mitem:hover span{transform:translateX(-16px)}
   .menu a.mitem:hover b{transform:translateX(16px)}
@@ -257,6 +259,12 @@ footer .foot:not(.in) > *{opacity:0;transform:translateY(20px)}
 footer .foot > :nth-child(2){transition-delay:.1s} footer .foot > :nth-child(3){transition-delay:.2s} footer .foot > :nth-child(4){transition-delay:.3s}
 @media (prefers-reduced-motion:reduce){.x-film video{clip-path:none}footer .foot:not(.in) > *{opacity:1;transform:none}}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+/* every page: headings, small titles and the line under them sit in the middle, like the home page */
+.sec-head,.cat-head{align-items:center}
+.sec-head > *,.cat-head > .eyebrow,.cat-head > h2,.cat-head > p,.about-text > .eyebrow,.about-text > h2,.legal h2,.legal h3,.legal h2 + p.muted{text-align:center!important;align-self:center;margin-left:auto!important;margin-right:auto!important}
+.about-text > .eyebrow,.about-text > h2{display:block}
+.cat-head{display:flex;flex-direction:column}
+.cat-head > a.muted{align-self:flex-start}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
