@@ -107,19 +107,27 @@ header{transition:transform .45s ease,opacity .45s ease,background .3s,color .3s
 .page .back{padding-top:28px}
 .page section:last-child{border-bottom:0}
 /* home: big photos + client logos, no extra text */
-.work{border-bottom:0;padding-top:0}
-/* circular 3D gallery (from the "circular gallery" reference): turns on its own; swipe or drag sideways to spin it (scrolling the page no longer turns it) */
-.ring-stage{position:relative}
-.ring-sticky{position:relative;height:clamp(560px,100svh,820px);overflow:hidden;display:flex;align-items:center;justify-content:center;perspective:2000px;padding-top:110px;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
-.ring-sticky.dragging{cursor:grabbing}
-.ring{position:relative;width:var(--cw);height:var(--ch);transform-style:preserve-3d;--cw:300px;--ch:400px;--r:600px}
-.ring .card{position:absolute;inset:0;border-radius:14px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 18px 40px rgba(40,20,60,.18);transition:opacity .3s linear}
-.ring .card .ph{position:absolute;inset:0;border-radius:0;align-items:flex-start;padding-top:40%}
-.ring .card .cap{position:absolute;left:0;right:0;bottom:0;padding:16px;background:linear-gradient(to top,rgba(30,12,48,.8),rgba(30,12,48,0));color:#fff;display:flex;flex-direction:column;gap:4px}
-.ring .card h3{font-size:18px;font-weight:700}
-.ring .card h3.en{font-size:15px;font-weight:500;text-align:left}
-.ring .card p{font-size:13px;opacity:.85;margin:0}
-@media (max-width:700px){.ring{--cw:180px;--ch:240px;--r:300px}.ring-sticky{height:480px;padding-top:90px}}
+.work{border-bottom:0;padding-top:72px}
+/* Our work: the same 3D cylinder as the Xantiva "Creative" section. It turns slowly on its own, drag/swipe sideways to spin it (with momentum), tap a work to open it big */
+.work-head{margin:0 auto}
+.cyl{position:relative;height:clamp(420px,50vw,710px);margin-top:clamp(24px,3vw,40px);perspective:1000px;display:grid;place-items:center;overflow:hidden;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+.cyl.drag{cursor:grabbing}
+@media (max-width:640px){.cyl{height:360px}}
+.cyl-ring{position:relative;transform-style:preserve-3d;will-change:transform}
+.face{position:absolute;inset:0;margin:0;padding:6px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.face .card{position:relative;width:100%;height:100%;border-radius:8px;overflow:hidden;box-shadow:0 14px 30px rgba(40,20,60,.22);pointer-events:none}
+.face .ph{position:absolute;inset:0;border-radius:0;align-items:flex-start;padding-top:38%}
+.face .cap{position:absolute;left:0;right:0;bottom:0;padding:14px;background:linear-gradient(to top,rgba(30,12,48,.8),rgba(30,12,48,0));color:#fff;display:flex;flex-direction:column;gap:3px}
+.face h3{font-size:16px;font-weight:700}
+.face h3.en{font-size:14px;font-weight:500;text-align:left}
+.face p{font-size:12px;opacity:.85;margin:0}
+.lightbox{position:fixed;inset:0;z-index:50;background:rgba(30,12,48,.88);display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;cursor:zoom-out;animation:lbin .35s cubic-bezier(.32,.72,0,1)}
+.lightbox[hidden]{display:none}
+.lightbox .card{position:relative;width:min(calc(100vw - 48px),440px);aspect-ratio:4/5;border-radius:10px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:lbimg .45s cubic-bezier(.25,.1,.25,1)}
+.lightbox .card .ph{position:absolute;inset:0;border-radius:0}
+.lightbox .cap{position:absolute;left:0;right:0;bottom:0;padding:20px;background:linear-gradient(to top,rgba(30,12,48,.85),rgba(30,12,48,0));color:#fff;display:flex;flex-direction:column;gap:4px}
+@keyframes lbin{from{opacity:0}}
+@keyframes lbimg{from{transform:scale(.6);opacity:0}}
 /* client names (later: their logos) slide by without stopping; two copies so the loop never shows a gap */
 .marquee{direction:ltr;overflow:hidden;padding-block:28px 8px;-webkit-mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent)}
 .marquee-track{display:flex;width:max-content;animation:marquee 28s linear infinite}
@@ -127,9 +135,8 @@ header{transition:transform .45s ease,opacity .45s ease,background .3s,color .3s
 .marquee-set span{font-family:var(--display);font-weight:500;font-size:clamp(15px,2vw,22px);letter-spacing:.04em;color:var(--muted);white-space:nowrap}
 .marquee:hover .marquee-track{animation-play-state:paused}
 @keyframes marquee{to{transform:translateX(-50%)}}
-.ring-head{position:absolute;top:48px;left:0;right:0;margin:0 auto;z-index:2}
 .clients-head{margin-top:24px;margin-bottom:0}
-.wrap.ring-head,.wrap.clients-head{max-width:1120px} /* .sec-head drops max-width, keep these lined up with the page edge */
+.wrap.work-head,.wrap.clients-head{max-width:1120px} /* .sec-head drops max-width, keep these lined up with the page edge */
 @media (prefers-reduced-motion:reduce){.marquee-track{animation:none}}
 .row{display:flex;flex-wrap:wrap;gap:12px}
 
@@ -300,15 +307,14 @@ footer .en{order:2}
 
 
   <section id="work" class="work" aria-label="עבודות נבחרות">
-    <div class="ring-stage">
-      <div class="ring-sticky">
-        <div class="wrap sec-head ring-head">
-          <span class="eyebrow en">Projects</span>
-          <h2 class="en">Our work</h2>
-        </div>
-        <div class="ring" id="ring"></div>
-      </div>
+    <div class="wrap sec-head work-head">
+      <span class="eyebrow en">Projects</span>
+      <h2 class="en">Our work</h2>
     </div>
+    <div class="cyl" id="cyl" aria-label="העבודות שלנו. גוררים לצדדים כדי לסובב, לוחצים על עבודה כדי לפתוח">
+      <div class="cyl-ring" id="cyl-ring"></div>
+    </div>
+    <div class="lightbox" id="lightbox" hidden></div>
     <div class="wrap sec-head clients-head">
       <span class="eyebrow en">Clients</span>
       <h2 class="en">Brands we worked with</h2>
@@ -545,36 +551,47 @@ const projects=[
 const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"Corporate"};
 
 (function(){
-  // circular gallery: turns slowly on its own; swipe / drag sideways (or a sideways trackpad swipe) spins it, with a little momentum after you let go
-  const ring=document.getElementById('ring'), stage=document.querySelector('.ring-sticky');
-  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  ring.innerHTML=projects.map(p=>`<div class="card" role="group" aria-label="${p.t}"><div class="ph">תמונה: ${p.t}</div><div class="cap"><h3 ${/^[A-Za-z]/.test(p.t)?'class="en"':''}>${p.t}</h3><p>${p.d}</p></div></div>`).join('');
-  const cards=[...ring.children], step=360/cards.length;
-  const AUTO=reduce?0:0.008; // degrees per ms when nobody touches it (~8° a second)
-  let shown=0, vel=AUTO, drag=null, last=performance.now(), visible=false, rad=600;
-  function measure(){ rad=parseFloat(getComputedStyle(ring).getPropertyValue('--r'))||600;
-    cards.forEach((c,i)=>{ c.style.transform='rotateY('+(i*step)+'deg) translateZ('+rad+'px)'; }); }
-  function draw(){
-    ring.style.transform='rotateY('+(-shown).toFixed(2)+'deg)';
-    cards.forEach((c,i)=>{ const rel=((i*step-shown)%360+360)%360, off=rel>180?360-rel:rel;
-      c.style.opacity=Math.max(0.3,1-off/180).toFixed(2); });
+  // Our work cylinder, the same motion as the Xantiva "Creative" carousel: slow idle turn, drag/swipe spins it with momentum, tap opens a work
+  const box=document.getElementById('cyl'), ring=document.getElementById('cyl-ring'), lb=document.getElementById('lightbox');
+  document.body.appendChild(lb);
+  const card=p=>`<div class="card"><div class="ph">תמונה: ${p.t}</div><div class="cap"><h3 ${/^[A-Za-z]/.test(p.t)?'class="en"':''}>${p.t}</h3><p>${p.d}</p></div></div>`;
+  const list=projects.concat(projects); // two rounds of the works, so the cylinder is full like Xantiva's 12 faces
+  ring.innerHTML=list.map((p,i)=>`<figure class="face" data-i="${i%projects.length}">${card(p)}</figure>`).join('');
+  const faces=[...ring.children], n=faces.length;
+  const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let angle=0, vel=0, idle=still?0:-7, dragging=false, moved=0, px=0, lt=0, last=performance.now(), r=0, on=true;
+  function build(){
+    const cylW=(innerWidth<=640?1988:(innerWidth<=1024?3023:4050))*n/12, fw=cylW/n; r=cylW/(2*Math.PI); // same face size as Xantiva
+    ring.style.width=fw+'px'; ring.style.height=(fw*1.25)+'px';
+    faces.forEach((f,i)=>{ f.style.transform='rotateY('+(i*360/n)+'deg) translateZ('+r+'px)'; });
+    ring.style.transform='translateZ('+(-r*0.4333)+'px) rotateY('+angle+'deg)'; // right away, before the first frame
   }
-  const degPerPx=()=>57.3/rad; // so the front card follows the finger 1:1
-  function tick(now){
-    const dt=Math.min(64,now-last); last=now;
-    if(!drag){ shown+=vel*dt; vel+=(AUTO-vel)*Math.min(1,dt*0.003); } // momentum fades back to the slow auto turn
-    if(visible&&!document.getElementById('home').hidden) draw();
-    requestAnimationFrame(tick);
+  function tick(t){
+    const dt=Math.min(.05,(t-last)/1000); last=t;
+    if(!dragging){ vel+=(idle-vel)*Math.min(1,dt*2.2); angle+=vel*dt; }
+    ring.style.transform='translateZ('+(-r*0.4333)+'px) rotateY('+angle+'deg)';
+    if(on) requestAnimationFrame(tick);
   }
-  stage.addEventListener('pointerdown',e=>{ if(e.button!==0) return; drag={x:e.clientX,t:performance.now(),v:0}; try{stage.setPointerCapture(e.pointerId);}catch(err){} stage.classList.add('dragging'); });
-  stage.addEventListener('pointermove',e=>{ if(!drag) return; const now=performance.now(), dx=e.clientX-drag.x;
-    shown-=dx*degPerPx(); drag.v=(-dx*degPerPx())/Math.max(1,now-drag.t); drag.x=e.clientX; drag.t=now; draw(); });
-  function release(){ if(!drag) return; const fresh=performance.now()-drag.t<80; vel=fresh?Math.max(-0.6,Math.min(0.6,drag.v)):AUTO; drag=null; stage.classList.remove('dragging'); } // a flick keeps spinning; holding still then letting go doesn't
-  stage.addEventListener('pointerup',release); stage.addEventListener('pointercancel',release);
-  stage.addEventListener('wheel',e=>{ if(Math.abs(e.deltaX)>Math.abs(e.deltaY)){ e.preventDefault(); shown+=e.deltaX*degPerPx(); vel=AUTO; draw(); } },{passive:false});
-  new IntersectionObserver(es=>{ visible=es[0].isIntersecting; },{rootMargin:'100px'}).observe(stage); // only animate while it's on screen
-  window.addEventListener('resize',()=>{ measure(); draw(); });
-  measure(); draw(); requestAnimationFrame(tick);
+  new IntersectionObserver(e=>{ const v=e[0].isIntersecting; if(v&&!on){ on=true; last=performance.now(); requestAnimationFrame(tick); } on=v; }).observe(box);
+  box.addEventListener('pointerdown',e=>{ dragging=true; moved=0; px=e.clientX; lt=performance.now(); box.classList.add('drag'); try{box.setPointerCapture(e.pointerId);}catch(err){} });
+  box.addEventListener('pointermove',e=>{
+    if(!dragging) return;
+    const dx=e.clientX-px, now=performance.now(), dt=Math.max(.008,(now-lt)/1000);
+    angle+=dx*0.3; vel=Math.max(-400,Math.min(400,dx*0.3/dt)); moved+=Math.abs(dx); px=e.clientX; lt=now;
+  });
+  function end(e){
+    if(!dragging) return; dragging=false; box.classList.remove('drag');
+    if(moved<6){
+      const hit=document.elementsFromPoint(e.clientX,e.clientY).find(el=>el.classList&&el.classList.contains('face'));
+      if(hit){ lb.innerHTML=card(projects[+hit.dataset.i]); lb.hidden=false; }
+    }
+  }
+  box.addEventListener('pointerup',end); box.addEventListener('pointercancel',()=>{ dragging=false; box.classList.remove('drag'); });
+  // Android sends a click right after the tap that opened it; ignore clicks in the first moment so it doesn't close at once
+  new MutationObserver(()=>{ if(!lb.hidden) lb.__t=performance.now(); }).observe(lb,{attributes:true,attributeFilter:['hidden']});
+  lb.addEventListener('click',()=>{ if(performance.now()-(lb.__t||0)<450) return; lb.hidden=true; });
+  addEventListener('keydown',e=>{ if(e.key==='Escape') lb.hidden=true; });
+  addEventListener('resize',build); build(); requestAnimationFrame(tick);
 })();
 
 const items=[
