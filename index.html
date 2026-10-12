@@ -191,7 +191,30 @@ input,select,textarea{font:inherit;font-weight:400;padding:11px 12px;border:1px 
 .lead{max-width:640px}
 /* floating accessibility button (in place of the floating WhatsApp), opens the accessibility statement */
 .a11y-btn{position:fixed;left:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:30;width:52px;height:52px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(40,20,60,.25)}
+.a11y-btn{border:0;cursor:pointer;padding:0}
 .a11y-btn svg{width:28px;height:28px}
+/* accessibility panel: opens from the floating button; choices are kept in this browser */
+.a11y-panel{position:fixed;left:20px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:45;width:min(300px,calc(100vw - 40px));background:#fff;color:#1b1b1b;border-radius:16px;padding:14px;box-shadow:0 18px 50px rgba(40,20,60,.28);font-family:var(--body)}
+.a11y-panel[hidden]{display:none}
+.a11y-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.a11y-top b{font-size:17px}
+.a11y-x{width:40px;height:40px;border:0;background:none;font-size:24px;cursor:pointer;color:#555}
+.a11y-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.a11y-grid button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;border:1px solid #ddd;border-radius:12px;background:#faf8fc;color:inherit;font:inherit;font-size:13px;cursor:pointer;min-height:76px}
+.a11y-grid svg{width:24px;height:24px}
+.a11y-grid button[aria-pressed="true"]{background:var(--grad);color:#fff;border-color:transparent}
+.a11y-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:13px}
+.a11y-foot button{border:0;background:none;font:inherit;text-decoration:underline;cursor:pointer;color:inherit;padding:8px 0}
+.a11y-foot a{color:inherit;padding:8px 0}
+/* the choices themselves */
+html.a11y-font *{font-family:Arial,"Arial Hebrew",sans-serif!important;letter-spacing:normal!important}
+html.a11y-links a{background:#ff0!important;color:#000!important;text-decoration:underline!important}
+html.a11y-contrast body,html.a11y-contrast main,html.a11y-contrast section,html.a11y-contrast header,html.a11y-contrast footer,html.a11y-contrast .intro,html.a11y-contrast .menu,html.a11y-contrast .card,html.a11y-contrast .item,html.a11y-contrast .svc,html.a11y-contrast form{background:#000!important;color:#fff!important;border-color:#fff!important}
+html.a11y-contrast p,html.a11y-contrast .muted,html.a11y-contrast span,html.a11y-contrast label,html.a11y-contrast summary,html.a11y-contrast h1,html.a11y-contrast h2,html.a11y-contrast h3{color:#fff!important}
+html.a11y-contrast a,html.a11y-contrast .eyebrow{color:#ff0!important}
+html.a11y-contrast .btn,html.a11y-contrast input,html.a11y-contrast textarea{background:#000!important;color:#ff0!important;border:2px solid #ff0!important}
+html.a11y-still .marquee-track,html.a11y-still .scroll-cue{animation:none!important}
+html.a11y-contrast .a11y-panel,html.a11y-contrast .a11y-panel a,html.a11y-contrast .a11y-panel span{color:#1b1b1b!important;background:#fff!important} /* the panel itself stays readable */
 .lead-ok{max-width:640px;font-size:16px;padding:18px}
 .direct{display:flex;flex-direction:column;gap:14px}
 .direct .box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:6px}
@@ -502,6 +525,7 @@ footer .en{text-align:center;font-size:12px}
       <ul>
         <li>רשימת האלמנטים שבחרתם מהקטלוג, כדי שהיא לא תימחק כשמרעננים את הדף.</li>
         <li>האם התפריט היה פתוח, כדי לדעת לאיזה עמוד להחזיר אתכם ברענון.</li>
+        <li>הגדרות הנגישות שבחרתם.</li>
       </ul>
       <p>המידע הזה נשאר רק במכשיר שלכם, ולא נשלח אלינו.</p>
       <h3>שירותים חיצוניים</h3>
@@ -565,7 +589,19 @@ footer .en{text-align:center;font-size:12px}
   </div>
 </footer>
 
-<a class="a11y-btn" href="#accessibility" aria-label="נגישות"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4" r="2"/><path d="M4.5 7.2c-.6-.2-1.2.2-1.3.8s.2 1.1.8 1.3L9 10.6V14l-2.3 6.6c-.2.6.1 1.2.7 1.4.6.2 1.2-.1 1.4-.7L11 16h2l2.2 5.3c.2.6.8.9 1.4.7.6-.2.9-.8.7-1.4L15 14v-3.4l5-1.3c.6-.2.9-.7.8-1.3-.1-.6-.7-1-1.3-.8-2.3.6-4.9 1-7.5 1s-5.2-.4-7.5-1z"/></svg></a>
+<button class="a11y-btn" id="a11yBtn" type="button" aria-label="נגישות" aria-expanded="false" aria-controls="a11yPanel"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4" r="2"/><path d="M4.5 7.2c-.6-.2-1.2.2-1.3.8s.2 1.1.8 1.3L9 10.6V14l-2.3 6.6c-.2.6.1 1.2.7 1.4.6.2 1.2-.1 1.4-.7L11 16h2l2.2 5.3c.2.6.8.9 1.4.7.6-.2.9-.8.7-1.4L15 14v-3.4l5-1.3c.6-.2.9-.7.8-1.3-.1-.6-.7-1-1.3-.8-2.3.6-4.9 1-7.5 1s-5.2-.4-7.5-1z"/></svg></button>
+<div class="a11y-panel" id="a11yPanel" role="dialog" aria-label="נגישות" hidden>
+  <div class="a11y-top"><b>נגישות</b><button type="button" class="a11y-x" id="a11yClose" aria-label="סגירה">×</button></div>
+  <div class="a11y-grid">
+    <button type="button" data-a11y="bigger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3 19 8.5 5h1L15 19M5 14h8M18 6v6M15 9h6"/></svg>הגדלת טקסט</button>
+    <button type="button" data-a11y="smaller"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M3 19 8.5 5h1L15 19M5 14h8M15 9h6"/></svg>הקטנת טקסט</button>
+    <button type="button" data-a11y="contrast" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg>ניגודיות גבוהה</button>
+    <button type="button" data-a11y="links" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>הדגשת קישורים</button>
+    <button type="button" data-a11y="still" aria-pressed="false"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>עצירת אנימציות</button>
+    <button type="button" data-a11y="font" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7V5h16v2M12 5v14M9 19h6"/></svg>גופן קריא</button>
+  </div>
+  <div class="a11y-foot"><button type="button" id="a11yReset">איפוס הגדרות</button><a href="#accessibility">להצהרת הנגישות</a></div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
 <script>
@@ -616,7 +652,8 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
   }
   function tick(t){
     const dt=Math.min(.05,(t-last)/1000); last=t;
-    if(!dragging){ vel+=(idle-vel)*Math.min(1,dt*2.2); angle+=vel*dt; }
+    const goal=document.documentElement.classList.contains('a11y-still')?0:idle; // "stop animations" in the accessibility menu
+    if(!dragging){ vel+=(goal-vel)*Math.min(1,dt*2.2); angle+=vel*dt; }
     ring.style.transform='translateZ('+(-r*0.4333)+'px) rotateY('+angle+'deg)';
     if(on) requestAnimationFrame(tick);
   }
@@ -718,6 +755,28 @@ document.querySelectorAll('header .logo, #menu .logo, #menu a[href="#top"]').for
 
 // contact form: the browser checks name + phone are filled, then the form is swapped for the thank-you (sending comes later)
 document.getElementById('leadForm').addEventListener('submit',e=>{ e.preventDefault(); e.target.hidden=true; document.getElementById('leadOk').hidden=false; });
+// accessibility menu: text size, high contrast, highlighted links, stop animations, readable font; kept in this browser
+(function(){
+  const root=document.documentElement, btn=document.getElementById('a11yBtn'), panel=document.getElementById('a11yPanel'), vid=document.querySelector('.hero-media video');
+  let st={size:0,contrast:false,links:false,still:false,font:false};
+  try{ Object.assign(st,JSON.parse(localStorage.getItem('odd-a11y')||'{}')); }catch(e){}
+  function apply(){
+    root.style.zoom=st.size?String(1+st.size*0.15):'';
+    ['contrast','links','still','font'].forEach(k=>{ root.classList.toggle('a11y-'+k,!!st[k]); const b=panel.querySelector('[data-a11y="'+k+'"]'); if(b) b.setAttribute('aria-pressed',st[k]?'true':'false'); });
+    if(vid){ st.still?vid.pause():vid.play().catch(()=>{}); }
+    try{ localStorage.setItem('odd-a11y',JSON.stringify(st)); }catch(e){}
+  }
+  function open(v){ panel.hidden=!v; btn.setAttribute('aria-expanded',v); if(v) panel.querySelector('button').focus(); }
+  btn.addEventListener('click',()=>open(panel.hidden));
+  document.getElementById('a11yClose').addEventListener('click',()=>{ open(false); btn.focus(); });
+  panel.addEventListener('click',e=>{ const b=e.target.closest('[data-a11y]'); if(!b) return; const k=b.dataset.a11y;
+    if(k==='bigger') st.size=Math.min(2,st.size+1); else if(k==='smaller') st.size=Math.max(-1,st.size-1); else st[k]=!st[k]; apply(); });
+  document.getElementById('a11yReset').addEventListener('click',()=>{ st={size:0,contrast:false,links:false,still:false,font:false}; apply(); });
+  panel.querySelector('.a11y-foot a').addEventListener('click',()=>open(false));
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!panel.hidden){ open(false); btn.focus(); } });
+  document.addEventListener('click',e=>{ if(!panel.hidden&&!panel.contains(e.target)&&!btn.contains(e.target)) open(false); });
+  apply();
+})();
 const menu=document.getElementById('menu'),burger=document.getElementById('burger');
 function setMenu(open){try{sessionStorage.setItem('odd-menu',open?'1':'0');}catch(e){}menu.hidden=!open;burger.setAttribute('aria-expanded',open);document.body.style.overflow=open?'hidden':'';if(lenis)open?lenis.stop():lenis.start();}
 burger.addEventListener('click',()=>setMenu(true));
