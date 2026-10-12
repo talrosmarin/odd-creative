@@ -185,6 +185,8 @@ input,select,textarea{font:inherit;font-weight:400;padding:11px 12px;border:1px 
 .seg label{flex-direction:row;align-items:center;gap:6px;font-weight:400;border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer}
 .seg input{width:auto}
 .ok{background:var(--ok-bg);color:var(--ok);border-radius:10px;padding:12px;font-size:14px}
+.lead{max-width:640px}
+.lead-ok{max-width:640px;font-size:16px;padding:18px}
 .direct{display:flex;flex-direction:column;gap:14px}
 .direct .box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:6px}
 .num{font-family:var(--body);font-size:20px;direction:ltr;text-align:right;user-select:all}
@@ -423,7 +425,15 @@ footer .en{order:2}
         <h2 class="en">Contact</h2>
         <p class="muted">ספרו לנו על האירוע, ונחזור אליכם.</p>
       </div>
-      <div class="row">
+      <!-- lead form: for now it only shows the thank-you; where it sends (email / WhatsApp) is decided later -->
+      <form class="lead" id="leadForm">
+        <label>שם<input name="name" type="text" placeholder="השם שלך" autocomplete="name" required></label>
+        <label>טלפון<input name="phone" type="tel" placeholder="050-0000000" autocomplete="tel" inputmode="tel" required></label>
+        <label class="full">ספרו לנו על הרעיון<textarea name="msg" rows="3" placeholder="מה אתם מדמיינים?"></textarea></label>
+        <div class="full"><button class="btn solid" type="submit">שליחה</button></div>
+      </form>
+      <div class="ok lead-ok" id="leadOk" hidden>תודה! נחזור אליכם בקרוב.</div>
+      <div class="row" style="margin-top:28px">
         <a class="btn solid" href="https://wa.me/972500000000">וואטסאפ</a>
         <a class="btn" href="https://www.instagram.com/odd__creative/">אינסטגרם</a>
       </div>
@@ -668,6 +678,8 @@ window.addEventListener('hashchange',()=>{route();hdrState();});route();hdrState
 function goHome(e){ e.preventDefault(); if(typeof setMenu==='function') setMenu(false); if(location.hash&&location.hash!=='#top'){ location.hash='#top'; } jumpTo(0); }
 document.querySelectorAll('header .logo, #menu a[href="#top"]').forEach(a=>a.addEventListener('click',goHome));
 
+// contact form: the browser checks name + phone are filled, then the form is swapped for the thank-you (sending comes later)
+document.getElementById('leadForm').addEventListener('submit',e=>{ e.preventDefault(); e.target.hidden=true; document.getElementById('leadOk').hidden=false; });
 const menu=document.getElementById('menu'),burger=document.getElementById('burger');
 function setMenu(open){try{sessionStorage.setItem('odd-menu',open?'1':'0');}catch(e){}menu.hidden=!open;burger.setAttribute('aria-expanded',open);document.body.style.overflow=open?'hidden':'';if(lenis)open?lenis.stop():lenis.start();}
 burger.addEventListener('click',()=>setMenu(true));
