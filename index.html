@@ -201,9 +201,13 @@ main > section + section::before{content:"";position:absolute;left:0;right:0;top
 .logos{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
 .logos span{font-family:var(--body);font-weight:700;font-size:15px;padding:14px 20px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);letter-spacing:.04em}
 
-.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;counter-reset:s}
-.step{display:flex;flex-direction:column;gap:6px}
-.step::before{content:"";height:3px;border-radius:2px;background:var(--grad);margin-bottom:8px}
+/* steps go down like a maze: each one sits lower and further along, joined by a thin soft-cornered line drawn on scroll */
+.steps{position:relative;display:flex;flex-direction:column;gap:44px;--w:min(300px,78%);direction:ltr;margin-top:8px}
+.step p{direction:rtl;text-align:left}
+.step{position:relative;display:flex;flex-direction:column;gap:6px;width:var(--w);padding-inline-start:26px;margin-inline-start:calc(var(--i) * (100% - var(--w)) / 3)}
+.step::before{content:"";position:absolute;inset-inline-start:-4px;top:3px;width:9px;height:9px;border-radius:50%;background:var(--purple);z-index:1}
+.steps-path{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.steps-path path{fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .step b{font-family:var(--body);font-size:13px;color:var(--accent);font-weight:500}
 
 .faq{display:flex;flex-direction:column;max-width:760px}
@@ -300,10 +304,9 @@ footer .foot-apps svg{width:100%;height:100%;display:block}
 @media (max-width:860px){
   .about,.contact,.cat-layout{grid-template-columns:1fr}
   .grid3,.biz,.items{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .steps{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:520px){
-  .grid3,.biz,.items,.steps{grid-template-columns:1fr}
+  .grid3,.biz,.items{grid-template-columns:1fr}
   form{grid-template-columns:1fr}
   section{padding-block:56px}
 }
@@ -404,10 +407,11 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
         <p class="muted">עיצוב, תכנון וייצור – הכל אצלנו ב־ODD.</p>
       </div>
       <div class="steps">
-        <div class="step"><b class="en">Step 1</b><h3 class="en">Idea</h3><p class="muted">שיחה על האירוע, המקום והאווירה.</p></div>
-        <div class="step"><b class="en">Step 2</b><h3 class="en">Design</h3><p class="muted">קונספט והדמיה של מה שנבנה.</p></div>
-        <div class="step"><b class="en">Step 3</b><h3 class="en">Build</h3><p class="muted">מייצרים את האלמנטים בסדנה שלנו.</p></div>
-        <div class="step"><b class="en">Step 4</b><h3 class="en">Install</h3><p class="muted">מגיעים, מקימים ומפרקים בסוף.</p></div>
+        <svg class="steps-path" aria-hidden="true"><defs><linearGradient id="stepsGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--purple)"/><stop offset="1" stop-color="var(--pink)"/></linearGradient></defs><path stroke="url(#stepsGrad)"/></svg>
+        <div class="step" style="--i:0"><b class="en">Step 1</b><h3 class="en">Idea</h3><p class="muted">שיחה על האירוע, המקום והאווירה.</p></div>
+        <div class="step" style="--i:1"><b class="en">Step 2</b><h3 class="en">Design</h3><p class="muted">קונספט והדמיה של מה שנבנה.</p></div>
+        <div class="step" style="--i:2"><b class="en">Step 3</b><h3 class="en">Build</h3><p class="muted">מייצרים את האלמנטים בסדנה שלנו.</p></div>
+        <div class="step" style="--i:3"><b class="en">Step 4</b><h3 class="en">Install</h3><p class="muted">מגיעים, מקימים ומפרקים בסוף.</p></div>
       </div>
     </div>
   </section>
@@ -640,6 +644,37 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
     <div class="logo3d" id="logo3d" role="img" aria-label="ODD CREATIVE"><span class="en">ODD CREATIVE · Let's create something ODD</span></div>
   </div>
 </footer>
+<script>
+// How it works: one path from the first dot down to the last, with rounded turns between steps,
+// drawn as the section scrolls through the screen.
+(() => {
+  const box = document.querySelector('.steps'); if (!box) return;
+  const path = box.querySelector('.steps-path path'), steps = [...box.querySelectorAll('.step')];
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let len = 0;
+  function build() {
+    const b = box.getBoundingClientRect();
+    const pts = steps.map(st => { const r = st.getBoundingClientRect(), d = getComputedStyle(st).direction === 'rtl';
+      return { x: (d ? r.right : r.left) - b.left, y: r.top - b.top + 7, bottom: r.bottom - b.top }; });
+    let d = `M${pts[0].x} ${pts[0].y}`;
+    for (let i = 0; i < pts.length - 1; i++) {
+      const a = pts[i], c = pts[i + 1], mid = (a.bottom + c.y) / 2, dir = Math.sign(c.x - a.x), r = Math.min(14, Math.abs(c.x - a.x) / 2, (c.y - a.bottom) / 2);
+      d += ` V${mid - r} Q${a.x} ${mid} ${a.x + dir * r} ${mid} H${c.x - dir * r} Q${c.x} ${mid} ${c.x} ${mid + r} V${c.y}`;
+    }
+    path.setAttribute('d', d); len = path.getTotalLength();
+    path.style.strokeDasharray = len; draw();
+  }
+  function draw() {
+    if (still) { path.style.strokeDashoffset = 0; return; }
+    const r = box.getBoundingClientRect(), vh = innerHeight;
+    const p = Math.min(1, Math.max(0, (vh * 0.8 - r.top) / (r.height + vh * 0.2)));
+    path.style.strokeDashoffset = len * (1 - p);
+  }
+  build(); addEventListener('resize', build); addEventListener('scroll', draw, { passive: true });
+  if (document.fonts) document.fonts.ready.then(build);
+  new ResizeObserver(build).observe(box);
+})();
+</script>
 <script type="importmap">
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
 </script>
