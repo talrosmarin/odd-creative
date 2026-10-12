@@ -93,14 +93,15 @@ section{padding-block:72px;border-bottom:1px solid var(--line);scroll-margin-top
 .sec-head{display:flex;flex-direction:column;gap:10px;margin-bottom:32px;max-width:640px}
 
 /* hero: a smooth modern cream page, the purple logo sits still in the middle; a doodle line draws itself around it and keeps going down into the next section as you scroll */
-.hero{position:relative;height:100svh;min-height:480px;background:#3b3935;display:grid;place-items:start center;overflow:hidden}
+.hero{position:relative;height:100svh;min-height:480px;background:#3b3935;display:flex;align-items:flex-end;color:#fff;overflow:hidden}
 /* opening video: the desert build (drone, ladder, drill), film look, loops seamlessly; the white logo sits on top */
 .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block}
-.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,24,40,.28),rgba(20,24,40,0) 45%);pointer-events:none}
-.hero-logo{margin-top:clamp(110px,20svh,200px)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.35),rgba(0,0,0,0) 28%),linear-gradient(0deg,rgba(46,16,72,.7),rgba(46,16,72,0) 50%);pointer-events:none} /* dark top for the header icons, purple bottom for the title */
+.hero-text{position:relative;z-index:2;width:100%;display:flex;flex-direction:column;gap:14px;padding-block:0 calc(84px + env(safe-area-inset-bottom,0px))}
+.hero h1{font-family:var(--display);font-size:min(clamp(30px,6.4vw,84px),calc(8.4vw - 4px));font-weight:800;letter-spacing:-.02em;line-height:1.05;direction:ltr;margin:0}
+.hero .lead{font-size:19px;max-width:560px;margin:0;text-align:left;align-self:flex-end}
 .hero .lg{stroke:#fff;filter:drop-shadow(0 4px 18px rgba(0,0,0,.25))}
 .hero .scroll-cue{color:#fff}
-@media (min-aspect-ratio:1/1){.hero-logo{margin-top:clamp(80px,14svh,150px)}} /* wide screens: logo a bit higher */
 .hero-logo{position:relative;z-index:2}
 .hero-logo .lg{display:block;width:min(48vw,330px);height:auto;overflow:visible}
 #home{position:relative}
@@ -315,7 +316,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 </head>
 <body>
 
-<header id="hdr" class="hide">
+<header id="hdr" class="over">
   <div class="wrap bar">
     <button class="burger" id="burger" aria-label="פתיחת תפריט" aria-expanded="false"><i></i><i></i></button>
     <a class="logo" href="#top"><svg class="mark" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="currentColor" stroke-linejoin="round"><g stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g stroke-width="18"><path d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path d="M97 197V137H140Q153 135 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path d="M234 135H177V190H234M177 162.5H228"/><path d="M250 197L279 137H291L320 197M264 174H306"/><path d="M336 135H402M369 135V197"/><path d="M419 128V197"/><path d="M443 128L477 189L511 128"/><path d="M592 135H535V190H592M535 162.5H586"/></g></svg></a>
@@ -347,15 +348,12 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 <main id="home">
   <div class="hero" id="top">
     <video class="hero-photo" src="video/odd-hero-desert.mp4" poster="img/hero-desert-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
-    <div class="hero-logo"><svg class="lg" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="url(#oddGrad)" stroke-linejoin="round" ><defs><linearGradient id="oddGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="600" y2="0"><stop offset="0" stop-color="#5e2b8c"/><stop offset="1" stop-color="#b0559a"/></linearGradient></defs><g class="g1" stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g class="g2" stroke-width="18"><path pathLength="1" d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path pathLength="1" d="M97 197V137H140Q153 137 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path pathLength="1" d="M234 135H177V190H234M177 162.5H228"/><path pathLength="1" d="M250 197L279 137H291L320 197M264 174H306"/><path pathLength="1" d="M336 135H402M369 135V197"/><path pathLength="1" d="M419 128V197"/><path pathLength="1" d="M443 128L477 189L511 128"/><path pathLength="1" d="M592 135H535V190H592M535 162.5H586"/></g></svg></div>
-    <a class="scroll-cue" href="#intro" aria-label="גללו למטה"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
-  </div>
-  <section id="intro" class="intro">
-    <div class="wrap intro-text">
+    <div class="wrap hero-text">
       <h1 class="en">Let's create<br>something ODD<span style="margin-left:.07em">.</span></h1>
       <p class="lead">עיצוב ובנייה של חללים, אלמנטים וחוויות.</p>
     </div>
-  </section>
+    <a class="scroll-cue" href="#work" aria-label="גללו למטה"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+  </div>
 
 
 
@@ -837,7 +835,7 @@ function route(){
   lastView=vid;
 }
 const hdr=document.getElementById('hdr');
-function hdrState(){const top=!home.hidden&&window.scrollY<window.innerHeight*0.7;hdr.classList.remove('over');hdr.classList.toggle('hide',top);}
+function hdrState(){hdr.classList.remove('hide');hdr.classList.toggle('over',!home.hidden&&window.scrollY<window.innerHeight*0.6);} // see-through header over the opening video
 (function(){
   // doodle: the scribble from the "stroke follows scroll" reference; its knot of loops sits behind the logo and draws on load, the long line draws as you scroll down behind "Let's create something ODD"
   const home=document.getElementById('home'), hero=document.getElementById('top');
