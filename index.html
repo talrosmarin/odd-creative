@@ -177,19 +177,79 @@ main > section + section::before{content:"";position:absolute;left:0;right:0;top
 .clients-head{margin-top:24px;margin-bottom:0}
 .wrap.work-head,.wrap.clients-head{max-width:1120px} /* .sec-head drops max-width, keep these lined up with the page edge */
 @media (prefers-reduced-motion:reduce){.marquee-track{animation:none}}
-/* home sections take turns: light, purple, light, purple. Headings on light are purple-to-pink, on purple they are white */
-#home > section:not(.film){background:var(--paper)}
-#home > #work,#home > #clients{background:#140a1f;color:#fff}
-#home > #intro{padding-block:64px}
-#home > section:not(.film):not(#work):not(#clients) .sec-head h2{background:linear-gradient(90deg,var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;width:fit-content}
-/* every page: headings, small titles and the lines under them sit on the left edge */
-.sec-head,.about-text,.cat-head{align-items:flex-end}
-.sec-head > *,.about-text > :not(.bts),.cat-head > :not(.filters),.legal h2,.legal h3,.legal h2 + p.muted,.back{text-align:left;align-self:flex-end;margin-left:0;margin-right:auto}
-.sec-head h2,.about-text h2,.cat-head h2{width:fit-content}
-#work .sec-head h2,#clients .sec-head h2{color:#fff}
-#work .eyebrow,#clients .eyebrow{color:rgba(255,255,255,.72)}
-#work .muted,#clients .muted{color:rgba(255,255,255,.78)}
-#clients .marquee-set span{color:rgba(255,255,255,.8)}
+/* scroll experience (inspired by a 3D-creator portfolio, rebuilt with ODD's own work and colors):
+   dark and light "sheets" with rounded tops that slide over each other, huge centered titles,
+   two rows of work photos that drift sideways with the scroll, letters that light up as you read,
+   a numbered process list, and project cards that stack and shrink as you scroll */
+:root{--night:#140a1f;--ease-out:cubic-bezier(.25,.1,.25,1)}
+#home > section::before{display:none}
+#home > section{border-bottom:0}
+.x-dark{background:var(--night);color:#efe6f5}
+.x-light{background:#fff;color:var(--night)}
+.x-sheet{position:relative;border-radius:clamp(40px,5vw,60px) clamp(40px,5vw,60px) 0 0;padding-block:clamp(80px,9vw,128px)}
+.x-pull{margin-top:clamp(-56px,-4vw,-40px);z-index:2}
+#process.x-sheet{margin-top:clamp(-56px,-4vw,-40px);z-index:1}
+.x-huge{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;line-height:.95;font-size:clamp(2.6rem,9vw,140px);margin:0}
+.x-center{display:block;text-align:center!important;margin-left:auto!important;margin-right:auto!important}
+.x-grad-dark{background:linear-gradient(180deg,#a77fd0 0%,#f4dcea 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.x-ink{background:linear-gradient(90deg,var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;padding-bottom:.06em}
+.x-dark .eyebrow{color:rgba(239,230,245,.6)}
+.x-light .eyebrow{color:var(--accent)}
+.x-sheet .eyebrow{margin-bottom:18px}
+.x-intro{padding-block:clamp(96px,12vw,160px) clamp(56px,6vw,80px);overflow:hidden}
+.x-intro-in{display:flex;flex-direction:column;align-items:center;gap:clamp(36px,5vw,60px);text-align:center}
+.x-chars{max-width:640px;margin:0;font-size:clamp(1.25rem,2.6vw,2rem);font-weight:600;line-height:1.5;color:#efe6f5}
+.x-chars .w{display:inline-block;white-space:nowrap}
+.x-chars .c{opacity:.2;transition:opacity .15s linear}
+.x-cta{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:16px 46px;color:#fff;text-decoration:none;font-size:clamp(12px,1.1vw,15px);font-weight:500;letter-spacing:.14em;text-transform:uppercase;background:linear-gradient(123deg,#140a1f 7%,var(--purple) 40%,#9d4fc4 70%,var(--pink) 100%);box-shadow:0 4px 4px rgba(94,43,140,.25),inset 4px 4px 12px #7b3a9e;outline:2px solid #fff;outline-offset:-3px;transition:transform .3s var(--ease-out)}
+@media (hover:hover){.x-cta:hover{transform:translateY(-2px)}}
+.x-rows{direction:ltr;display:flex;flex-direction:column;gap:12px;margin-top:clamp(80px,10vw,140px)}
+.x-row{display:flex;gap:12px;width:max-content;will-change:transform}
+.x-row img{width:clamp(240px,29vw,420px);aspect-ratio:420/270;object-fit:cover;border-radius:16px;display:block;flex:none}
+.x-sub{max-width:560px;margin-top:22px!important;color:rgba(20,10,31,.62);font-size:17px}
+.x-list{list-style:none;margin:clamp(56px,7vw,110px) auto 0;padding:0;max-width:1024px;direction:ltr}
+.x-list li{display:flex;align-items:center;gap:clamp(20px,4vw,56px);padding-block:clamp(28px,3.4vw,48px);border-top:1px solid rgba(20,10,31,.14)}
+.x-list li:last-child{border-bottom:1px solid rgba(20,10,31,.14)}
+.x-num{font-family:var(--display);font-weight:800;line-height:1;font-size:clamp(3rem,10vw,140px);background:linear-gradient(180deg,var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;flex:none;min-width:1.4em}
+.x-list h3{font-family:var(--display);font-weight:500;text-transform:uppercase;font-size:clamp(1rem,2.2vw,2.1rem);margin:0 0 8px;text-align:left}
+.x-list p{margin:0;direction:rtl;text-align:left;font-weight:300;font-size:clamp(.95rem,1.6vw,1.25rem);line-height:1.6;opacity:.6}
+.x-stack{margin-top:clamp(48px,6vw,96px)}
+.x-slot{height:85vh}
+.x-slot:last-child{height:auto;padding-bottom:4vh}
+@media (max-width:767px){.x-slot{height:64vh}.x-card-top .x-ghost{display:none}}
+.x-card{position:sticky;top:calc(96px + var(--i) * 28px);transform-origin:top center;border:2px solid rgba(239,230,245,.75);border-radius:clamp(40px,5vw,60px);background:var(--night);padding:clamp(16px,2.2vw,32px);will-change:transform;direction:ltr}
+@media (min-width:768px){.x-card{top:calc(128px + var(--i) * 28px)}}
+.x-card-top{display:flex;align-items:center;gap:clamp(14px,2.4vw,32px);padding:4px 8px clamp(14px,2vw,26px);flex-wrap:wrap}
+.x-card-top .x-num{font-size:clamp(2.6rem,7vw,100px);background:linear-gradient(180deg,#a77fd0,#f4dcea);-webkit-background-clip:text;background-clip:text}
+.x-card-meta{flex:1;min-width:160px}
+.x-card-meta small{display:block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(239,230,245,.55);margin-bottom:6px}
+.x-card-meta b{font-family:var(--display);font-weight:500;text-transform:uppercase;font-size:clamp(1rem,2.2vw,1.9rem);color:#efe6f5}
+.x-ghost{border:2px solid rgba(239,230,245,.85);border-radius:999px;color:#efe6f5;background:transparent;padding:12px 30px;font:500 13px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:background-color .2s}
+@media (hover:hover){.x-ghost:hover{background:rgba(239,230,245,.1)}}
+.x-grid{display:grid;grid-template-columns:2fr 3fr;gap:clamp(10px,1.4vw,16px)}
+.x-grid > div{display:flex;flex-direction:column;gap:clamp(10px,1.4vw,16px)}
+.x-grid button{position:relative;padding:0;border:0;background:#2a1c38;border-radius:clamp(28px,4vw,56px);overflow:hidden;cursor:zoom-in;display:block;width:100%}
+.x-grid img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease-out)}
+@media (hover:hover){.x-grid button:hover img{transform:scale(1.04)}}
+.x-grid button span{position:absolute;left:18px;bottom:14px;font-size:12px;letter-spacing:.06em;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.6);text-align:left}
+.x-g1{height:clamp(130px,16vw,230px)}
+.x-g2{height:clamp(160px,22vw,340px)}
+.x-g3{height:calc(clamp(130px,16vw,230px) + clamp(160px,22vw,340px) + clamp(10px,1.4vw,16px))}
+#clients{background:var(--night);color:#efe6f5}
+#clients .sec-head h2{color:#efe6f5}
+#clients .eyebrow{color:rgba(239,230,245,.6)}
+#clients .marquee-set span{color:rgba(239,230,245,.8)}
+#faq{background:#fff;border-radius:clamp(40px,5vw,60px) clamp(40px,5vw,60px) 0 0;position:relative;z-index:1}
+#faq .sec-head h2{background:linear-gradient(90deg,var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;width:fit-content}
+/* fade-in on scroll (once) */
+[data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
+[data-fade].in{opacity:1;transform:none}
+/* page load: header, then buttons */
+@keyframes x-down{from{opacity:0;transform:translateY(-20px)}}
+@keyframes x-up{from{opacity:0;transform:translateY(20px)}}
+#hdr{animation:x-down .7s var(--ease-out) both}
+.hero-ctas{animation:x-up .7s var(--ease-out) .5s both}
+@media (prefers-reduced-motion:reduce){[data-fade]{opacity:1;transform:none;transition:none}.x-chars .c{opacity:1}#hdr,.hero-ctas{animation:none}.x-card{transform:none!important}}
 .row{display:flex;flex-wrap:wrap;gap:12px}
 
 .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:center}
@@ -214,13 +274,6 @@ main > section + section::before{content:"";position:absolute;left:0;right:0;top
 .logos{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
 .logos span{font-family:var(--body);font-weight:700;font-size:15px;padding:14px 20px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);letter-spacing:.04em}
 
-/* steps go down like a maze: each one sits lower and further along, joined by a thin soft-cornered line drawn on scroll */
-.steps{position:relative;display:flex;flex-direction:column;gap:44px;--w:min(300px,78%);direction:ltr;margin-top:8px}
-.step p{direction:rtl;text-align:left}
-.step{position:relative;display:flex;flex-direction:column;gap:6px;width:var(--w);padding-inline-start:26px;margin-inline-start:calc(var(--i) * (100% - var(--w)) / 3)}
-.step::before{content:"";position:absolute;inset-inline-start:-4px;top:3px;width:9px;height:9px;border-radius:50%;background:var(--purple);z-index:1}
-.steps-path{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
-.steps-path path{fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .step b{font-family:var(--body);font-size:13px;color:var(--accent);font-weight:500}
 
 .faq{display:flex;flex-direction:column;max-width:760px}
@@ -394,39 +447,36 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 
 
 
-  <section id="intro" class="intro">
-    <div class="wrap sec-head work-head">
-      <h2 class="en">Let's create something ODD<span style="margin-left:.07em">.</span></h2>
-      <p class="muted intro-line">עיצוב ובנייה של חללים, אלמנטים וחוויות.</p>
+  <section id="intro" class="x-dark x-intro">
+    <div class="wrap x-intro-in">
+      <h2 class="en x-huge x-grad-dark" data-fade style="--fy:40px">Let's create something ODD.</h2>
+      <p class="x-chars" data-chars>עיצוב ובנייה של חללים, אלמנטים וחוויות.</p>
+      <div data-fade style="--fd:.2s"><a class="x-cta en" href="https://wa.me/972500000000" target="_blank" rel="noopener">Let's talk</a></div>
+    </div>
+    <div class="x-rows" aria-hidden="true"><div class="x-row" data-dir="1"></div><div class="x-row" data-dir="-1"></div></div>
+  </section>
+
+  <section id="process" class="x-light x-sheet">
+    <div class="wrap">
+      <span class="eyebrow en x-center" data-fade>How it works</span>
+      <h2 class="en x-huge x-center x-ink" data-fade style="--fy:40px">Design. Plan. Build.</h2>
+      <p class="x-center x-sub" data-fade style="--fd:.1s">עיצוב, תכנון וייצור – הכל אצלנו ב־ODD.</p>
+      <ol class="x-list">
+        <li data-fade style="--fd:0s"><span class="x-num en">01</span><div><h3 class="en">Idea</h3><p>שיחה על האירוע, המקום והאווירה.</p></div></li>
+        <li data-fade style="--fd:.1s"><span class="x-num en">02</span><div><h3 class="en">Design</h3><p>קונספט והדמיה של מה שנבנה.</p></div></li>
+        <li data-fade style="--fd:.2s"><span class="x-num en">03</span><div><h3 class="en">Build</h3><p>מייצרים את האלמנטים בסדנה שלנו.</p></div></li>
+        <li data-fade style="--fd:.3s"><span class="x-num en">04</span><div><h3 class="en">Install</h3><p>מגיעים, מקימים ומפרקים בסוף.</p></div></li>
+      </ol>
     </div>
   </section>
 
-  <section id="work" class="work" aria-label="עבודות נבחרות">
-    <div class="wrap sec-head work-head">
-      <span class="eyebrow en">Projects</span>
-      <h2 class="en">Our work</h2>
-    </div>
-    <div class="cyl" id="cyl" aria-label="העבודות שלנו. גוררים לצדדים כדי לסובב, לוחצים על עבודה כדי לפתוח">
-      <div class="cyl-ring" id="cyl-ring"></div>
+  <section id="work" class="x-dark x-sheet x-pull" aria-label="עבודות נבחרות">
+    <div class="wrap">
+      <span class="eyebrow en x-center" data-fade>Projects</span>
+      <h2 class="en x-huge x-center x-grad-dark" data-fade style="--fy:40px">Our work</h2>
+      <div class="x-stack" id="x-stack"></div>
     </div>
     <div class="lightbox" id="lightbox" hidden></div>
-  </section>
-
-  <section id="process">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow en">How it works</span>
-        <h2 class="en">Design. Plan. Build.</h2>
-        <p class="muted">עיצוב, תכנון וייצור – הכל אצלנו ב־ODD.</p>
-      </div>
-      <div class="steps">
-        <svg class="steps-path" aria-hidden="true"><defs><linearGradient id="stepsGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--purple)"/><stop offset="1" stop-color="var(--pink)"/></linearGradient></defs><path stroke="url(#stepsGrad)"/></svg>
-        <div class="step" style="--i:0"><b class="en">Step 1</b><h3 class="en">Idea</h3><p class="muted">שיחה על האירוע, המקום והאווירה.</p></div>
-        <div class="step" style="--i:1"><b class="en">Step 2</b><h3 class="en">Design</h3><p class="muted">קונספט והדמיה של מה שנבנה.</p></div>
-        <div class="step" style="--i:2"><b class="en">Step 3</b><h3 class="en">Build</h3><p class="muted">מייצרים את האלמנטים בסדנה שלנו.</p></div>
-        <div class="step" style="--i:3"><b class="en">Step 4</b><h3 class="en">Install</h3><p class="muted">מגיעים, מקימים ומפרקים בסוף.</p></div>
-      </div>
-    </div>
   </section>
 
   <section id="film" class="film" aria-label="מהסדנה">
@@ -657,37 +707,6 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
     <div class="logo3d" id="logo3d" role="img" aria-label="ODD CREATIVE"><span class="en">ODD CREATIVE · Let's create something ODD</span></div>
   </div>
 </footer>
-<script>
-// How it works: one path from the first dot down to the last, with rounded turns between steps,
-// drawn as the section scrolls through the screen.
-(() => {
-  const box = document.querySelector('.steps'); if (!box) return;
-  const path = box.querySelector('.steps-path path'), steps = [...box.querySelectorAll('.step')];
-  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let len = 0;
-  function build() {
-    const b = box.getBoundingClientRect();
-    const pts = steps.map(st => { const r = st.getBoundingClientRect(), d = getComputedStyle(st).direction === 'rtl';
-      return { x: (d ? r.right : r.left) - b.left, y: r.top - b.top + 7, bottom: r.bottom - b.top }; });
-    let d = `M${pts[0].x} ${pts[0].y}`;
-    for (let i = 0; i < pts.length - 1; i++) {
-      const a = pts[i], c = pts[i + 1], mid = (a.bottom + c.y) / 2, dir = Math.sign(c.x - a.x), r = Math.min(14, Math.abs(c.x - a.x) / 2, (c.y - a.bottom) / 2);
-      d += ` V${mid - r} Q${a.x} ${mid} ${a.x + dir * r} ${mid} H${c.x - dir * r} Q${c.x} ${mid} ${c.x} ${mid + r} V${c.y}`;
-    }
-    path.setAttribute('d', d); len = path.getTotalLength();
-    path.style.strokeDasharray = len; draw();
-  }
-  function draw() {
-    if (still) { path.style.strokeDashoffset = 0; return; }
-    const r = box.getBoundingClientRect(), vh = innerHeight;
-    const p = Math.min(1, Math.max(0, (vh * 0.8 - r.top) / (r.height + vh * 0.2)));
-    path.style.strokeDashoffset = len * (1 - p);
-  }
-  build(); addEventListener('resize', build); addEventListener('scroll', draw, { passive: true });
-  if (document.fonts) document.fonts.ready.then(build);
-  new ResizeObserver(build).observe(box);
-})();
-</script>
 <script type="importmap">
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
 </script>
@@ -798,48 +817,77 @@ const projects=[ // photos: temporary, from @odd__creative on Instagram (2026-10
 const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"Corporate"};
 
 (function(){
-  // Our work cylinder, the same motion as the Xantiva "Creative" carousel: slow idle turn, drag/swipe spins it with momentum, tap opens a work
-  const box=document.getElementById('cyl'), ring=document.getElementById('cyl-ring'), lb=document.getElementById('lightbox');
-  document.body.appendChild(lb);
-  const card=p=>`<div class="card"><img src="${p.img}" alt="${p.t}" loading="lazy" draggable="false"><div class="cap"><h3 ${/^[A-Za-z]/.test(p.t)?'class="en"':''}>${p.t}</h3><p>${p.d}</p></div></div>`;
-  const list=projects.length>=12?projects:projects.concat(projects); // 12 faces like Xantiva (a second round only if there are fewer works)
-  ring.innerHTML=list.map((p,i)=>`<figure class="face" data-i="${i%projects.length}">${card(p)}</figure>`).join('');
-  const faces=[...ring.children], n=faces.length;
+  // Scroll experience on the home page (see the CSS note "scroll experience").
   const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let angle=0, vel=0, idle=still?0:-7, dragging=false, moved=0, px=0, lt=0, last=performance.now(), r=0, on=true;
-  function build(){
-    const cylW=(innerWidth<=640?1988:(innerWidth<=1024?3023:4050))*n/12, fw=cylW/n; r=cylW/(2*Math.PI); // same face size as Xantiva
-    ring.style.width=fw+'px'; ring.style.height=(fw*1.25)+'px';
-    faces.forEach((f,i)=>{ f.style.transform='rotateY('+(i*360/n)+'deg) translateZ('+r+'px)'; });
-    ring.style.transform='translateZ('+(-r*0.4333)+'px) rotateY('+angle+'deg)'; // right away, before the first frame
-  }
-  function tick(t){
-    const dt=Math.min(.05,(t-last)/1000); last=t;
-    const goal=document.documentElement.classList.contains('a11y-still')?0:idle; // "stop animations" in the accessibility menu
-    if(!dragging){ vel+=(goal-vel)*Math.min(1,dt*2.2); angle+=vel*dt; }
-    ring.style.transform='translateZ('+(-r*0.4333)+'px) rotateY('+angle+'deg)';
-    if(on) requestAnimationFrame(tick);
-  }
-  new IntersectionObserver(e=>{ const v=e[0].isIntersecting; if(v&&!on){ on=true; last=performance.now(); requestAnimationFrame(tick); } on=v; }).observe(box);
-  box.addEventListener('pointerdown',e=>{ dragging=true; moved=0; px=e.clientX; lt=performance.now(); box.classList.add('drag'); try{box.setPointerCapture(e.pointerId);}catch(err){} });
-  box.addEventListener('pointermove',e=>{
-    if(!dragging) return;
-    const dx=e.clientX-px, now=performance.now(), dt=Math.max(.008,(now-lt)/1000);
-    angle+=dx*0.3; vel=Math.max(-400,Math.min(400,dx*0.3/dt)); moved+=Math.abs(dx); px=e.clientX; lt=now;
-  });
-  function end(e){
-    if(!dragging) return; dragging=false; box.classList.remove('drag');
-    if(moved<6){
-      const hit=document.elementsFromPoint(e.clientX,e.clientY).find(el=>el.classList&&el.classList.contains('face'));
-      if(hit){ lb.innerHTML=card(projects[+hit.dataset.i]); lb.hidden=false; }
-    }
-  }
-  box.addEventListener('pointerup',end); box.addEventListener('pointercancel',()=>{ dragging=false; box.classList.remove('drag'); });
-  // Android sends a click right after the tap that opened it; ignore clicks in the first moment so it doesn't close at once
+  const lb=document.getElementById('lightbox'); document.body.appendChild(lb);
+  const card=p=>`<div class="card"><img src="${p.img}" alt="${p.t}" loading="lazy" draggable="false"><div class="cap"><h3 ${/^[A-Za-z]/.test(p.t)?'class="en"':''}>${p.t}</h3><p>${p.d}</p></div></div>`;
+  const by=src=>projects.find(p=>p.img.endsWith(src));
+
+  // 1. project cards: four groups of three works, each card sticks and shrinks a little as the next one slides over it
+  const groups=[
+    {label:"Brands",items:["garmin.jpg","candid.jpg","bali.jpg"]},
+    {label:"Parties & Festivals",items:["lost-temple.jpg","adamo.jpg","rock-and-roll.jpg"]},
+    {label:"Weddings & Corporate",items:["wedding-stage.jpg","dan-amit.jpg","admaven.jpg"]},
+    {label:"Brands & Events",items:["our-mantra.jpg","make-sense.jpg","premiere.jpg"]}
+  ];
+  const stack=document.getElementById('x-stack');
+  const tile=(p,cls)=>`<button type="button" class="${cls}" data-i="${projects.indexOf(p)}" aria-label="${p.t}"><img src="${p.img}" alt="${p.t}" loading="lazy"><span>${p.t}</span></button>`;
+  stack.innerHTML=groups.map((g,i)=>{ const [a,b,c]=g.items.map(by); return `<div class="x-slot"><article class="x-card" style="--i:${i}">
+    <div class="x-card-top"><span class="x-num en">0${i+1}</span><div class="x-card-meta en"><small>${a.t} · ${b.t} · ${c.t}</small><b>${g.label}</b></div><a class="x-ghost" href="#catalog">Catalog</a></div>
+    <div class="x-grid"><div>${tile(a,'x-g1')}${tile(b,'x-g2')}</div>${tile(c,'x-g3')}</div></article></div>`; }).join('');
+  stack.addEventListener('click',e=>{ const t=e.target.closest('button[data-i]'); if(t){ lb.innerHTML=card(projects[+t.dataset.i]); lb.hidden=false; } });
+  const cards=[...stack.querySelectorAll('.x-card')], N=cards.length;
   new MutationObserver(()=>{ if(!lb.hidden) lb.__t=performance.now(); }).observe(lb,{attributes:true,attributeFilter:['hidden']});
   lb.addEventListener('click',()=>{ if(performance.now()-(lb.__t||0)<450) return; lb.hidden=true; });
   addEventListener('keydown',e=>{ if(e.key==='Escape') lb.hidden=true; });
-  addEventListener('resize',build); build(); requestAnimationFrame(tick);
+
+  // 2. two rows of work photos, tripled so they never run out; one drifts right and one left as you scroll
+  const rows=[...document.querySelectorAll('.x-row')], half=Math.ceil(projects.length/2);
+  rows.forEach((r,k)=>{ const set=(k?projects.slice(half):projects.slice(0,half)).map(p=>`<img src="${p.img}" alt="" loading="lazy" draggable="false">`).join(''); r.innerHTML=set+set+set; });
+  const rowsBox=document.querySelector('.x-rows');
+
+  // 3. the intro line lights up letter by letter as it moves up the screen (words stay whole)
+  const chars=[];
+  document.querySelectorAll('[data-chars]').forEach(el=>{
+    el.innerHTML=el.textContent.trim().split(' ').map(w=>'<span class="w">'+[...w].map(ch=>'<span class="c">'+ch+'</span>').join('')+'</span>').join(' ');
+    chars.push({el,cs:[...el.querySelectorAll('.c')]});
+  });
+
+  // 4. fade in once when it comes into view
+  const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }),{rootMargin:'50px 0px 0px 0px'});
+  document.querySelectorAll('[data-fade]').forEach(el=>io.observe(el));
+
+  let ticking=false;
+  function frame(){
+    ticking=false; const vh=innerHeight;
+    if(rowsBox&&!still){
+      const top=rowsBox.getBoundingClientRect().top+scrollY, off=(scrollY-top+vh)*0.3;
+      rows.forEach(r=>{ const w=r.scrollWidth/3, d=+r.dataset.dir; r.style.transform='translate3d('+(d>0?(-w+off-200):(-(off-200)-w*0.5))+'px,0,0)'; });
+    }
+    chars.forEach(({el,cs})=>{
+      const r=el.getBoundingClientRect(), p=Math.min(1,Math.max(0,(vh*0.8-r.top)/(r.height+vh*0.6)));
+      const lit=p*cs.length; cs.forEach((c,i)=>{ c.style.opacity=still?1:(.2+.8*Math.min(1,Math.max(0,lit-i))).toFixed(2); });
+    });
+    if(!still&&N){
+      const r=stack.getBoundingClientRect(), p=Math.min(1,Math.max(0,-(r.top-vh*0.15)/Math.max(1,r.height-vh)));
+      cards.forEach((c,i)=>{ const target=1-(N-1-i)*0.03, start=i/N, t=Math.min(1,Math.max(0,(p-start)/(1-start||1))); c.style.transform='scale('+(1-(1-target)*t).toFixed(4)+')'; });
+    }
+  }
+  const req=()=>{ if(!ticking){ ticking=true; requestAnimationFrame(frame); } };
+  frame(); addEventListener('scroll',req,{passive:true}); addEventListener('resize',req);
+
+  // 5. hero buttons follow the cursor a little when it comes near (magnet)
+  if(!still&&matchMedia('(hover:hover) and (pointer:fine)').matches){
+    document.querySelectorAll('.lm-btn,.x-cta').forEach(b=>{
+      b.style.transition='transform .6s ease-in-out';
+      addEventListener('mousemove',e=>{
+        const r=b.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2, pad=80;
+        const near=e.clientX>r.left-pad&&e.clientX<r.right+pad&&e.clientY>r.top-pad&&e.clientY<r.bottom+pad;
+        b.style.transition=near?'transform .3s ease-out':'transform .6s ease-in-out';
+        b.style.transform=near?'translate3d('+((e.clientX-cx)/3)+'px,'+((e.clientY-cy)/3)+'px,0)':'';
+      },{passive:true});
+    });
+  }
 })();
 
 const items=[
