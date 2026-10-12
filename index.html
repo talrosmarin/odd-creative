@@ -235,12 +235,28 @@ main > section + section::before{content:"";position:absolute;left:0;right:0;top
 .x-g1{height:clamp(130px,16vw,230px)}
 .x-g2{height:clamp(160px,22vw,340px)}
 .x-g3{height:calc(clamp(130px,16vw,230px) + clamp(160px,22vw,340px) + clamp(10px,1.4vw,16px))}
-#clients{background:var(--night);color:#efe6f5}
-#clients .sec-head h2{color:#efe6f5}
-#clients .eyebrow{color:rgba(239,230,245,.6)}
-#clients .marquee-set span{color:rgba(239,230,245,.8)}
-#faq{background:#fff;border-radius:clamp(40px,5vw,60px) clamp(40px,5vw,60px) 0 0;position:relative;z-index:1}
-#faq .sec-head h2{background:linear-gradient(90deg,var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;width:fit-content}
+/* the workshop video opens up from a rounded window to full width as it scrolls into the middle */
+.x-film{background:var(--night)}
+.x-film video{clip-path:inset(var(--ci,0%) var(--ci,0%) round var(--cr,0px));will-change:clip-path}
+/* clients: two rows of huge names drifting opposite ways with the scroll, one solid and one outlined */
+.x-clients{padding-block:clamp(88px,10vw,140px) clamp(120px,13vw,180px);overflow:hidden}
+.x-names{direction:ltr;display:flex;flex-direction:column;gap:clamp(6px,1vw,14px);margin-top:clamp(48px,6vw,90px)}
+.x-nrow{display:flex;gap:clamp(28px,4vw,64px);width:max-content;will-change:transform}
+.x-nrow span{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:-.01em;line-height:1;font-size:clamp(2.6rem,8vw,120px);color:#efe6f5;white-space:nowrap}
+.x-outline span{color:transparent;-webkit-text-stroke:1.5px #b98ad9}
+.x-faq{margin-top:clamp(-56px,-4vw,-40px);z-index:2}
+.x-faq .faq{margin:clamp(48px,6vw,90px) auto 0;max-width:820px}
+.x-faq details{border-bottom:1px solid rgba(20,10,31,.14);padding:clamp(20px,2.4vw,30px) 0}
+.x-faq details:first-child{border-top:1px solid rgba(20,10,31,.14)}
+.x-faq summary{font-size:clamp(17px,1.8vw,22px);font-weight:600;align-items:center}
+.x-faq summary::after{content:"";width:34px;height:34px;flex:none;border-radius:50%;border:1.5px solid rgba(20,10,31,.25);background:linear-gradient(var(--night),var(--night)) center/12px 1.5px no-repeat,linear-gradient(var(--night),var(--night)) center/1.5px 12px no-repeat;transition:transform .4s var(--ease-out),background-color .3s}
+.x-faq details[open] summary::after{content:"";transform:rotate(135deg);background-color:#f1e6f7}
+.x-faq details[open] p{animation:x-up .5s var(--ease-out) both}
+footer .foot > *{transition:opacity .8s var(--ease-out),transform .8s var(--ease-out)}
+footer .foot:not(.in) > *{opacity:0;transform:translateY(20px)}
+footer .foot > :nth-child(2){transition-delay:.1s} footer .foot > :nth-child(3){transition-delay:.2s} footer .foot > :nth-child(4){transition-delay:.3s}
+@media (prefers-reduced-motion:reduce){.x-film video{clip-path:none}footer .foot:not(.in) > *{opacity:1;transform:none}}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
@@ -479,35 +495,29 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
     <div class="lightbox" id="lightbox" hidden></div>
   </section>
 
-  <section id="film" class="film" aria-label="מהסדנה">
+  <section id="film" class="film x-film" aria-label="מהסדנה">
     <video poster="img/hero-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="video/odd-hero.mp4" type="video/mp4"></video>
   </section>
 
-  <section id="clients" class="clients">
-    <div class="wrap sec-head clients-head">
-      <span class="eyebrow en">Clients</span>
-      <h2 class="en">Brands we worked with</h2>
+  <section id="clients" class="x-dark x-clients">
+    <div class="wrap">
+      <span class="eyebrow en x-center" data-fade>Clients</span>
+      <h2 class="en x-huge x-center x-grad-dark" data-fade style="--fy:40px">Brands we worked with</h2>
     </div>
-    <div class="marquee" aria-label="לקוחות">
-      <div class="marquee-track">
-        <div class="marquee-set"><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span></div>
-        <div class="marquee-set" aria-hidden="true"><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span></div>
-      </div>
-    </div>
+    <ul class="sr-only" aria-label="לקוחות"><li>GARMIN</li><li>CANDID</li><li>BALI</li><li>ADMAVEN</li><li>OUR MANTRA</li><li>ADAMO</li><li>MAKE SENSE</li></ul>
+    <div class="x-names" aria-hidden="true"><div class="x-nrow" data-dir="1"><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span></div><div class="x-nrow x-outline" data-dir="-1"><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span></div></div>
   </section>
 
-  <section id="faq">
+  <section id="faq" class="x-light x-sheet x-faq">
     <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow en">FAQ</span>
-        <h2 class="en">Good questions</h2>
-      </div>
+      <span class="eyebrow en x-center" data-fade>FAQ</span>
+      <h2 class="en x-huge x-center x-ink" data-fade style="--fy:40px">Good questions</h2>
       <div class="faq">
-        <details><summary>באיזה אזורים אתם עובדים?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
-        <details><summary>כמה זמן מראש צריך להזמין?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
-        <details><summary>אפשר לשכור אלמנט, או שהכל נבנה מחדש?</summary><p>גם וגם. יש אלמנטים להשכרה בקטלוג, ואפשר להזמין משהו שנבנה במיוחד.</p></details>
-        <details><summary>אתם גם מעצבים, או רק בונים?</summary><p>גם וגם. מהרעיון ועד הביצוע.</p></details>
-        <details><summary>אפשר למתג אלמנט עם הלוגו שלנו?</summary><p>כן. תשובה מלאה <span class="fill">מהלקוח</span></p></details>
+        <details data-fade style="--fd:0.0s"><summary>באיזה אזורים אתם עובדים?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
+        <details data-fade style="--fd:0.1s"><summary>כמה זמן מראש צריך להזמין?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
+        <details data-fade style="--fd:0.2s"><summary>אפשר לשכור אלמנט, או שהכל נבנה מחדש?</summary><p>גם וגם. יש אלמנטים להשכרה בקטלוג, ואפשר להזמין משהו שנבנה במיוחד.</p></details>
+        <details data-fade style="--fd:0.3s"><summary>אתם גם מעצבים, או רק בונים?</summary><p>גם וגם. מהרעיון ועד הביצוע.</p></details>
+        <details data-fade style="--fd:0.4s"><summary>אפשר למתג אלמנט עם הלוגו שלנו?</summary><p>כן. תשובה מלאה <span class="fill">מהלקוח</span></p></details>
       </div>
     </div>
   </section>
@@ -857,6 +867,8 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
   const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }),{rootMargin:'50px 0px 0px 0px'});
   document.querySelectorAll('[data-fade]').forEach(el=>io.observe(el));
 
+  const film=document.querySelector('.x-film'), nameBox=document.querySelector('.x-names'), nrows=[...document.querySelectorAll('.x-nrow')];
+  const foot=document.querySelector('footer .foot'); if(foot){ if(still) foot.classList.add('in'); else io.observe(foot); }
   let ticking=false;
   function frame(){
     ticking=false; const vh=innerHeight;
@@ -868,6 +880,14 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
       const r=el.getBoundingClientRect(), p=Math.min(1,Math.max(0,(vh*0.8-r.top)/(r.height+vh*0.6)));
       const lit=p*cs.length; cs.forEach((c,i)=>{ c.style.opacity=still?1:(.2+.8*Math.min(1,Math.max(0,lit-i))).toFixed(2); });
     });
+    if(film&&!still){
+      const r=film.getBoundingClientRect(), p=Math.min(1,Math.max(0,(vh-r.top)/(vh*0.5+r.height*0.5)));
+      film.style.setProperty('--ci',((1-p)*7).toFixed(2)+'%'); film.style.setProperty('--cr',((1-p)*60).toFixed(1)+'px');
+    }
+    if(nameBox&&!still){
+      const top=nameBox.getBoundingClientRect().top+scrollY, off=(scrollY-top+vh)*0.35;
+      nrows.forEach(r=>{ const w=r.scrollWidth/3, d=+r.dataset.dir; r.style.transform='translate3d('+(d>0?(-w+off-200):(-(off-200)-w*0.5))+'px,0,0)'; });
+    }
     if(!still&&N){
       const r=stack.getBoundingClientRect(), p=Math.min(1,Math.max(0,-(r.top-vh*0.15)/Math.max(1,r.height-vh)));
       cards.forEach((c,i)=>{ const target=1-(N-1-i)*0.03, start=i/N, t=Math.min(1,Math.max(0,(p-start)/(1-start||1))); c.style.transform='scale('+(1-(1-target)*t).toFixed(4)+')'; });
