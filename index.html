@@ -179,10 +179,11 @@ main > section + section::before{content:"";position:absolute;left:0;right:0;top
 @media (prefers-reduced-motion:reduce){.marquee-track{animation:none}}
 /* home sections take turns: light, purple, light, purple. Headings on light are purple-to-pink, on purple they are white */
 #home > section:not(.film){background:var(--paper)}
-#home > #work,#home > #clients{background:var(--purple);color:#fff}
+#home > #work,#home > #clients{background:#140a1f;color:#fff}
 #home > #intro{padding-block:64px}
 #home > section:not(.film):not(#work):not(#clients) .sec-head h2{background:linear-gradient(90deg,var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;width:fit-content}
 #home > section .sec-head h2.en{align-self:flex-end;margin-left:0;margin-right:auto}
+#home > section .sec-head p{align-self:flex-end;text-align:left;margin-left:0;margin-right:auto}
 #work .sec-head h2,#clients .sec-head h2{color:#fff}
 #work .eyebrow,#clients .eyebrow{color:rgba(255,255,255,.72)}
 #work .muted,#clients .muted{color:rgba(255,255,255,.78)}
