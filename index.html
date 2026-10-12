@@ -177,31 +177,16 @@ main > section + section::before{content:"";position:absolute;left:0;right:0;top
 .clients-head{margin-top:24px;margin-bottom:0}
 .wrap.work-head,.wrap.clients-head{max-width:1120px} /* .sec-head drops max-width, keep these lined up with the page edge */
 @media (prefers-reduced-motion:reduce){.marquee-track{animation:none}}
-/* Matto-inspired: a dark statement block, big staggered words over one photo */
-.statement{background:#140a1f;color:#fff;border-bottom:0;padding-block:clamp(72px,10vw,120px) clamp(56px,8vw,96px);overflow:hidden}
-.st-stage{position:relative;width:min(860px,calc(100% - 32px));margin:0 auto;min-height:clamp(360px,46vw,560px);display:grid;place-items:center}
-.st-photo{width:clamp(200px,28vw,340px);aspect-ratio:3/4;object-fit:cover;display:block;transform:translate3d(0,var(--py,0px),0) scale(var(--ps,1));will-change:transform}
-.st-words{position:absolute;inset:0;margin:0;direction:ltr;font-family:var(--display);font-weight:300;text-transform:uppercase;letter-spacing:-.02em;line-height:.92;font-size:clamp(34px,7.2vw,104px);pointer-events:none}
-.st-words span{position:absolute;max-width:9ch}
-.st-a{top:6%;right:0;text-align:right;transform:translate3d(var(--ax,0px),0,0);will-change:transform}
-.st-b{bottom:6%;left:0;text-align:left;transform:translate3d(var(--bx,0px),0,0);will-change:transform;background:linear-gradient(90deg,#b57be0,var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
-.st-line{max-width:520px;margin:clamp(28px,4vw,44px) auto 0;padding:0 16px;text-align:center;font-size:17px;color:rgba(255,255,255,.82)}
-/* Matto-inspired: clients as big words over a dark photo, each name lights up as you scroll past */
-.clients-big{position:relative;background:#140a1f;color:#fff;border-bottom:0;padding-block:clamp(88px,12vw,150px);overflow:hidden;isolation:isolate}
-.cb-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1;opacity:.28;filter:grayscale(.4) blur(2px);transform:scale(1.04)}
-.cb-inner{text-align:center;direction:ltr}
-.cb-eyebrow{display:block;color:rgba(255,255,255,.75);letter-spacing:.14em;margin-bottom:22px;text-align:center}
-.cb-names{margin:0;font-family:var(--display);font-weight:300;text-transform:uppercase;letter-spacing:-.01em;line-height:1.08;font-size:clamp(30px,5.6vw,76px)}
-.cb-names .nm{color:rgba(255,255,255,.22);transition:color .5s ease}
-.cb-names .nm.on{color:#fff}
-.cb-names .nm.now{color:var(--pink)}
-.cb-bg{transform:translate3d(0,var(--by,0px),0) scale(1.15)}
-.sec-head h2.rise{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
-.sec-head h2.rise.in{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.sec-head h2.rise{opacity:1;transform:none;transition:none}}
-.cb-names .dot{color:var(--pink);font-weight:700}
-@media (prefers-reduced-motion:reduce){.cb-names .nm{color:#fff;transition:none}}
-@media (max-width:640px){.st-words span{max-width:7ch}.st-stage{min-height:420px}}
+/* home sections take turns: light, purple, light, purple. Headings on light are purple-to-pink, on purple they are white */
+#home > section:not(.film){background:var(--paper)}
+#home > #work,#home > #clients{background:var(--purple);color:#fff}
+#home > #intro{padding-block:64px}
+#home > section:not(.film):not(#work):not(#clients) .sec-head h2{background:linear-gradient(90deg,var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;width:fit-content}
+#home > section .sec-head h2.en{align-self:flex-end;margin-left:0;margin-right:auto}
+#work .sec-head h2,#clients .sec-head h2{color:#fff}
+#work .eyebrow,#clients .eyebrow{color:rgba(255,255,255,.72)}
+#work .muted,#clients .muted{color:rgba(255,255,255,.78)}
+#clients .marquee-set span{color:rgba(255,255,255,.8)}
 .row{display:flex;flex-wrap:wrap;gap:12px}
 
 .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:center}
@@ -406,12 +391,11 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 
 
 
-  <section id="intro" class="statement">
-    <div class="st-stage">
-      <img class="st-photo" src="img/work/lost-temple.jpg" alt="" loading="lazy">
-      <h2 class="en st-words"><span class="st-a">Let's create</span> <span class="st-b">something ODD.</span></h2>
+  <section id="intro" class="intro">
+    <div class="wrap sec-head work-head">
+      <h2 class="en">Let's create something ODD<span style="margin-left:.07em">.</span></h2>
+      <p class="muted intro-line">עיצוב ובנייה של חללים, אלמנטים וחוויות.</p>
     </div>
-    <p class="st-line">עיצוב ובנייה של חללים, אלמנטים וחוויות.</p>
   </section>
 
   <section id="work" class="work" aria-label="עבודות נבחרות">
@@ -446,11 +430,16 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
     <video poster="img/hero-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="video/odd-hero.mp4" type="video/mp4"></video>
   </section>
 
-  <section id="clients" class="clients-big">
-    <img class="cb-bg" src="img/work/garmin.jpg" alt="" loading="lazy">
-    <div class="wrap cb-inner">
-      <span class="eyebrow en cb-eyebrow">Brands we worked with</span>
-      <p class="en cb-names" aria-label="לקוחות: GARMIN, CANDID, BALI, ADMAVEN, OUR MANTRA, ADAMO, MAKE SENSE"><span class="nm">GARMIN</span> <span class="dot" aria-hidden="true">·</span> <span class="nm">CANDID</span> <span class="dot" aria-hidden="true">·</span> <span class="nm">BALI</span> <span class="dot" aria-hidden="true">·</span> <span class="nm">ADMAVEN</span> <span class="dot" aria-hidden="true">·</span> <span class="nm">OUR MANTRA</span> <span class="dot" aria-hidden="true">·</span> <span class="nm">ADAMO</span> <span class="dot" aria-hidden="true">·</span> <span class="nm">MAKE SENSE</span></p>
+  <section id="clients" class="clients">
+    <div class="wrap sec-head clients-head">
+      <span class="eyebrow en">Clients</span>
+      <h2 class="en">Brands we worked with</h2>
+    </div>
+    <div class="marquee" aria-label="לקוחות">
+      <div class="marquee-track">
+        <div class="marquee-set"><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span></div>
+        <div class="marquee-set" aria-hidden="true"><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span></div>
+      </div>
     </div>
   </section>
 
@@ -694,39 +683,6 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
   build(); addEventListener('resize', build); addEventListener('scroll', draw, { passive: true });
   if (document.fonts) document.fonts.ready.then(build);
   new ResizeObserver(build).observe(box);
-})();
-</script>
-<script>
-// Scroll motion, Matto-style: the statement words glide in toward the photo, the photo grows a little and drifts,
-// client names light up one by one (the newest in pink), and section titles rise in once.
-(() => {
-  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const st = document.querySelector('.statement'), cb = document.querySelector('.clients-big');
-  const names = [...document.querySelectorAll('.cb-names .nm')];
-  const prog = el => { const r = el.getBoundingClientRect(); return Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight + r.height))); };
-  let ticking = false;
-  function frame() {
-    ticking = false;
-    if (st && !still) {
-      const p = prog(st), e = 1 - Math.pow(1 - Math.min(1, p / .55), 3), vw = innerWidth / 100;
-      st.style.setProperty('--ax', ((1 - e) * 14 * vw - p * 2 * vw).toFixed(1) + 'px');
-      st.style.setProperty('--bx', (-(1 - e) * 14 * vw + p * 2 * vw).toFixed(1) + 'px');
-      st.style.setProperty('--ps', (.86 + e * .16).toFixed(3));
-      st.style.setProperty('--py', ((.5 - p) * 60).toFixed(1) + 'px');
-    }
-    if (cb && !still) cb.style.setProperty('--by', ((.5 - prog(cb)) * 120).toFixed(1) + 'px');
-    if (names.length) {
-      const line = innerHeight * .62; let last = -1;
-      names.forEach((n, i) => { const on = n.getBoundingClientRect().top < line; n.classList.toggle('on', on); if (on) last = i; });
-      names.forEach((n, i) => n.classList.toggle('now', i === last && last < names.length - 1));
-    }
-  }
-  const req = () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } };
-  frame(); addEventListener('scroll', req, { passive: true }); addEventListener('resize', req);
-  if (!still && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -12% 0px' });
-    document.querySelectorAll('#home .sec-head h2').forEach(h => { h.classList.add('rise'); io.observe(h); });
-  }
 })();
 </script>
 <script type="importmap">
