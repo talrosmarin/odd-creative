@@ -116,7 +116,7 @@ header{transition:transform .45s ease,opacity .45s ease,background .3s,color .3s
 .cyl-ring{position:relative;transform-style:preserve-3d;will-change:transform}
 .face{position:absolute;inset:0;margin:0;padding:6px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .face .card{position:relative;width:100%;height:100%;border-radius:8px;overflow:hidden;box-shadow:0 14px 30px rgba(40,20,60,.22);pointer-events:none}
-.face .ph{position:absolute;inset:0;border-radius:0;align-items:flex-start;padding-top:38%}
+.face img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .face .cap{position:absolute;left:0;right:0;bottom:0;padding:14px;background:linear-gradient(to top,rgba(30,12,48,.8),rgba(30,12,48,0));color:#fff;display:flex;flex-direction:column;gap:3px}
 .face h3{font-size:16px;font-weight:700}
 .face h3.en{font-size:14px;font-weight:500;text-align:left}
@@ -124,7 +124,8 @@ header{transition:transform .45s ease,opacity .45s ease,background .3s,color .3s
 .lightbox{position:fixed;inset:0;z-index:50;background:rgba(30,12,48,.88);display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;cursor:zoom-out;animation:lbin .35s cubic-bezier(.32,.72,0,1)}
 .lightbox[hidden]{display:none}
 .lightbox .card{position:relative;width:min(calc(100vw - 48px),440px);aspect-ratio:4/5;border-radius:10px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:lbimg .45s cubic-bezier(.25,.1,.25,1)}
-.lightbox .card .ph{position:absolute;inset:0;border-radius:0}
+.lightbox .card{aspect-ratio:auto;width:auto;max-width:min(calc(100vw - 48px),560px)}
+.lightbox .card img{display:block;max-width:100%;max-height:82vh;width:auto;height:auto}
 .lightbox .cap{position:absolute;left:0;right:0;bottom:0;padding:20px;background:linear-gradient(to top,rgba(30,12,48,.85),rgba(30,12,48,0));color:#fff;display:flex;flex-direction:column;gap:4px}
 @keyframes lbin{from{opacity:0}}
 @keyframes lbimg{from{transform:scale(.6);opacity:0}}
@@ -547,16 +548,19 @@ window.scrollTo(0,0);
 // smooth "buttery" scrolling on computers; phones keep their own native scroll, and "reduce motion" gets normal scrolling
 const lenis=(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&window.Lenis)?new Lenis({autoRaf:true}):null;
 function jumpTo(y){ if(lenis) lenis.scrollTo(y,{immediate:true,force:true}); window.scrollTo({top:y,behavior:'instant'}); } // native jump too, in case Lenis hasn't caught up with the page yet
-const projects=[
-  {t:"LOST TEMPLE",d:"במה · חמת גדר",c:"party"},
-  {t:"Dan & Amit",d:"חתונה · דיסקו ירוק במטע זיתים",c:"wed"},
-  {t:"Garmin FENIX 9",d:"השקה · שער ממותג",c:"brand"},
-  {t:"Candid",d:"פתיחת סניף · ראשון לציון",c:"brand"},
-  {t:"ADMAVEN",d:"אירוע חברה · לוקיישן טרופי",c:"corp"},
-  {t:"Premiere-Inspired Event",d:"ערב גאלה · מראות ובדים אדומים",c:"party"},
-  {t:"ADAMO",d:"שער כניסה · הר החרמון",c:"party"},
-  {t:"במת חתונה",d:"קשתות טרקוטה וצמחייה",c:"wed"},
-  {t:"MAKE SENSE",d:"קופסאות תאורה בחיפוי מראה",c:"brand"}
+const projects=[ // photos: temporary, from @odd__creative on Instagram (2026-10-12) until the client sends originals
+  {t:"במת חתונה",d:"קשתות טרקוטה וצמחייה",c:"wed",img:"img/work/wedding-stage.jpg"},
+  {t:"Garmin FENIX 9",d:"השקה · שער ממותג",c:"brand",img:"img/work/garmin.jpg"},
+  {t:"LOST TEMPLE",d:"במה · חמת גדר",c:"party",img:"img/work/lost-temple.jpg"},
+  {t:"Candid",d:"פתיחת סניף · ראשון לציון",c:"brand",img:"img/work/candid.jpg"},
+  {t:"Dan & Amit",d:"חתונה · דיסקו ירוק במטע זיתים",c:"wed",img:"img/work/dan-amit.jpg"},
+  {t:"Bali",d:"בר ממותג",c:"brand",img:"img/work/bali.jpg"},
+  {t:"ADMAVEN",d:"אירוע חברה · לוקיישן טרופי",c:"corp",img:"img/work/admaven.jpg"},
+  {t:"Rock & Roll",d:"קיר צילום",c:"party",img:"img/work/rock-and-roll.jpg"},
+  {t:"ADAMO",d:"שער כניסה · הר החרמון",c:"party",img:"img/work/adamo.jpg"},
+  {t:"Our Mantra",d:"iPod ענק",c:"brand",img:"img/work/our-mantra.jpg"},
+  {t:"Premiere-Inspired Event",d:"ערב גאלה · מראות ובדים אדומים",c:"party",img:"img/work/premiere.jpg"},
+  {t:"MAKE SENSE",d:"קופסאות תאורה בחיפוי מראה",c:"brand",img:"img/work/make-sense.jpg"}
 ];
 const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"Corporate"};
 
@@ -564,8 +568,8 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
   // Our work cylinder, the same motion as the Xantiva "Creative" carousel: slow idle turn, drag/swipe spins it with momentum, tap opens a work
   const box=document.getElementById('cyl'), ring=document.getElementById('cyl-ring'), lb=document.getElementById('lightbox');
   document.body.appendChild(lb);
-  const card=p=>`<div class="card"><div class="ph">תמונה: ${p.t}</div><div class="cap"><h3 ${/^[A-Za-z]/.test(p.t)?'class="en"':''}>${p.t}</h3><p>${p.d}</p></div></div>`;
-  const list=projects.concat(projects); // two rounds of the works, so the cylinder is full like Xantiva's 12 faces
+  const card=p=>`<div class="card"><img src="${p.img}" alt="${p.t}" loading="lazy" draggable="false"><div class="cap"><h3 ${/^[A-Za-z]/.test(p.t)?'class="en"':''}>${p.t}</h3><p>${p.d}</p></div></div>`;
+  const list=projects.length>=12?projects:projects.concat(projects); // 12 faces like Xantiva (a second round only if there are fewer works)
   ring.innerHTML=list.map((p,i)=>`<figure class="face" data-i="${i%projects.length}">${card(p)}</figure>`).join('');
   const faces=[...ring.children], n=faces.length;
   const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
