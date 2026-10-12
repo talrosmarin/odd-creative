@@ -100,6 +100,15 @@ section{padding-block:72px;border-bottom:1px solid var(--line);scroll-margin-top
 .hero-text{position:relative;z-index:2;width:100%;display:flex;flex-direction:column;gap:14px;padding-block:0 calc(52px + env(safe-area-inset-bottom,0px))}
 .hero h1{font-family:var(--display);font-size:min(clamp(30px,6.4vw,84px),calc(8.4vw - 4px));font-weight:800;letter-spacing:-.02em;line-height:1.05;direction:ltr;margin:0}
 .hero .lead{font-size:19px;max-width:560px;margin:0;text-align:left;align-self:flex-end}
+/* two quick buttons on the video, centered, where the title used to sit: catalog + WhatsApp */
+.hero-ctas{position:relative;z-index:2;width:100%;display:flex;direction:ltr;justify-content:center;gap:12px;flex-wrap:wrap;padding-block:0 calc(64px + env(safe-area-inset-bottom,0px))}
+.hero-btn{color:#fff;border-color:rgba(255,255,255,.85);background:rgba(0,0,0,.12);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:13px 22px}
+.hero-btn.solid{border-color:transparent;background:var(--grad);color:#fff}
+@media (hover:hover) and (pointer:fine){.hero-btn{transition:transform .16s ease-out}.hero-btn:hover{transform:translateY(-1px)}}
+.hero-btn:active{transform:scale(.97)}
+/* "Let's create something ODD." now a normal section heading right under the video, same size as "Our work" */
+#intro.intro{background:var(--paper);border-bottom:0;padding-block:64px 0}
+#intro .intro-line{text-align:left;margin:0 auto 0 0} /* left edge, under the English heading */
 .hero .lg{stroke:#fff;filter:drop-shadow(0 4px 18px rgba(0,0,0,.25))}
 .hero .scroll-cue{color:#fff}
 .hero-logo{position:relative;z-index:2}
@@ -351,11 +360,11 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 <main id="home">
   <div class="hero" id="top">
     <video class="hero-photo" src="video/odd-hero-desert.mp4" poster="img/hero-desert-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
-    <div class="wrap hero-text">
-      <h1 class="en">Let's create<br>something ODD<span style="margin-left:.07em">.</span></h1>
-      <p class="lead">עיצוב ובנייה של חללים, אלמנטים וחוויות.</p>
+    <div class="wrap hero-ctas">
+      <a class="btn en hero-btn" href="#catalog">Catalog</a>
+      <a class="btn en hero-btn solid" href="https://wa.me/972500000000" target="_blank" rel="noopener">Let's talk</a>
     </div>
-    <a class="scroll-cue" href="#work" aria-label="גללו למטה"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+    <a class="scroll-cue" href="#intro" aria-label="גללו למטה"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
   </div>
 
 
@@ -363,6 +372,13 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 
 
 
+
+  <section id="intro" class="intro">
+    <div class="wrap sec-head work-head">
+      <h2 class="en">Let's create something ODD<span style="margin-left:.07em">.</span></h2>
+      <p class="muted intro-line">עיצוב ובנייה של חללים, אלמנטים וחוויות.</p>
+    </div>
+  </section>
 
   <section id="work" class="work" aria-label="עבודות נבחרות">
     <div class="wrap sec-head work-head">
