@@ -25,6 +25,12 @@
 [hidden]{display:none!important}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* Lenis smooth scroll (rules from lenis@1.3.26/dist/lenis.css, plus turning off the browser's own smooth scroll so the two don't fight) */
+html.lenis,html.lenis body{height:auto}
+.lenis:not(.lenis-autoToggle).lenis-stopped{overflow:clip}
+.lenis [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-smooth iframe{pointer-events:none}
+html.lenis.lenis-smooth{scroll-behavior:auto}
 html{direction:rtl}
 body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;margin:0}
 .wrap{max-width:1120px;margin:0 auto;padding-inline:20px}
@@ -489,7 +495,11 @@ footer .en{order:2}
   <span>דברו איתנו</span>
 </a>
 
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
 <script>
+// smooth "buttery" scrolling on computers; phones keep their own native scroll, and "reduce motion" gets normal scrolling
+const lenis=(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&window.Lenis)?new Lenis({autoRaf:true}):null;
+function jumpTo(y){ lenis?lenis.scrollTo(y,{immediate:true,force:true}):window.scrollTo(0,y); }
 const projects=[
   {t:"LOST TEMPLE",d:"במה · חמת גדר",c:"party"},
   {t:"Dan & Amit",d:"חתונה · דיסקו ירוק במטע זיתים",c:"wed"},
@@ -527,7 +537,7 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
     const dt=Math.min(64,now-last); last=now;
     if(!reduce && now-lastScroll>150) drift+=dt*0.0015; // slow turn on its own, about 1.5 degrees a second
     const target=scrollAngle()+drift;
-    shown+=(target-shown)*0.1; // ease toward the scroll position so fast scrolling stays smooth
+    shown+=(target-shown)*(lenis?0.25:0.1); // ease toward the scroll position; lighter when Lenis already smooths the scroll
     if(!document.getElementById('home').hidden) draw();
     requestAnimationFrame(tick);
   }
@@ -586,9 +596,9 @@ let lastView=null;
 function route(){
   const key=location.hash.slice(1), vid=views[key]||'home';
   document.querySelectorAll('main').forEach(m=>{m.hidden=m.id!==vid;});
-  if(vid!=='home'){ window.scrollTo(0,0); }
-  else if(key&&key!=='top'){ const el=document.getElementById(key); if(el) el.scrollIntoView(); }
-  else if(lastView&&lastView!=='home'){ window.scrollTo(0,0); }
+  if(vid!=='home'){ jumpTo(0); }
+  else if(key&&key!=='top'){ const el=document.getElementById(key); if(el){ lenis&&lastView==='home'?lenis.scrollTo(el):el.scrollIntoView(); } }
+  else if(lastView&&lastView!=='home'){ jumpTo(0); }
   lastView=vid;
 }
 const hdr=document.getElementById('hdr');
@@ -599,7 +609,7 @@ window.addEventListener('scroll',hdrState,{passive:true});
 window.addEventListener('hashchange',()=>{route();hdrState();});route();hdrState();
 
 const menu=document.getElementById('menu'),burger=document.getElementById('burger');
-function setMenu(open){menu.hidden=!open;burger.setAttribute('aria-expanded',open);document.body.style.overflow=open?'hidden':'';}
+function setMenu(open){menu.hidden=!open;burger.setAttribute('aria-expanded',open);document.body.style.overflow=open?'hidden':'';if(lenis)open?lenis.stop():lenis.start();}
 burger.addEventListener('click',()=>setMenu(true));
 document.getElementById('close').addEventListener('click',()=>setMenu(false));
 menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
