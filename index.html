@@ -290,6 +290,25 @@ footer .foot > :nth-child(2){transition-delay:.1s} footer .foot > :nth-child(3){
 @media (hover:hover){.gc-arrow:hover{background:rgba(255,255,255,.14)}}
 .gc-arrow:active{transform:scale(.94)}
 .gc-arrow:disabled{opacity:.35;cursor:default}
+/* opening screen: the ODD logo big in the middle, drawn line by line on load, thin enough that the video shows through */
+.hero{height:100svh}
+.hero-mark{position:absolute;z-index:2;left:50%;top:50%;width:min(78vw,760px);height:auto;transform:translate(-50%,-50%) scale(var(--ls,1));opacity:var(--lo,1);overflow:visible;filter:drop-shadow(0 6px 24px rgba(30,10,50,.35));will-change:transform,opacity}
+.hero-mark > *{stroke-dasharray:1 1;stroke-dashoffset:1;animation:mark-draw 1.6s cubic-bezier(.65,0,.35,1) forwards}
+.hero-mark > :nth-child(1){animation-delay:.2s}.hero-mark > :nth-child(2){animation-delay:.35s}.hero-mark > :nth-child(3){animation-delay:.45s}
+.hero-mark > :nth-child(n+4){animation-delay:calc(.7s + var(--k,0) * .06s);animation-duration:1s}
+@keyframes mark-draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.hero-mark > *{animation:none;stroke-dashoffset:0}}
+/* slides: each part is a card with rounded top corners that slides up over the one before it.
+   The part underneath stays put (sticky), shrinks a little and gets darker, like a deck of cards */
+#home > .hero,#home > section{position:sticky}
+#home > section{box-shadow:0 -24px 60px rgba(30,10,50,.18)}
+#home > section:last-child{position:relative}
+#home > *{transform-origin:50% 0;transform:scale(var(--sc,1))}
+#home > * > .x-shade{position:absolute;inset:0;z-index:5;pointer-events:none;background:#1e0a32;opacity:var(--dim,0);border-radius:inherit}
+#process.x-sheet,.x-pull,.x-faq{margin-top:0}
+#home > .x-sheet{margin-top:0}
+.x-film.x-sheet{padding:0;overflow:hidden}
+@media (prefers-reduced-motion:reduce){#home > .hero,#home > section{position:relative}#home > *{transform:none}}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
@@ -483,11 +502,20 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 <main id="home">
   <div class="hero" id="top">
     <video class="hero-photo" src="video/odd-hero-desert.mp4" poster="img/hero-desert-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
-    <div class="wrap hero-ctas">
-      <a class="en lm-btn" href="https://wa.me/972500000000" target="_blank" rel="noopener"><span class="lm-label">Let's talk</span></a>
-      <a class="en lm-btn" href="#catalog"><span class="lm-label">Catalog</span></a>
-    </div>
-    <a class="scroll-cue" href="#intro" aria-label="גללו למטה"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+    <svg class="hero-mark" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="#fff" stroke-linejoin="round" stroke-linecap="round" stroke-width="18">
+      <rect pathLength="1" x="9" y="34" width="312" height="59" rx="29.5"/>
+      <path pathLength="1" d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/>
+      <path pathLength="1" d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/>
+      <path pathLength="1" d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/>
+      <path pathLength="1" d="M97 197V137H140Q153 135 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/>
+      <path pathLength="1" d="M234 135H177V190H234M177 162.5H228"/>
+      <path pathLength="1" d="M250 197L279 137H291L320 197M264 174H306"/>
+      <path pathLength="1" d="M336 135H402M369 135V197"/>
+      <path pathLength="1" d="M419 128V197"/>
+      <path pathLength="1" d="M443 128L477 189L511 128"/>
+      <path pathLength="1" d="M592 135H535V190H592M535 162.5H586"/>
+    </svg>
+    <a class="scroll-cue" href="#process" aria-label="גללו למטה"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
   </div>
 
 
@@ -495,15 +523,6 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 
 
 
-
-  <section id="intro" class="x-dark x-intro">
-    <div class="wrap x-intro-in">
-      <h2 class="en x-huge x-grad-dark" data-fade style="--fy:40px">Let's create something ODD.</h2>
-      <p class="x-chars" data-chars>עיצוב ובנייה של חללים, אלמנטים וחוויות.</p>
-      <div data-fade style="--fd:.2s"><a class="x-cta en" href="https://wa.me/972500000000" target="_blank" rel="noopener">Let's talk</a></div>
-    </div>
-    <div class="x-rows" aria-hidden="true"><div class="x-row" data-dir="1"></div><div class="x-row" data-dir="-1"></div></div>
-  </section>
 
   <section id="process" class="x-light x-sheet">
     <div class="wrap">
@@ -519,7 +538,16 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
     </div>
   </section>
 
-  <section id="work" class="x-dark x-sheet x-pull" aria-label="עבודות נבחרות">
+  <section id="intro" class="x-dark x-sheet x-intro">
+    <div class="wrap x-intro-in">
+      <h2 class="en x-huge x-grad-dark" data-fade style="--fy:40px">Let's create something ODD.</h2>
+      <p class="x-chars" data-chars>עיצוב ובנייה של חללים, אלמנטים וחוויות.</p>
+      <div data-fade style="--fd:.2s"><a class="x-cta en" href="https://wa.me/972500000000" target="_blank" rel="noopener">Let's talk</a></div>
+    </div>
+    <div class="x-rows" aria-hidden="true"><div class="x-row" data-dir="1"></div><div class="x-row" data-dir="-1"></div></div>
+  </section>
+
+  <section id="work" class="x-dark x-sheet" aria-label="עבודות נבחרות">
     <div class="wrap">
       <span class="eyebrow en x-center" data-fade>Projects</span>
       <h2 class="en x-huge x-center x-grad-dark" data-fade style="--fy:40px">Our work</h2>
@@ -534,11 +562,11 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
     <div class="lightbox" id="lightbox" hidden></div>
   </section>
 
-  <section id="film" class="film x-film" aria-label="מהסדנה">
+  <section id="film" class="film x-film x-sheet" aria-label="מהסדנה">
     <video poster="img/hero-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="video/odd-hero.mp4" type="video/mp4"></video>
   </section>
 
-  <section id="clients" class="x-dark x-clients">
+  <section id="clients" class="x-dark x-sheet x-clients">
     <div class="wrap">
       <span class="eyebrow en x-center" data-fade>Clients</span>
       <h2 class="en x-huge x-center x-grad-dark" data-fade style="--fy:40px">Brands we worked with</h2>
@@ -981,6 +1009,13 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
 
   const film=document.querySelector('.x-film'), nameBox=document.querySelector('.x-names'), nrows=[...document.querySelectorAll('.x-nrow')];
   const foot=document.querySelector('footer .foot'); if(foot){ if(still) foot.classList.add('in'); else io.observe(foot); }
+  // slides: every part of the home page sticks when its bottom reaches the screen bottom, and the next one slides over it
+  const home=document.getElementById('home'), slides=[...home.children].filter(el=>el.matches('.hero,section'));
+  const mark=document.querySelector('.hero-mark');
+  if(mark) [...mark.children].slice(3).forEach((el,k)=>el.style.setProperty('--k',k));
+  slides.forEach((el,i)=>{ el.style.zIndex=String(i+1); if(i<slides.length-1){ const sh=document.createElement('div'); sh.className='x-shade'; sh.setAttribute('aria-hidden','true'); el.appendChild(sh); } });
+  function place(){ const vh=innerHeight; slides.forEach(el=>{ el.style.top=Math.min(0,vh-el.offsetHeight)+'px'; }); }
+  place(); addEventListener('resize',place); if('ResizeObserver' in window){ const ro=new ResizeObserver(place); slides.forEach(el=>ro.observe(el)); }
   let ticking=false;
   function frame(){
     ticking=false; const vh=innerHeight;
@@ -992,6 +1027,15 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
       const r=el.getBoundingClientRect(), p=Math.min(1,Math.max(0,(vh*0.8-r.top)/(r.height+vh*0.6)));
       const lit=p*cs.length; cs.forEach((c,i)=>{ c.style.opacity=still?1:(.2+.8*Math.min(1,Math.max(0,lit-i))).toFixed(2); });
     });
+    if(!still&&!home.hidden){
+      slides.forEach((el,i)=>{
+        const nx=slides[i+1]; if(!nx) return;
+        const p=Math.min(1,Math.max(0,1-nx.getBoundingClientRect().top/vh));
+        el.style.setProperty('--sc',(1-.06*p).toFixed(4));
+        el.style.setProperty('--dim',(.5*p).toFixed(3));
+        if(el.classList.contains('hero')&&mark){ mark.style.setProperty('--ls',(1+.6*p).toFixed(3)); mark.style.setProperty('--lo',Math.max(0,1-p*1.4).toFixed(3)); }
+      });
+    }
     if(film&&!still){
       const r=film.getBoundingClientRect(), p=Math.min(1,Math.max(0,(vh-r.top)/(vh*0.5+r.height*0.5)));
       film.style.setProperty('--ci',((1-p)*7).toFixed(2)+'%'); film.style.setProperty('--cr',((1-p)*60).toFixed(1)+'px');
@@ -1088,7 +1132,7 @@ function route(){
   lastView=vid;
 }
 const hdr=document.getElementById('hdr');
-function hdrState(){hdr.classList.remove('hide');hdr.classList.toggle('over',!home.hidden&&window.scrollY<window.innerHeight*0.6);} // see-through header over the opening video
+function hdrState(){const top=!home.hidden&&window.scrollY<window.innerHeight*0.6;hdr.classList.toggle('over',top);hdr.classList.toggle('hide',top);} // no header over the opening logo screen; it comes in once you scroll past it
 (function(){
   // doodle: the scribble from the "stroke follows scroll" reference; its knot of loops sits behind the logo and draws on load, the long line draws as you scroll down behind "Let's create something ODD"
   const home=document.getElementById('home'), hero=document.getElementById('top');
