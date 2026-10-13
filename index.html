@@ -6,7 +6,6 @@
 <meta property="og:title" content="ODD CREATIVE">
 <meta property="og:description" content="עיצוב ובנייה של חללים, אלמנטים וחוויות">
 <meta property="og:url" content="https://talrosmarin.github.io/odd-creative/">
-<meta name="theme-color" content="#5e2b8c">
 <meta name="robots" content="noindex, nofollow">
 <title>ODD Creative Wireframe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -291,7 +290,7 @@ footer .foot > :nth-child(2){transition-delay:.1s} footer .foot > :nth-child(3){
 .gc-arrow:active{transform:scale(.94)}
 .gc-arrow:disabled{opacity:.35;cursor:default}
 /* opening screen: the ODD logo big in the middle, drawn line by line on load, thin enough that the video shows through */
-.hero{height:100svh}
+.hero{height:100svh;background:#4a3a57} /* close to the bottom of the video under its purple shade, so the phone browser bar (which reads this color, not the video) blends in */
 .hero-mark{position:absolute;z-index:2;left:50%;top:43%;width:min(62vw,580px);height:auto;transform:translate(-50%,-50%) scale(var(--ls,1));opacity:var(--lo,1);overflow:visible;filter:drop-shadow(0 6px 24px rgba(30,10,50,.35));will-change:transform,opacity}
 /* intro "bend": the o stretches out like plywood being bent, the two d's pop up, then CREATIVE rises letter by letter */
 .hero-mark > *{transform-box:fill-box;opacity:0}
