@@ -427,6 +427,25 @@ main.page .about-text .bts{justify-content:center}
 .x-tcard p{margin:0;direction:rtl;text-align:right;font-size:15px;line-height:1.6}
 @media (prefers-reduced-motion:reduce){.x-ttrack{animation:none}.x-tmarq{overflow-x:auto}}
 html.a11y-still .x-ttrack{animation:none!important}
+/* How it works: a small animated icon in brand colors before each step title (bulb, pencil, hammer, truck) */
+.x-list h3{display:flex;align-items:center;gap:.45em}
+.x-ic{width:1.5em;height:1.5em;margin-block:-.15em;flex:none;fill:none;stroke:url(#x-icg);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+.ic-idea .ray{animation:ic-glow 2.4s ease-in-out infinite}
+@keyframes ic-glow{0%,100%{opacity:.25}50%{opacity:1}}
+.ic-design{animation:ic-sketch 2.8s ease-in-out infinite;transform-origin:20% 85%}
+@keyframes ic-sketch{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}50%{transform:rotate(4deg)}75%{transform:rotate(-3deg)}}
+.ic-design .line{stroke-dasharray:8;stroke-dashoffset:8;animation:ic-line 2.8s ease-in-out infinite}
+@keyframes ic-line{0%{stroke-dashoffset:8}60%,100%{stroke-dashoffset:0}}
+.ic-build .head{transform-box:view-box;transform-origin:12px 12px;animation:ic-hit 1.6s cubic-bezier(.5,0,.3,1) infinite}
+.ic-build{transform-origin:20% 85%;animation:ic-swing 1.6s cubic-bezier(.5,0,.3,1) infinite}
+@keyframes ic-swing{0%,100%{transform:rotate(0)}40%{transform:rotate(-22deg)}55%{transform:rotate(4deg)}65%{transform:rotate(0)}}
+@keyframes ic-hit{0%,100%{opacity:1}}
+.ic-install .truck{animation:ic-drive 2.2s ease-in-out infinite}
+@keyframes ic-drive{0%,100%{transform:translateX(-1.5px)}50%{transform:translateX(1.5px)}}
+.ic-install .road{stroke-dasharray:4 4;animation:ic-road .8s linear infinite}
+@keyframes ic-road{to{stroke-dashoffset:-8}}
+@media (prefers-reduced-motion:reduce){.x-ic,.x-ic *{animation:none!important}}
+html.a11y-still .x-ic,html.a11y-still .x-ic *{animation:none!important}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
@@ -618,6 +637,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 </div>
 
 <main id="home">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="x-icg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5e2b8c"/><stop offset="1" stop-color="#d9739f"/></linearGradient></defs></svg>
   <div class="hero" id="top">
     <video class="hero-photo" src="video/odd-hero-desert.mp4" poster="img/hero-desert-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
     <div class="hero-center">
@@ -643,10 +663,10 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
       <p class="x-center x-sub" data-fade style="--fd:.1s">עיצוב, תכנון וייצור – הכל אצלנו ב־ODD.</p>
       <div class="x-steps">
         <ol class="x-list">
-        <li tabindex="0" data-fade style="--fd:0s"><span class="x-num en">01</span><div><h3 class="en">Idea</h3><p>שיחה על האירוע, המקום והאווירה.</p></div></li>
-        <li tabindex="0" data-fade style="--fd:.1s"><span class="x-num en">02</span><div><h3 class="en">Design</h3><p>קונספט והדמיה של מה שנבנה.</p></div></li>
-        <li tabindex="0" data-fade style="--fd:.2s"><span class="x-num en">03</span><div><h3 class="en">Build</h3><p>מייצרים את האלמנטים בסדנה שלנו.</p></div></li>
-        <li tabindex="0" data-fade style="--fd:.3s"><span class="x-num en">04</span><div><h3 class="en">Install</h3><p>מגיעים, מקימים ומפרקים בסוף.</p></div></li>
+        <li tabindex="0" data-fade style="--fd:0s"><span class="x-num en">01</span><div><h3 class="en"><svg class="x-ic ic-idea" viewBox="0 0 24 24" aria-hidden="true"><path class="ray" d="M12 1.5v1.8M4.6 4.6l1.3 1.3M19.4 4.6l-1.3 1.3M1.5 12h1.8M20.7 12h1.8"/><path d="M9 18h6M10 21.2h4M12 5.2a5.8 5.8 0 0 0-3.8 10.2c.6.6 1 1.4 1 2.4h5.6c0-1 .4-1.8 1-2.4A5.8 5.8 0 0 0 12 5.2z"/></svg>Idea</h3><p>שיחה על האירוע, המקום והאווירה.</p></div></li>
+        <li tabindex="0" data-fade style="--fd:.1s"><span class="x-num en">02</span><div><h3 class="en"><svg class="x-ic ic-design" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.2-4.6L16.4 4.2a2 2 0 0 1 2.8 0l.6.6a2 2 0 0 1 0 2.8L8.6 18.8 4 20z"/><path d="M14.5 6.1l3.4 3.4"/><path class="line" d="M13 21h8"/></svg>Design</h3><p>קונספט והדמיה של מה שנבנה.</p></div></li>
+        <li tabindex="0" data-fade style="--fd:.2s"><span class="x-num en">03</span><div><h3 class="en"><svg class="x-ic ic-build" viewBox="0 0 24 24" aria-hidden="true"><g class="head"><path d="M13.5 3.5l7 7-2.6 2.6-7-7z"/><path d="M15.2 5.2l-1.7-1.7"/></g><path d="M12.2 8.8L3.6 17.4a1.8 1.8 0 0 0 2.5 2.5l8.6-8.6"/></svg>Build</h3><p>מייצרים את האלמנטים בסדנה שלנו.</p></div></li>
+        <li tabindex="0" data-fade style="--fd:.3s"><span class="x-num en">04</span><div><h3 class="en"><svg class="x-ic ic-install" viewBox="0 0 24 24" aria-hidden="true"><g class="truck"><path d="M2.5 6.5h11v9.5h-11z"/><path d="M13.5 9.5h4.2l3.3 3.6v2.9h-7.5"/><circle cx="7" cy="17.6" r="1.9"/><circle cx="17.2" cy="17.6" r="1.9"/></g><path class="road" d="M1 21.5h4M9 21.5h6M19 21.5h4"/></svg>Install</h3><p>מגיעים, מקימים ומפרקים בסוף.</p></div></li>
       </ol>
         <figure class="x-steps-fig" aria-hidden="true">
           <div class="x-steps-glow"></div>
