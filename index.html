@@ -312,6 +312,8 @@ footer .foot > :nth-child(2){transition-delay:.1s} footer .foot > :nth-child(3){
 /* the two buttons sit centered just under the opening logo, come in after it is drawn, and leave with it on scroll */
 .hero-ctas.hero-ctas-mark{position:absolute;z-index:3;left:0;right:0;top:calc(43% + min(62vw,580px) * .17 + clamp(28px,4vw,44px));padding:0;width:auto;opacity:var(--lo,1);animation:x-up .8s var(--ease-out) 1.6s both}
 @media (prefers-reduced-motion:reduce){.hero-ctas.hero-ctas-mark{animation:none}}
+header.over .bar > .logo{opacity:0;pointer-events:none}
+header .bar > .logo{transition:opacity .3s}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
@@ -1139,7 +1141,7 @@ function route(){
   lastView=vid;
 }
 const hdr=document.getElementById('hdr');
-function hdrState(){const top=!home.hidden&&window.scrollY<window.innerHeight*0.6;hdr.classList.toggle('over',top);hdr.classList.toggle('hide',top);} // no header over the opening logo screen; it comes in once you scroll past it
+function hdrState(){hdr.classList.remove('hide');hdr.classList.toggle('over',!home.hidden&&window.scrollY<window.innerHeight*0.6);} // see-through header over the opening video: menu and request list on the sides, the small logo hidden there (the big one is in the middle)
 (function(){
   // doodle: the scribble from the "stroke follows scroll" reference; its knot of loops sits behind the logo and draws on load, the long line draws as you scroll down behind "Let's create something ODD"
   const home=document.getElementById('home'), hero=document.getElementById('top');
