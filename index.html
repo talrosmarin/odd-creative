@@ -314,6 +314,19 @@ footer .foot > :nth-child(2){transition-delay:.1s} footer .foot > :nth-child(3){
 @media (prefers-reduced-motion:reduce){.hero-ctas.hero-ctas-mark{animation:none}}
 header.over .bar > .logo{opacity:0;pointer-events:none}
 header .bar > .logo{transition:opacity .3s}
+/* opening logo, made to sit inside the video instead of on top of it:
+   it draws itself in white, then settles into a "glass" logo — the video shows through the letters, a little blurred and brighter,
+   with only a faint white line left on top. A soft shade in the middle helps it read without a box */
+.hero::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(60% 42% at 50% 52%,rgba(46,16,72,.30),rgba(46,16,72,0) 70%)}
+.hero-center{position:absolute;z-index:2;left:50%;top:49%;width:min(62vw,580px);aspect-ratio:600/204;transform:translate(-50%,-50%) scale(var(--ls,1));opacity:var(--lo,1);will-change:transform,opacity}
+.hero-center .hero-mark{position:absolute;inset:0;left:0;top:0;width:100%;height:100%;transform:none;opacity:1;filter:none;mix-blend-mode:overlay}
+.hero-center .hero-mark{animation:mark-settle 1.2s ease 2.1s forwards}
+@keyframes mark-settle{to{opacity:.55}}
+.hero-glass{position:absolute;inset:0;opacity:0;-webkit-backdrop-filter:blur(7px) brightness(1.45) saturate(1.25);backdrop-filter:blur(7px) brightness(1.45) saturate(1.25);background:rgba(255,255,255,.16);-webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-2%20-2%20600%20204%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%20stroke-width%3D%2218%22%3E%3Crect%20x%3D%229%22%20y%3D%2234%22%20width%3D%22312%22%20height%3D%2259%22%20rx%3D%2229.5%22%2F%3E%3Cpath%20d%3D%22M446%200V73Q446%2093%20426%2093H372Q352%2093%20352%2073V54Q352%2034%20372%2034H446%22%2F%3E%3Cpath%20d%3D%22M576%200V73Q576%2093%20556%2093H502Q482%2093%20482%2073V54Q482%2034%20502%2034H576%22%2F%3E%3Cpath%20d%3D%22M78%20135H30Q7%20135%207%20158V167Q7%20190%2030%20190H78%22%2F%3E%3Cpath%20d%3D%22M97%20197V137H140Q153%20135%20153%20148V151Q153%20164%20140%20164H97M140%20164Q153%20164%20153%20177V197%22%2F%3E%3Cpath%20d%3D%22M234%20135H177V190H234M177%20162.5H228%22%2F%3E%3Cpath%20d%3D%22M250%20197L279%20137H291L320%20197M264%20174H306%22%2F%3E%3Cpath%20d%3D%22M336%20135H402M369%20135V197%22%2F%3E%3Cpath%20d%3D%22M419%20128V197%22%2F%3E%3Cpath%20d%3D%22M443%20128L477%20189L511%20128%22%2F%3E%3Cpath%20d%3D%22M592%20135H535V190H592M535%20162.5H586%22%2F%3E%3C%2Fsvg%3E") center/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-2%20-2%20600%20204%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%20stroke-width%3D%2218%22%3E%3Crect%20x%3D%229%22%20y%3D%2234%22%20width%3D%22312%22%20height%3D%2259%22%20rx%3D%2229.5%22%2F%3E%3Cpath%20d%3D%22M446%200V73Q446%2093%20426%2093H372Q352%2093%20352%2073V54Q352%2034%20372%2034H446%22%2F%3E%3Cpath%20d%3D%22M576%200V73Q576%2093%20556%2093H502Q482%2093%20482%2073V54Q482%2034%20502%2034H576%22%2F%3E%3Cpath%20d%3D%22M78%20135H30Q7%20135%207%20158V167Q7%20190%2030%20190H78%22%2F%3E%3Cpath%20d%3D%22M97%20197V137H140Q153%20135%20153%20148V151Q153%20164%20140%20164H97M140%20164Q153%20164%20153%20177V197%22%2F%3E%3Cpath%20d%3D%22M234%20135H177V190H234M177%20162.5H228%22%2F%3E%3Cpath%20d%3D%22M250%20197L279%20137H291L320%20197M264%20174H306%22%2F%3E%3Cpath%20d%3D%22M336%20135H402M369%20135V197%22%2F%3E%3Cpath%20d%3D%22M419%20128V197%22%2F%3E%3Cpath%20d%3D%22M443%20128L477%20189L511%20128%22%2F%3E%3Cpath%20d%3D%22M592%20135H535V190H592M535%20162.5H586%22%2F%3E%3C%2Fsvg%3E") center/100% 100% no-repeat;animation:glass-in 1.4s ease 1.7s forwards}
+@keyframes glass-in{to{opacity:1}}
+.hero-ctas.hero-ctas-mark{top:calc(49% + min(62vw,580px) * .17 + clamp(28px,4vw,44px))}
+.hero-ctas-mark .lm-btn{background:rgba(255,255,255,.08);-webkit-backdrop-filter:blur(10px) saturate(1.3);backdrop-filter:blur(10px) saturate(1.3);border-color:rgba(255,255,255,.6)}
+@media (prefers-reduced-motion:reduce){.hero-mark > *{animation:none;stroke-dashoffset:0}.hero-center .hero-mark{animation:none;opacity:.55}.hero-glass{animation:none;opacity:1}}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
@@ -507,7 +520,9 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 <main id="home">
   <div class="hero" id="top">
     <video class="hero-photo" src="video/odd-hero-desert.mp4" poster="img/hero-desert-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
-    <svg class="hero-mark" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="#fff" stroke-linejoin="round" stroke-linecap="round" stroke-width="18">
+    <div class="hero-center">
+      <div class="hero-glass" aria-hidden="true"></div>
+      <svg class="hero-mark" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="#fff" stroke-linejoin="round" stroke-linecap="round" stroke-width="18">
       <rect pathLength="1" x="9" y="34" width="312" height="59" rx="29.5"/>
       <path pathLength="1" d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/>
       <path pathLength="1" d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/>
@@ -520,6 +535,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
       <path pathLength="1" d="M443 128L477 189L511 128"/>
       <path pathLength="1" d="M592 135H535V190H592M535 162.5H586"/>
     </svg>
+    </div>
     <div class="hero-ctas hero-ctas-mark">
       <a class="en lm-btn" href="https://wa.me/972500000000" target="_blank" rel="noopener"><span class="lm-label">Let's talk</span></a>
       <a class="en lm-btn" href="#catalog"><span class="lm-label">Catalog</span></a>
@@ -1042,7 +1058,7 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
         const p=Math.min(1,Math.max(0,1-nx.getBoundingClientRect().top/vh));
         el.style.setProperty('--sc',(1-.06*p).toFixed(4));
         el.style.setProperty('--dim',(.5*p).toFixed(3));
-        if(el.classList.contains('hero')&&mark){ mark.style.setProperty('--ls',(1+.6*p).toFixed(3)); el.style.setProperty('--lo',Math.max(0,1-p*1.4).toFixed(3)); }
+        if(el.classList.contains('hero')&&mark){ el.style.setProperty('--ls',(1+.6*p).toFixed(3)); el.style.setProperty('--lo',Math.max(0,1-p*1.4).toFixed(3)); }
       });
     }
     if(film&&!still){
