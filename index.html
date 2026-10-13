@@ -293,11 +293,17 @@ footer .foot > :nth-child(2){transition-delay:.1s} footer .foot > :nth-child(3){
 /* opening screen: the ODD logo big in the middle, drawn line by line on load, thin enough that the video shows through */
 .hero{height:100svh}
 .hero-mark{position:absolute;z-index:2;left:50%;top:43%;width:min(62vw,580px);height:auto;transform:translate(-50%,-50%) scale(var(--ls,1));opacity:var(--lo,1);overflow:visible;filter:drop-shadow(0 6px 24px rgba(30,10,50,.35));will-change:transform,opacity}
-.hero-mark > *{stroke-dasharray:1 1;stroke-dashoffset:1;animation:mark-draw 1.6s cubic-bezier(.65,0,.35,1) forwards}
-.hero-mark > :nth-child(1){animation-delay:.2s}.hero-mark > :nth-child(2){animation-delay:.35s}.hero-mark > :nth-child(3){animation-delay:.45s}
-.hero-mark > :nth-child(n+4){animation-delay:calc(.7s + var(--k,0) * .06s);animation-duration:1s}
+/* intro "bend": the o stretches out like plywood being bent, the two d's pop up, then CREATIVE rises letter by letter */
+.hero-mark > *{transform-box:fill-box;opacity:0}
+.hero-mark > :nth-child(1){transform-origin:left center;animation:mark-bend 1s cubic-bezier(.3,1.5,.5,1) .3s forwards}
+.hero-mark > :nth-child(2),.hero-mark > :nth-child(3){transform-origin:center bottom;animation:mark-pop .55s cubic-bezier(.3,1.8,.5,1) forwards}
+.hero-mark > :nth-child(2){animation-delay:1.05s}.hero-mark > :nth-child(3){animation-delay:1.18s}
+.hero-mark > :nth-child(n+4){animation:mark-rise .5s ease-out forwards;animation-delay:calc(1.45s + var(--k,0) * .05s)}
+@keyframes mark-bend{0%{opacity:1;transform:scaleX(.19)}100%{opacity:1;transform:scaleX(1)}}
+@keyframes mark-pop{from{opacity:1;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+@keyframes mark-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes mark-draw{to{stroke-dashoffset:0}}
-@media (prefers-reduced-motion:reduce){.hero-mark > *{animation:none;stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.hero-mark > *{animation:none;opacity:1}}
 /* slides: each part is a card with rounded top corners that slides up over the one before it.
    The part underneath stays put (sticky), shrinks a little and gets darker, like a deck of cards */
 #home > .hero,#home > section{position:sticky}
@@ -310,7 +316,7 @@ footer .foot > :nth-child(2){transition-delay:.1s} footer .foot > :nth-child(3){
 .x-film.x-sheet{padding:0;overflow:hidden}
 @media (prefers-reduced-motion:reduce){#home > .hero,#home > section{position:relative}#home > *{transform:none}}
 /* the two buttons sit centered just under the opening logo, come in after it is drawn, and leave with it on scroll */
-.hero-ctas.hero-ctas-mark{position:absolute;z-index:3;left:0;right:0;top:calc(43% + min(62vw,580px) * .17 + clamp(28px,4vw,44px));padding:0;width:auto;opacity:var(--lo,1);animation:x-up .8s var(--ease-out) 1.6s both}
+.hero-ctas.hero-ctas-mark{position:absolute;z-index:3;left:0;right:0;top:calc(43% + min(62vw,580px) * .17 + clamp(28px,4vw,44px));padding:0;width:auto;opacity:var(--lo,1);animation:x-up .8s var(--ease-out) 2.1s both}
 @media (prefers-reduced-motion:reduce){.hero-ctas.hero-ctas-mark{animation:none}}
 header.over .bar > .logo{opacity:0;pointer-events:none}
 header .bar > .logo{transition:opacity .3s}
@@ -318,15 +324,20 @@ header .bar > .logo{transition:opacity .3s}
    it draws itself in white, then settles into a "glass" logo — the video shows through the letters, a little blurred and brighter,
    with only a faint white line left on top. A soft shade in the middle helps it read without a box */
 .hero::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(60% 42% at 50% 47%,rgba(46,16,72,.38),rgba(46,16,72,0) 70%)}
-.hero-center{position:absolute;z-index:2;left:50%;top:44%;width:min(62vw,580px);aspect-ratio:600/204;transform:translate(-50%,-50%) scale(var(--ls,1));opacity:var(--lo,1);will-change:transform,opacity}
+.hero-center{position:absolute;z-index:2;left:50%;top:44%;width:min(62vw,580px);aspect-ratio:601/203;transform:translate(-50%,-50%) scale(var(--ls,1));opacity:var(--lo,1);will-change:transform,opacity}
 .hero-center .hero-mark{position:absolute;inset:0;left:0;top:0;width:100%;height:100%;transform:none;opacity:1;filter:none;mix-blend-mode:overlay}
-.hero-center .hero-mark{animation:mark-settle 1.2s ease 2.1s forwards}
+.hero-center .hero-mark{animation:mark-settle 1.2s ease 2.5s forwards}
 @keyframes mark-settle{to{opacity:.8}}
-.hero-glass{position:absolute;inset:0;opacity:0;-webkit-backdrop-filter:blur(8px) brightness(1.7) saturate(1.3);backdrop-filter:blur(8px) brightness(1.7) saturate(1.3);background:rgba(255,255,255,.3);-webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-2%20-2%20600%20204%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%20stroke-width%3D%2218%22%3E%3Crect%20x%3D%229%22%20y%3D%2234%22%20width%3D%22312%22%20height%3D%2259%22%20rx%3D%2229.5%22%2F%3E%3Cpath%20d%3D%22M446%200V73Q446%2093%20426%2093H372Q352%2093%20352%2073V54Q352%2034%20372%2034H446%22%2F%3E%3Cpath%20d%3D%22M576%200V73Q576%2093%20556%2093H502Q482%2093%20482%2073V54Q482%2034%20502%2034H576%22%2F%3E%3Cpath%20d%3D%22M78%20135H30Q7%20135%207%20158V167Q7%20190%2030%20190H78%22%2F%3E%3Cpath%20d%3D%22M97%20197V137H140Q153%20135%20153%20148V151Q153%20164%20140%20164H97M140%20164Q153%20164%20153%20177V197%22%2F%3E%3Cpath%20d%3D%22M234%20135H177V190H234M177%20162.5H228%22%2F%3E%3Cpath%20d%3D%22M250%20197L279%20137H291L320%20197M264%20174H306%22%2F%3E%3Cpath%20d%3D%22M336%20135H402M369%20135V197%22%2F%3E%3Cpath%20d%3D%22M419%20128V197%22%2F%3E%3Cpath%20d%3D%22M443%20128L477%20189L511%20128%22%2F%3E%3Cpath%20d%3D%22M592%20135H535V190H592M535%20162.5H586%22%2F%3E%3C%2Fsvg%3E") center/100% 100% no-repeat;mask:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%22-2%20-2%20600%20204%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%20stroke-width%3D%2218%22%3E%3Crect%20x%3D%229%22%20y%3D%2234%22%20width%3D%22312%22%20height%3D%2259%22%20rx%3D%2229.5%22%2F%3E%3Cpath%20d%3D%22M446%200V73Q446%2093%20426%2093H372Q352%2093%20352%2073V54Q352%2034%20372%2034H446%22%2F%3E%3Cpath%20d%3D%22M576%200V73Q576%2093%20556%2093H502Q482%2093%20482%2073V54Q482%2034%20502%2034H576%22%2F%3E%3Cpath%20d%3D%22M78%20135H30Q7%20135%207%20158V167Q7%20190%2030%20190H78%22%2F%3E%3Cpath%20d%3D%22M97%20197V137H140Q153%20135%20153%20148V151Q153%20164%20140%20164H97M140%20164Q153%20164%20153%20177V197%22%2F%3E%3Cpath%20d%3D%22M234%20135H177V190H234M177%20162.5H228%22%2F%3E%3Cpath%20d%3D%22M250%20197L279%20137H291L320%20197M264%20174H306%22%2F%3E%3Cpath%20d%3D%22M336%20135H402M369%20135V197%22%2F%3E%3Cpath%20d%3D%22M419%20128V197%22%2F%3E%3Cpath%20d%3D%22M443%20128L477%20189L511%20128%22%2F%3E%3Cpath%20d%3D%22M592%20135H535V190H592M535%20162.5H586%22%2F%3E%3C%2Fsvg%3E") center/100% 100% no-repeat;animation:glass-in 1.4s ease 1.7s forwards}
+.hero-glass{position:absolute;inset:0;opacity:0;-webkit-backdrop-filter:blur(8px) brightness(1.7) saturate(1.3);backdrop-filter:blur(8px) brightness(1.7) saturate(1.3);background:rgba(255,255,255,.3);-webkit-mask:url('img/odd-logo-mask.png') center/100% 100% no-repeat;mask:url('img/odd-logo-mask.png') center/100% 100% no-repeat;animation:glass-in 1.4s ease 2.2s forwards}
 @keyframes glass-in{to{opacity:1}}
 .hero-ctas.hero-ctas-mark{top:calc(44% + min(62vw,580px) * .17 + clamp(40px,5.5vw,64px))}
 .hero-ctas-mark .lm-btn{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;border-color:rgba(255,255,255,.85)}
-@media (prefers-reduced-motion:reduce){.hero-mark > *{animation:none;stroke-dashoffset:0}.hero-center .hero-mark{animation:none;opacity:.8}.hero-glass{animation:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.hero-mark > *{animation:none;opacity:1}.hero-center .hero-mark{animation:none;opacity:.8}.hero-glass{animation:none;opacity:1}}
+/* the opening logo is traced from the client's original logo file (03-brand/2026-10-08_logo-original.jpg), one image per piece, so it matches it exactly */
+.hero-center .hero-mark > img{position:absolute;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none}
+/* small logo in the header and menu: the same traced logo, in the text color */
+.logo .mark.mark-img{display:block;width:132px;aspect-ratio:601/203;background:currentColor;-webkit-mask:url('img/odd-logo-mask.png') center/contain no-repeat;mask:url('img/odd-logo-mask.png') center/contain no-repeat}
+@media (max-width:520px){.logo .mark.mark-img{width:112px}}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
@@ -491,7 +502,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 <header id="hdr" class="over">
   <div class="wrap bar">
     <button class="burger" id="burger" aria-label="פתיחת תפריט" aria-expanded="false"><i></i><i></i></button>
-    <a class="logo" href="#top"><svg class="mark" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="currentColor" stroke-linejoin="round"><g stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g stroke-width="18"><path d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path d="M97 197V137H140Q153 135 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path d="M234 135H177V190H234M177 162.5H228"/><path d="M250 197L279 137H291L320 197M264 174H306"/><path d="M336 135H402M369 135V197"/><path d="M419 128V197"/><path d="M443 128L477 189L511 128"/><path d="M592 135H535V190H592M535 162.5H586"/></g></svg></a>
+    <a class="logo" href="#top"><span class="mark mark-img" role="img" aria-label="ODD Creative"></span></a>
     <a class="req-link" href="#request" aria-label="רשימת הבקשה שלי"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4.5V3h6v1.5M8.5 10h7M8.5 14h7M8.5 18h4"/></svg><span class="req-count" id="reqCount" hidden>0</span></a>
   </div>
 </header>
@@ -500,7 +511,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
   <svg class="menu-curve" aria-hidden="true" preserveAspectRatio="none"><path id="menuCurve"/></svg>
   <div class="wrap bar" style="padding-inline:0">
     <button class="close" id="close" aria-label="סגירת תפריט">×</button>
-    <a class="logo" href="#top" aria-label="לדף הבית"><svg class="mark" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="currentColor" stroke-linejoin="round"><g stroke-width="18"><rect x="9" y="34" width="312" height="59" rx="29.5"/><path d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/><path d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/></g><g stroke-width="18"><path d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/><path d="M97 197V137H140Q153 135 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/><path d="M234 135H177V190H234M177 162.5H228"/><path d="M250 197L279 137H291L320 197M264 174H306"/><path d="M336 135H402M369 135V197"/><path d="M419 128V197"/><path d="M443 128L477 189L511 128"/><path d="M592 135H535V190H592M535 162.5H586"/></g></svg></a>
+    <a class="logo" href="#top" aria-label="לדף הבית"><span class="mark mark-img" role="img" aria-label="ODD Creative"></span></a>
     <span></span>
   </div>
   <nav aria-label="תפריט ראשי">
@@ -522,19 +533,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
     <video class="hero-photo" src="video/odd-hero-desert.mp4" poster="img/hero-desert-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
     <div class="hero-center">
       <div class="hero-glass" aria-hidden="true"></div>
-      <svg class="hero-mark" role="img" aria-label="ODD Creative" viewBox="-2 -2 600 204" fill="none" stroke="#fff" stroke-linejoin="round" stroke-linecap="round" stroke-width="18">
-      <rect pathLength="1" x="9" y="34" width="312" height="59" rx="29.5"/>
-      <path pathLength="1" d="M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446"/>
-      <path pathLength="1" d="M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576"/>
-      <path pathLength="1" d="M78 135H30Q7 135 7 158V167Q7 190 30 190H78"/>
-      <path pathLength="1" d="M97 197V137H140Q153 135 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197"/>
-      <path pathLength="1" d="M234 135H177V190H234M177 162.5H228"/>
-      <path pathLength="1" d="M250 197L279 137H291L320 197M264 174H306"/>
-      <path pathLength="1" d="M336 135H402M369 135V197"/>
-      <path pathLength="1" d="M419 128V197"/>
-      <path pathLength="1" d="M443 128L477 189L511 128"/>
-      <path pathLength="1" d="M592 135H535V190H592M535 162.5H586"/>
-    </svg>
+      <div class="hero-mark" role="img" aria-label="ODD Creative"><img src="img/logo/odd-logo-0.png" alt="" style="left:0.333%;top:11.823%;width:56.905%;height:40.887%"><img src="img/logo/odd-logo-1.png" alt="" style="left:58.902%;top:0.985%;width:19.634%;height:51.724%"><img src="img/logo/odd-logo-2.png" alt="" style="left:80.033%;top:0.985%;width:19.634%;height:51.724%"><img src="img/logo/odd-logo-3.png" alt="" style="left:0.333%;top:64.039%;width:12.313%;height:34.483%"><img src="img/logo/odd-logo-4.png" alt="" style="left:13.644%;top:63.547%;width:12.978%;height:34.975%"><img src="img/logo/odd-logo-5.png" alt="" style="left:27.621%;top:63.547%;width:12.313%;height:34.975%"><img src="img/logo/odd-logo-6.png" alt="" style="left:40.599%;top:63.054%;width:15.141%;height:35.468%"><img src="img/logo/odd-logo-7.png" alt="" style="left:53.577%;top:63.547%;width:13.311%;height:34.975%"><img src="img/logo/odd-logo-8.png" alt="" style="left:67.554%;top:63.547%;width:3.494%;height:34.975%"><img src="img/logo/odd-logo-9.png" alt="" style="left:72.047%;top:63.547%;width:15.141%;height:35.468%"><img src="img/logo/odd-logo-10.png" alt="" style="left:87.354%;top:63.547%;width:12.313%;height:34.975%"></div>
     </div>
     <div class="hero-ctas hero-ctas-mark">
       <a class="en lm-btn" href="https://wa.me/972500000000" target="_blank" rel="noopener"><span class="lm-label">Let's talk</span></a>
