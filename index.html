@@ -368,6 +368,16 @@ main.page .about-text .bts{justify-content:center}
 .about-video{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:clamp(22px,2.6vw,34px);background:#3b3935;box-shadow:0 24px 60px rgba(30,10,50,.18)}
 /* Contact: the team photo in the ODD shirt, wide, under the form */
 .contact-photo{display:block;width:100%;aspect-ratio:2.1/1;object-fit:cover;object-position:50% 31.5%;border-radius:clamp(22px,2.6vw,34px);margin-top:36px}
+/* Our work on white: dark text and purple arrows, the color glow behind the carousel stays but lighter */
+#work.x-light .gc-cap{color:var(--ink)}
+#work.x-light .gc-cap b{color:var(--purple)}
+#work.x-light .gc-arrow{border-color:rgba(94,43,140,.55);color:var(--purple)}
+@media (hover:hover){#work.x-light .gc-arrow:hover{background:rgba(94,43,140,.08)}}
+#work.x-light .gc:focus-visible{outline-color:var(--purple)}
+#work.x-light .gc-bg{opacity:.45}
+/* menu words: the same type as the big section titles ("Design. Plan. Build."): Panchang extra bold, uppercase, tight, purple-to-pink from left to right */
+.menu a.mitem{font-weight:800;letter-spacing:-.02em;line-height:.95;white-space:nowrap;font-size:clamp(30px,8.6vw,62px);padding:clamp(16px,2.4vw,24px) 0}
+.menu a.mitem span,.menu a.mitem b{background-image:linear-gradient(90deg,var(--purple),var(--pink));background-repeat:no-repeat;background-size:var(--gw,100%) 100%;background-position:var(--gx,0) 0}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
@@ -601,10 +611,10 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
     <div class="x-rows" aria-hidden="true"><div class="x-row" data-dir="1"></div><div class="x-row" data-dir="-1"></div></div>
   </section>
 
-  <section id="work" class="x-dark x-sheet" aria-label="עבודות נבחרות">
+  <section id="work" class="x-light x-sheet" aria-label="עבודות נבחרות">
     <div class="wrap">
       <span class="eyebrow en x-center" data-fade>Projects</span>
-      <h2 class="en x-huge x-center x-grad-dark" data-fade style="--fy:40px">Our work</h2>
+      <h2 class="en x-huge x-center x-ink" data-fade style="--fy:40px">Our work</h2>
     </div>
     <div class="gc-bg" aria-hidden="true"></div>
     <div class="gc" id="gc" tabindex="0" role="region" aria-roledescription="carousel" aria-label="העבודות שלנו. גוררים לצדדים או משתמשים בחיצים, לוחצים על עבודה כדי לפתוח"></div>
@@ -1289,6 +1299,10 @@ document.getElementById('close').addEventListener('click',()=>setMenu(false));
 menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
 // each menu word: letters as pieces so they can spread on hover (like the reference)
 menu.querySelectorAll('a.mitem span').forEach(sp=>{ sp.innerHTML=[...sp.textContent].map((ch,i)=>'<b style="transition-delay:'+(i*0.035).toFixed(3)+'s">'+(ch===' '?'&nbsp;':ch)+'</b>').join(''); });
+// one gradient across the whole word: each letter shows its own slice of it
+function menuGrad(){ menu.querySelectorAll('a.mitem span').forEach(sp=>{ const r=sp.getBoundingClientRect(); if(!r.width) return; sp.querySelectorAll('b').forEach(b=>{ const x=b.getBoundingClientRect().left-r.left; b.style.setProperty('--gw',r.width+'px'); b.style.setProperty('--gx',(-x)+'px'); }); }); }
+menuGrad(); addEventListener('resize',menuGrad); if(document.fonts) document.fonts.ready.then(menuGrad);
+new MutationObserver(menuGrad).observe(menu,{attributes:true,attributeFilter:['class']});
 document.addEventListener('click',e=>{ if(!menu.hidden&&menu.classList.contains('open')&&!menu.contains(e.target)&&!burger.contains(e.target)) setMenu(false); }); // tap outside closes
 document.addEventListener('keydown',e=>{if(e.key==="Escape")setMenu(false)});
 
