@@ -447,6 +447,20 @@ html.a11y-still .x-ttrack{animation:none!important}
 @keyframes ic-road{to{stroke-dashoffset:-8}}
 @media (prefers-reduced-motion:reduce){.x-ic,.x-ic *{animation:none!important}}
 html.a11y-still .x-ic,html.a11y-still .x-ic *{animation:none!important}
+/* How it works: smaller numbers, and a rail between the numbers and the titles.
+   The rail fills with the brand gradient as you scroll down, and each step's dot lights up when the fill reaches it */
+.x-steps .x-list .x-num{font-size:clamp(2.4rem,7vw,96px);min-width:0;width:2.4em;flex:none;text-align:left;white-space:nowrap} /* same width for every number, so the rail is one straight line */
+.x-steps .x-list li{gap:clamp(16px,2.6vw,36px);align-items:stretch}
+.x-steps .x-list li > .x-num,.x-steps .x-list li > div{align-self:center}
+.x-rail{position:relative;flex:none;width:18px;margin-block:calc(-1 * clamp(28px,3.4vw,48px))}
+.x-rail::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;margin-left:-1px;background:rgba(94,43,140,.14)}
+.x-rail::after{content:"";position:absolute;left:50%;top:0;width:2px;margin-left:-1px;height:calc(var(--fill,0) * 100%);background:linear-gradient(180deg,var(--purple),var(--pink))}
+.x-rail i{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:#fff;border:2px solid rgba(94,43,140,.25);z-index:1;transition:background .4s,border-color .4s,transform .4s cubic-bezier(.34,1.56,.64,1)}
+.x-rail.on i{background:linear-gradient(135deg,var(--purple),var(--pink));border-color:transparent;transform:scale(1.25);box-shadow:0 0 0 5px rgba(217,115,159,.18)}
+.x-list li:first-child .x-rail::before,.x-list li:first-child .x-rail::after{top:50%}
+.x-list li:first-child .x-rail::after{height:calc(var(--fill,0) * 50%)}
+.x-list li:last-child .x-rail::before{bottom:50%}
+.x-list li:last-child .x-rail::after{height:calc(var(--fill,0) * 50%)}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
@@ -664,10 +678,10 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
       <p class="x-center x-sub" data-fade style="--fd:.1s">עיצוב, תכנון וייצור – הכל אצלנו ב־ODD.</p>
       <div class="x-steps">
         <ol class="x-list">
-        <li tabindex="0" data-fade style="--fd:0s"><span class="x-num en">01</span><div><h3 class="en"><svg class="x-ic ic-idea" viewBox="0 0 24 24" aria-hidden="true"><path class="ray" d="M12 1.5v1.8M4.6 4.6l1.3 1.3M19.4 4.6l-1.3 1.3M1.5 12h1.8M20.7 12h1.8"/><path d="M9 18h6M10 21.2h4M12 5.2a5.8 5.8 0 0 0-3.8 10.2c.6.6 1 1.4 1 2.4h5.6c0-1 .4-1.8 1-2.4A5.8 5.8 0 0 0 12 5.2z"/></svg>Idea</h3><p>שיחה על האירוע, המקום והאווירה.</p></div></li>
-        <li tabindex="0" data-fade style="--fd:.1s"><span class="x-num en">02</span><div><h3 class="en"><svg class="x-ic ic-design" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.2-4.6L16.4 4.2a2 2 0 0 1 2.8 0l.6.6a2 2 0 0 1 0 2.8L8.6 18.8 4 20z"/><path d="M14.5 6.1l3.4 3.4"/><path class="line" d="M13 21h8"/></svg>Design</h3><p>קונספט והדמיה של מה שנבנה.</p></div></li>
-        <li tabindex="0" data-fade style="--fd:.2s"><span class="x-num en">03</span><div><h3 class="en"><svg class="x-ic ic-build" viewBox="0 0 24 24" aria-hidden="true"><g class="head"><path d="M13.5 3.5l7 7-2.6 2.6-7-7z"/><path d="M15.2 5.2l-1.7-1.7"/></g><path d="M12.2 8.8L3.6 17.4a1.8 1.8 0 0 0 2.5 2.5l8.6-8.6"/></svg>Build</h3><p>מייצרים את האלמנטים בסדנה שלנו.</p></div></li>
-        <li tabindex="0" data-fade style="--fd:.3s"><span class="x-num en">04</span><div><h3 class="en"><svg class="x-ic ic-install" viewBox="0 0 24 24" aria-hidden="true"><g class="truck"><path d="M2.5 6.5h11v9.5h-11z"/><path d="M13.5 9.5h4.2l3.3 3.6v2.9h-7.5"/><circle cx="7" cy="17.6" r="1.9"/><circle cx="17.2" cy="17.6" r="1.9"/></g><path class="road" d="M1 21.5h4M9 21.5h6M19 21.5h4"/></svg>Install</h3><p>מגיעים, מקימים ומפרקים בסוף.</p></div></li>
+        <li tabindex="0" data-fade style="--fd:0s"><span class="x-num en">01</span><span class="x-rail" aria-hidden="true"><i></i></span><div><h3 class="en"><svg class="x-ic ic-idea" viewBox="0 0 24 24" aria-hidden="true"><path class="ray" d="M12 1.5v1.8M4.6 4.6l1.3 1.3M19.4 4.6l-1.3 1.3M1.5 12h1.8M20.7 12h1.8"/><path d="M9 18h6M10 21.2h4M12 5.2a5.8 5.8 0 0 0-3.8 10.2c.6.6 1 1.4 1 2.4h5.6c0-1 .4-1.8 1-2.4A5.8 5.8 0 0 0 12 5.2z"/></svg>Idea</h3><p>שיחה על האירוע, המקום והאווירה.</p></div></li>
+        <li tabindex="0" data-fade style="--fd:.1s"><span class="x-num en">02</span><span class="x-rail" aria-hidden="true"><i></i></span><div><h3 class="en"><svg class="x-ic ic-design" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.2-4.6L16.4 4.2a2 2 0 0 1 2.8 0l.6.6a2 2 0 0 1 0 2.8L8.6 18.8 4 20z"/><path d="M14.5 6.1l3.4 3.4"/><path class="line" d="M13 21h8"/></svg>Design</h3><p>קונספט והדמיה של מה שנבנה.</p></div></li>
+        <li tabindex="0" data-fade style="--fd:.2s"><span class="x-num en">03</span><span class="x-rail" aria-hidden="true"><i></i></span><div><h3 class="en"><svg class="x-ic ic-build" viewBox="0 0 24 24" aria-hidden="true"><g class="head"><path d="M13.5 3.5l7 7-2.6 2.6-7-7z"/><path d="M15.2 5.2l-1.7-1.7"/></g><path d="M12.2 8.8L3.6 17.4a1.8 1.8 0 0 0 2.5 2.5l8.6-8.6"/></svg>Build</h3><p>מייצרים את האלמנטים בסדנה שלנו.</p></div></li>
+        <li tabindex="0" data-fade style="--fd:.3s"><span class="x-num en">04</span><span class="x-rail" aria-hidden="true"><i></i></span><div><h3 class="en"><svg class="x-ic ic-install" viewBox="0 0 24 24" aria-hidden="true"><g class="truck"><path d="M2.5 6.5h11v9.5h-11z"/><path d="M13.5 9.5h4.2l3.3 3.6v2.9h-7.5"/><circle cx="7" cy="17.6" r="1.9"/><circle cx="17.2" cy="17.6" r="1.9"/></g><path class="road" d="M1 21.5h4M9 21.5h6M19 21.5h4"/></svg>Install</h3><p>מגיעים, מקימים ומפרקים בסוף.</p></div></li>
       </ol>
         <figure class="x-steps-fig" aria-hidden="true">
           <div class="x-steps-glow"></div>
@@ -1238,6 +1252,12 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
       cards.forEach((c,i)=>{ const target=1-(N-1-i)*0.03, start=i/N, t=Math.min(1,Math.max(0,(p-start)/(1-start||1))); c.style.transform='scale('+(1-(1-target)*t).toFixed(4)+')'; });
     }
   }
+  // How it works rail: fill each row's piece of the rail up to the reading line, light the dot once the fill passes it
+  const rails=[...document.querySelectorAll('.x-rail')];
+  function railFrame(){ const line=innerHeight*.6, n=rails.length; rails.forEach((r,i)=>{ const b=r.getBoundingClientRect(); if(!b.height) return;
+    const mid=b.top+b.height/2, start=i===0?mid:b.top, end=i===n-1?mid:b.bottom, f=Math.min(1,Math.max(0,(line-start)/Math.max(1,end-start)));
+    r.style.setProperty('--fill',f.toFixed(3)); r.classList.toggle('on', line>=mid); }); }
+  addEventListener('scroll',()=>requestAnimationFrame(railFrame),{passive:true}); addEventListener('resize',railFrame); railFrame();
   const req=()=>{ if(!ticking){ ticking=true; requestAnimationFrame(frame); } };
   frame(); addEventListener('scroll',req,{passive:true}); addEventListener('resize',req);
 
