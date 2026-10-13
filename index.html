@@ -364,6 +364,10 @@ main.page .about-text > p{margin-left:auto;margin-right:auto;max-width:560px}
 main.page .about-text .bts{justify-content:center}
 .legal h2{font-size:clamp(2rem,5vw,56px);font-weight:800;background:linear-gradient(90deg,var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;width:fit-content;padding-bottom:.08em}
 @media (prefers-reduced-motion:reduce){main.page > section{position:relative;transform:none}}
+/* About: the workshop video next to the text (it used to be a slide on the home page) */
+.about-video{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:clamp(22px,2.6vw,34px);background:#3b3935;box-shadow:0 24px 60px rgba(30,10,50,.18)}
+/* Contact: the team photo in the ODD shirt, wide, under the form */
+.contact-photo{display:block;width:100%;aspect-ratio:2.1/1;object-fit:cover;object-position:50% 31.5%;border-radius:clamp(22px,2.6vw,34px);margin-top:36px}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
@@ -621,9 +625,6 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
     <div class="x-names" aria-hidden="true"><div class="x-nrow" data-dir="1"><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span></div><div class="x-nrow x-outline" data-dir="-1"><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span></div></div>
   </section>
 
-  <section id="film" class="film x-film x-sheet" aria-label="מהסדנה">
-    <video poster="img/hero-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="video/odd-hero.mp4" type="video/mp4"></video>
-  </section>
 
   <section id="faq" class="x-light x-sheet x-faq">
     <div class="wrap">
@@ -650,14 +651,10 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
         <h2 data-fade class="en">From idea to execution</h2>
         <p>מהרעיון ועד הביצוע. אנחנו מעצבים, מתכננים ובונים הכל בסדנה שלנו. כל אירוע מקבל קונספט משלו.</p>
         <p class="muted">כאן יבוא טקסט קצר על המייסדים והסדנה <span class="fill">מהלקוח</span></p>
-        <div class="bts">
-          <div class="ph">BTS 1</div><div class="ph">BTS 2</div><div class="ph">BTS 3</div>
-        </div>
       </div>
-      <div class="ph">תמונה מהסדנה</div>
+      <video class="about-video" poster="img/hero-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="מהסדנה של ODD"><source src="video/odd-hero.mp4" type="video/mp4"></video>
     </div>
   </section>
-  <section class="band" aria-label="הצוות של ODD"><img src="img/about-shirt.jpg" alt="איש צוות של ODD בחולצה עם הלוגו של ODD CREATIVE" loading="lazy"></section>
 
 </main>
 
@@ -712,10 +709,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
         <div class="full"><button class="btn solid" type="submit">שליחה</button></div>
       </form>
       <div class="ok lead-ok" id="leadOk" hidden>תודה! נחזור אליכם בקרוב.</div>
-      <div class="row" style="margin-top:28px">
-        <a class="btn solid" href="https://wa.me/972500000000">וואטסאפ</a>
-        <a class="btn" href="https://www.instagram.com/odd__creative/">אינסטגרם</a>
-      </div>
+      <img class="contact-photo" src="img/about-shirt.jpg" alt="איש צוות של ODD בחולצה עם הלוגו של ODD CREATIVE" loading="lazy">
     </div>
   </section>
 </main>
