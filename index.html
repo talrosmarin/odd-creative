@@ -394,6 +394,7 @@ main.page .about-text .bts{justify-content:center}
 /* accessibility button on the right, and above the open menu too (menu is z-index 40) */
 .a11y-btn{left:auto;right:20px;z-index:46}
 .a11y-panel{left:auto;right:20px;z-index:47}
+#clients.x-clients{display:flex;flex-direction:column;justify-content:center}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
@@ -1090,6 +1091,10 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
   // the Let's create card is as tall as the first white card (Design. Plan. Build.)
   const proc=document.getElementById('process'), intro=document.getElementById('intro');
   function matchIntro(){ if(!proc||!intro||home.hidden) return; intro.style.removeProperty('--introh'); intro.style.setProperty('--introh',proc.offsetHeight+'px'); }
+  // and the Brands card is as tall as the Good questions card
+  const cl=document.getElementById('clients'), fq=document.getElementById('faq');
+  function matchClients(){ if(!cl||!fq||home.hidden) return; cl.style.minHeight=fq.offsetHeight+'px'; }
+  matchClients(); addEventListener('resize',matchClients); if(document.fonts) document.fonts.ready.then(matchClients); addEventListener('hashchange',()=>setTimeout(matchClients,60));
   matchIntro(); addEventListener('resize',matchIntro); if(document.fonts) document.fonts.ready.then(matchIntro); addEventListener('hashchange',()=>setTimeout(matchIntro,60));
   place(); addEventListener('resize',place); if('ResizeObserver' in window){ const ro=new ResizeObserver(place); decks.forEach(d=>d.forEach(el=>ro.observe(el))); }
   addEventListener('hashchange',()=>setTimeout(()=>{ place(); req(); },50));
