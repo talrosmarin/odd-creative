@@ -387,6 +387,9 @@ main.page .about-text .bts{justify-content:center}
   #home > section,main.page > section{margin-top:-40px!important}
   #home > * > .x-shade{display:none}
 }
+/* accessibility button on the right, and above the open menu too (menu is z-index 40) */
+.a11y-btn{left:auto;right:20px;z-index:46}
+.a11y-panel{left:auto;right:20px;z-index:47}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
@@ -588,7 +591,6 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
       <a class="en lm-btn" href="https://wa.me/972500000000" target="_blank" rel="noopener"><span class="lm-label">Let's talk</span></a>
       <a class="en lm-btn" href="#catalog"><span class="lm-label">Catalog</span></a>
     </div>
-    <a class="scroll-cue" href="#process" aria-label="גללו למטה"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
   </div>
 
 
@@ -1205,7 +1207,7 @@ function hdrState(){hdr.classList.remove('hide');hdr.classList.toggle('over',!ho
 (function(){
   // doodle: the scribble from the "stroke follows scroll" reference; its knot of loops sits behind the logo and draws on load, the long line draws as you scroll down behind "Let's create something ODD"
   const home=document.getElementById('home'), hero=document.getElementById('top');
-  if(!home.querySelector('.doodle')){ const cue=hero.querySelector('.scroll-cue'); window.addEventListener('scroll',()=>{cue.style.visibility=window.scrollY>40?'hidden':'';},{passive:true}); return; } // photo opening: no doodle
+  if(!home.querySelector('.doodle')){ const cue=hero.querySelector('.scroll-cue'); if(cue) window.addEventListener('scroll',()=>{cue.style.visibility=window.scrollY>40?'hidden':'';},{passive:true}); return; } // photo opening: no doodle
   const svg=home.querySelector('.doodle'), g=svg.querySelector('g'), line=svg.querySelector('.d-line'), tail=svg.querySelector('.d-tail');
   const logo=hero.querySelector('.hero-logo .lg'), cue=hero.querySelector('.scroll-cue');
   const intro=document.getElementById('intro');
