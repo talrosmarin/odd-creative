@@ -292,7 +292,7 @@ footer .foot > :nth-child(2){transition-delay:.1s} footer .foot > :nth-child(3){
 .gc-arrow:disabled{opacity:.35;cursor:default}
 /* opening screen: the ODD logo big in the middle, drawn line by line on load, thin enough that the video shows through */
 .hero{height:100svh}
-.hero-mark{position:absolute;z-index:2;left:50%;top:50%;width:min(62vw,580px);height:auto;transform:translate(-50%,-50%) scale(var(--ls,1));opacity:var(--lo,1);overflow:visible;filter:drop-shadow(0 6px 24px rgba(30,10,50,.35));will-change:transform,opacity}
+.hero-mark{position:absolute;z-index:2;left:50%;top:43%;width:min(62vw,580px);height:auto;transform:translate(-50%,-50%) scale(var(--ls,1));opacity:var(--lo,1);overflow:visible;filter:drop-shadow(0 6px 24px rgba(30,10,50,.35));will-change:transform,opacity}
 .hero-mark > *{stroke-dasharray:1 1;stroke-dashoffset:1;animation:mark-draw 1.6s cubic-bezier(.65,0,.35,1) forwards}
 .hero-mark > :nth-child(1){animation-delay:.2s}.hero-mark > :nth-child(2){animation-delay:.35s}.hero-mark > :nth-child(3){animation-delay:.45s}
 .hero-mark > :nth-child(n+4){animation-delay:calc(.7s + var(--k,0) * .06s);animation-duration:1s}
@@ -310,7 +310,7 @@ footer .foot > :nth-child(2){transition-delay:.1s} footer .foot > :nth-child(3){
 .x-film.x-sheet{padding:0;overflow:hidden}
 @media (prefers-reduced-motion:reduce){#home > .hero,#home > section{position:relative}#home > *{transform:none}}
 /* the two buttons sit centered just under the opening logo, come in after it is drawn, and leave with it on scroll */
-.hero-ctas.hero-ctas-mark{position:absolute;z-index:3;left:0;right:0;top:calc(50% + min(62vw,580px) * .17 + clamp(28px,4vw,44px));padding:0;width:auto;opacity:var(--lo,1);animation:x-up .8s var(--ease-out) 1.6s both}
+.hero-ctas.hero-ctas-mark{position:absolute;z-index:3;left:0;right:0;top:calc(43% + min(62vw,580px) * .17 + clamp(28px,4vw,44px));padding:0;width:auto;opacity:var(--lo,1);animation:x-up .8s var(--ease-out) 1.6s both}
 @media (prefers-reduced-motion:reduce){.hero-ctas.hero-ctas-mark{animation:none}}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
