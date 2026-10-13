@@ -338,6 +338,32 @@ header .bar > .logo{transition:opacity .3s}
 /* small logo in the header and menu: the same traced logo, in the text color */
 .logo .mark.mark-img{display:block;width:132px;aspect-ratio:601/203;background:currentColor;-webkit-mask:url('img/odd-logo-mask.png') center/contain no-repeat;mask:url('img/odd-logo-mask.png') center/contain no-repeat}
 @media (max-width:520px){.logo .mark.mark-img{width:112px}}
+/* home: "Let's create something ODD." sits in the middle of its card, like a slide of its own; the photo rows follow under it */
+.x-intro-in{min-height:calc(100svh - 2 * clamp(96px,12vw,160px));justify-content:center}
+/* inner pages (menu items + catalog): the same cards as the home page.
+   The page is the brand gradient, every part is a card with rounded top corners that slides over the one before it.
+   First card white, the next one in the gradient, and so on. Titles big and centered, like on the home page */
+main.page,#catalogView{background:linear-gradient(180deg,var(--purple),var(--pink));padding-top:96px;min-height:100svh}
+main.page > .back{color:#fff;padding-bottom:18px}
+main.page > .back a,#catalogView .cat-head > a.muted{color:rgba(255,255,255,.85)!important}
+main.page > section,#catalogView > .cat-sheet{position:sticky;border-radius:clamp(40px,5vw,60px) clamp(40px,5vw,60px) 0 0;padding-block:clamp(72px,8vw,120px);box-shadow:0 -24px 60px rgba(30,10,50,.18);border-bottom:0;transform-origin:50% 0;transform:scale(var(--sc,1))}
+main.page > section:nth-of-type(odd),#catalogView > .cat-sheet{background:#fff;color:var(--ink)}
+main.page > section:nth-of-type(even){background:linear-gradient(180deg,var(--purple),var(--pink));color:#fff}
+main.page > section:last-of-type{min-height:60svh}
+main.page > section.band{padding:0;min-height:0}
+#catalogView .cat-head > a.muted{position:absolute;top:-56px;right:16px}
+#catalogView > .cat-sheet{position:relative;padding-top:clamp(64px,7vw,104px)}
+#catalogView .cat-head{position:relative}
+main.page .sec-head h2.en,main.page .about-text > h2.en,#catalogView .cat-head > h2.en{font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:-.02em;line-height:.95;font-size:clamp(2.2rem,7vw,104px);margin-bottom:6px}
+main.page > section:nth-of-type(odd) .sec-head h2.en,main.page > section:nth-of-type(odd) .about-text > h2.en,#catalogView .cat-head > h2.en{background:linear-gradient(90deg,var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;padding-bottom:.06em}
+main.page > section:nth-of-type(even) .sec-head h2,main.page > section:nth-of-type(even) .eyebrow,main.page > section:nth-of-type(even) .muted{color:#fff}
+main.page > section:nth-of-type(even) .eyebrow{color:rgba(255,255,255,.75)}
+main.page .about-text{text-align:center}
+main.page .about-text > h2.en{font-size:clamp(2rem,4.4vw,64px)}
+main.page .about-text > p{margin-left:auto;margin-right:auto;max-width:560px}
+main.page .about-text .bts{justify-content:center}
+.legal h2{font-size:clamp(2rem,5vw,56px);font-weight:800;background:linear-gradient(90deg,var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;width:fit-content;padding-bottom:.08em}
+@media (prefers-reduced-motion:reduce){main.page > section{position:relative;transform:none}}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
@@ -586,10 +612,6 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
     <div class="lightbox" id="lightbox" hidden></div>
   </section>
 
-  <section id="film" class="film x-film x-sheet" aria-label="מהסדנה">
-    <video poster="img/hero-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="video/odd-hero.mp4" type="video/mp4"></video>
-  </section>
-
   <section id="clients" class="x-dark x-sheet x-clients">
     <div class="wrap">
       <span class="eyebrow en x-center" data-fade>Clients</span>
@@ -597,6 +619,10 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
     </div>
     <ul class="sr-only" aria-label="לקוחות"><li>GARMIN</li><li>CANDID</li><li>BALI</li><li>ADMAVEN</li><li>OUR MANTRA</li><li>ADAMO</li><li>MAKE SENSE</li></ul>
     <div class="x-names" aria-hidden="true"><div class="x-nrow" data-dir="1"><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span></div><div class="x-nrow x-outline" data-dir="-1"><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span><span>GARMIN</span><span>CANDID</span><span>BALI</span><span>ADMAVEN</span><span>OUR MANTRA</span><span>ADAMO</span><span>MAKE SENSE</span></div></div>
+  </section>
+
+  <section id="film" class="film x-film x-sheet" aria-label="מהסדנה">
+    <video poster="img/hero-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="video/odd-hero.mp4" type="video/mp4"></video>
   </section>
 
   <section id="faq" class="x-light x-sheet x-faq">
@@ -621,7 +647,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
     <div class="wrap about">
       <div class="about-text">
         <span class="eyebrow en">About</span>
-        <h2 class="en">From idea to execution</h2>
+        <h2 data-fade class="en">From idea to execution</h2>
         <p>מהרעיון ועד הביצוע. אנחנו מעצבים, מתכננים ובונים הכל בסדנה שלנו. כל אירוע מקבל קונספט משלו.</p>
         <p class="muted">כאן יבוא טקסט קצר על המייסדים והסדנה <span class="fill">מהלקוח</span></p>
         <div class="bts">
@@ -641,7 +667,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow en">Services</span>
-        <h2 class="en">What we do</h2>
+        <h2 data-fade class="en">What we do</h2>
       </div>
       <div class="grid3">
         <div class="svc"><div class="ph">במת חתונה — קשתות טרקוטה</div><h3 class="en">Stages &amp; Sets</h3><p class="muted">עיצוב במה שמותאם בדיוק לאירוע. חתונות, מסיבות ופסטיבלים.</p></div>
@@ -658,7 +684,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow en">Business</span>
-        <h2 class="en">Brands, companies &amp; producers</h2>
+        <h2 data-fade class="en">Brands, companies &amp; producers</h2>
       </div>
       <div class="biz">
         <div class="svc"><h3 class="en">For Brands</h3><p class="muted">השקות, פתיחת סניפים וחנויות. השפה של המותג הופכת לאלמנט פיזי.</p><ul><li>Garmin — השקת FENIX 9</li><li>Our Mantra — iPod ענק</li><li>Bali — בר ממותג</li></ul></div>
@@ -675,7 +701,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
   <section class="sec-contact">
     <div class="wrap">
       <div class="sec-head">
-        <h2 class="en">Contact</h2>
+        <h2 data-fade class="en">Contact</h2>
         <p class="muted">ספרו לנו על האירוע, ונחזור אליכם.</p>
       </div>
       <!-- lead form: for now it only shows the thank-you; where it sends (email / WhatsApp) is decided later -->
@@ -698,7 +724,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
   <div class="wrap back"><a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a></div>
   <section class="sec-request">
     <div class="wrap req-page">
-      <div class="sec-head"><h2 class="en">My request</h2></div>
+      <div class="sec-head"><h2 data-fade class="en">My request</h2></div>
       <ul class="req-items" id="reqList"></ul>
       <div class="req-empty" id="reqEmpty">
         <p class="muted">עוד לא בחרתם אלמנטים.</p>
@@ -716,7 +742,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
   <div class="wrap back"><a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a></div>
   <section class="legal">
     <div class="wrap">
-      <h2>מדיניות פרטיות</h2>
+      <h2 data-fade>מדיניות פרטיות</h2>
       <p class="muted">עודכן לאחרונה: [תאריך]</p>
       <p>האתר שייך ל-ODD CREATIVE ([שם העסק הרשמי / ח.פ או ע.מ]). אנחנו מכבדים את הפרטיות שלכם, וכאן מוסבר איזה מידע נאסף באתר ומה עושים איתו.</p>
       <h3>איזה מידע נאסף</h3>
@@ -737,7 +763,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
   <div class="wrap back"><a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a></div>
   <section class="legal">
     <div class="wrap">
-      <h2>מדיניות עוגיות</h2>
+      <h2 data-fade>מדיניות עוגיות</h2>
       <p class="muted">עודכן לאחרונה: [תאריך]</p>
       <p>עוגיות (Cookies) הן קבצים קטנים שאתר שומר בדפדפן שלכם.</p>
       <p><b>האתר שלנו לא משתמש בעוגיות לפרסום או למעקב.</b></p>
@@ -761,7 +787,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
   <div class="wrap back"><a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a></div>
   <section class="legal">
     <div class="wrap">
-      <h2>הצהרת נגישות</h2>
+      <h2 data-fade>הצהרת נגישות</h2>
       <p class="muted">עודכן לאחרונה: [תאריך]</p>
       <p>ב-ODD CREATIVE חשוב לנו שכל אחד יוכל להשתמש באתר. אנחנו פועלים להתאים את האתר לתקן הישראלי ת"י 5568, ברמה AA של הנחיות WCAG.</p>
       <h3>מה עשינו באתר</h3>
@@ -779,10 +805,11 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 </main>
 
 <main id="catalogView" hidden>
+  <section class="cat-sheet">
   <div class="wrap cat-head">
     <a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a>
     <span class="eyebrow en">Catalog</span>
-    <h2 class="en">Elements for your event</h2>
+    <h2 data-fade class="en">Elements for your event</h2>
     <p class="muted" style="max-width:600px">בחרו אלמנטים מהמלאי להשכרה, או קבלו השראה ממה שבנינו בהזמנה אישית. הוסיפו לבקשה ושלחו לנו.</p>
     <div class="filters" role="group" aria-label="סינון קטלוג" style="margin:8px 0 0">
       <button class="chip" data-c="all" aria-pressed="true">All</button>
@@ -794,6 +821,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
   <div class="wrap cat-layout">
     <div class="items" id="items"></div>
   </div>
+  </section>
 </main>
 
 <footer>
@@ -1035,11 +1063,14 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
   const foot=document.querySelector('footer .foot'); if(foot){ if(still) foot.classList.add('in'); else io.observe(foot); }
   // slides: every part of the home page sticks when its bottom reaches the screen bottom, and the next one slides over it
   const home=document.getElementById('home'), slides=[...home.children].filter(el=>el.matches('.hero,section'));
+  const decks=[slides,...[...document.querySelectorAll('main.page')].map(m=>[...m.children].filter(el=>el.matches('section')))].filter(d=>d.length);
   const mark=document.querySelector('.hero-mark');
   if(mark) [...mark.children].slice(3).forEach((el,k)=>el.style.setProperty('--k',k));
   slides.forEach((el,i)=>{ el.style.zIndex=String(i+1); if(i<slides.length-1){ const sh=document.createElement('div'); sh.className='x-shade'; sh.setAttribute('aria-hidden','true'); el.appendChild(sh); } });
-  function place(){ const vh=innerHeight; slides.forEach(el=>{ el.style.top=Math.min(0,vh-el.offsetHeight)+'px'; }); }
-  place(); addEventListener('resize',place); if('ResizeObserver' in window){ const ro=new ResizeObserver(place); slides.forEach(el=>ro.observe(el)); }
+  decks.slice(1).forEach(d=>d.forEach((el,i)=>{ el.style.zIndex=String(i+1); }));
+  function place(){ const vh=innerHeight; decks.forEach(d=>d.forEach(el=>{ el.style.top=Math.min(0,vh-el.offsetHeight)+'px'; })); }
+  place(); addEventListener('resize',place); if('ResizeObserver' in window){ const ro=new ResizeObserver(place); decks.forEach(d=>d.forEach(el=>ro.observe(el))); }
+  addEventListener('hashchange',()=>setTimeout(()=>{ place(); req(); },50));
   let ticking=false;
   function frame(){
     ticking=false; const vh=innerHeight;
@@ -1051,6 +1082,7 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
       const r=el.getBoundingClientRect(), p=Math.min(1,Math.max(0,(vh*0.8-r.top)/(r.height+vh*0.6)));
       const lit=p*cs.length; cs.forEach((c,i)=>{ c.style.opacity=still?1:(.2+.8*Math.min(1,Math.max(0,lit-i))).toFixed(2); });
     });
+    if(!still) decks.slice(1).forEach(d=>{ if(d[0].parentElement.hidden) return; d.forEach((el,i)=>{ const nx=d[i+1]; const p=nx?Math.min(1,Math.max(0,1-nx.getBoundingClientRect().top/vh)):0; el.style.setProperty('--sc',(1-.06*p).toFixed(4)); }); });
     if(!still&&!home.hidden){
       slides.forEach((el,i)=>{
         const nx=slides[i+1]; if(!nx) return;
