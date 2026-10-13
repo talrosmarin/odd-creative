@@ -387,6 +387,11 @@ main.page .about-text .bts{justify-content:center}
   #home > section,main.page > section{margin-top:-40px!important}
   #home > * > .x-shade{display:none}
 }
+/* all home cards are the same height (the tallest one sets it); content sits in the middle of each card */
+#home > section{display:flex;flex-direction:column;justify-content:center;min-height:var(--cardh,100svh)}
+#home > section > *{width:100%}
+/* the first white card starts a little lower, so more of the opening video shows */
+@media (hover:none) and (pointer:coarse){#home > #process{margin-top:0!important}}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
@@ -1082,6 +1087,9 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
   slides.forEach((el,i)=>{ el.style.zIndex=String(i+1); if(i<slides.length-1){ const sh=document.createElement('div'); sh.className='x-shade'; sh.setAttribute('aria-hidden','true'); el.appendChild(sh); } });
   decks.slice(1).forEach(d=>d.forEach((el,i)=>{ el.style.zIndex=String(i+1); }));
   function place(){ const vh=innerHeight; decks.forEach(d=>d.forEach(el=>{ el.style.top=Math.min(0,vh-el.offsetHeight)+'px'; })); }
+  // equal cards: measure each home card at its natural height, then give them all the tallest height
+  function equal(){ const cards=slides.filter(el=>el.tagName==='SECTION'); home.style.removeProperty('--cardh'); const h=Math.max(...cards.map(el=>el.offsetHeight)); if(h>0) home.style.setProperty('--cardh',h+'px'); }
+  equal(); addEventListener('resize',()=>{ equal(); place(); }); if(document.fonts) document.fonts.ready.then(()=>{ equal(); place(); });
   place(); addEventListener('resize',place); if('ResizeObserver' in window){ const ro=new ResizeObserver(place); decks.forEach(d=>d.forEach(el=>ro.observe(el))); }
   addEventListener('hashchange',()=>setTimeout(()=>{ place(); req(); },50));
   let ticking=false;
