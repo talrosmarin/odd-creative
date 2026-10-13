@@ -265,6 +265,31 @@ footer .foot > :nth-child(2){transition-delay:.1s} footer .foot > :nth-child(3){
 .about-text > .eyebrow,.about-text > h2{display:block}
 .cat-head{display:flex;flex-direction:column}
 .cat-head > a.muted{align-self:flex-start}
+/* Our work: gradient carousel (idea from React Bits "Gradient Carousel", rebuilt in plain JS).
+   Cards sit in a row, the middle one flat and big, the side ones turn and step back in 3D.
+   Drag / swipe / arrow keys with momentum, and it always settles on a card.
+   The soft glow behind it takes its color from the middle card, matched to the closest brand shade */
+@property --g1{syntax:'<color>';inherits:true;initial-value:#5e2b8c}
+@property --g2{syntax:'<color>';inherits:true;initial-value:#d9739f}
+#work{overflow:hidden}
+#work > .wrap,.gc,.gc-foot{position:relative;z-index:1}
+.gc-bg{position:absolute;inset:-10%;z-index:0;pointer-events:none;filter:blur(24px);opacity:.9;transition:--g1 1s var(--ease-out),--g2 1s var(--ease-out);
+  background:radial-gradient(50% 44% at 28% 55%,var(--g1),transparent 72%),radial-gradient(48% 42% at 74% 45%,var(--g2),transparent 72%)}
+.gc{height:calc(var(--cw) * 1.25 + 80px);--cw:clamp(220px,26vw,360px);margin-top:clamp(40px,5vw,72px);perspective:1200px;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;outline:none}
+.gc.drag{cursor:grabbing}
+.gc:focus-visible{outline:2px solid #fff;outline-offset:4px;border-radius:24px}
+.gc-card{position:absolute;left:50%;top:40px;width:var(--cw);aspect-ratio:4/5;margin-left:calc(var(--cw) / -2);border-radius:clamp(22px,2.6vw,34px);overflow:hidden;transform-style:preserve-3d;will-change:transform;box-shadow:0 30px 60px rgba(46,16,72,.35);background:rgba(255,255,255,.12)}
+.gc-card img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.gc-card::after{content:"";position:absolute;inset:0;background:rgba(46,16,72,var(--dim,0));transition:background-color .2s}
+.gc-foot{display:flex;align-items:center;justify-content:center;gap:clamp(16px,3vw,40px);margin-top:12px;direction:ltr}
+.gc-cap{min-width:0;width:min(420px,60vw);text-align:center;display:flex;flex-direction:column;gap:4px}
+.gc-cap b{font-family:var(--display);font-weight:500;text-transform:uppercase;font-size:clamp(15px,1.6vw,20px);letter-spacing:.02em}
+.gc-cap span{font-size:15px;opacity:.85;direction:rtl}
+.gc-arrow{width:48px;height:48px;flex:none;border-radius:50%;border:1.5px solid rgba(255,255,255,.75);background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer;transition:background-color .2s,transform .2s var(--ease-out)}
+.gc-arrow svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+@media (hover:hover){.gc-arrow:hover{background:rgba(255,255,255,.14)}}
+.gc-arrow:active{transform:scale(.94)}
+.gc-arrow:disabled{opacity:.35;cursor:default}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
@@ -499,8 +524,12 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
       <span class="eyebrow en x-center" data-fade>Projects</span>
       <h2 class="en x-huge x-center x-grad-dark" data-fade style="--fy:40px">Our work</h2>
     </div>
-    <div class="cyl" id="cyl" aria-label="העבודות שלנו. גוררים לצדדים כדי לסובב, לוחצים על עבודה כדי לפתוח">
-      <div class="cyl-ring" id="cyl-ring"></div>
+    <div class="gc-bg" aria-hidden="true"></div>
+    <div class="gc" id="gc" tabindex="0" role="region" aria-roledescription="carousel" aria-label="העבודות שלנו. גוררים לצדדים או משתמשים בחיצים, לוחצים על עבודה כדי לפתוח"></div>
+    <div class="gc-foot">
+      <button type="button" class="gc-arrow" id="gc-prev" aria-label="העבודה הקודמת"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="gc-cap" aria-live="polite"><b id="gc-t"></b><span id="gc-d"></span></div>
+      <button type="button" class="gc-arrow" id="gc-next" aria-label="העבודה הבאה"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
     <div class="lightbox" id="lightbox" hidden></div>
   </section>
@@ -837,48 +866,96 @@ const projects=[ // photos: temporary, from @odd__creative on Instagram (2026-10
 const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"Corporate"};
 
 (function(){
-  // Our work cylinder, the same motion as the Xantiva "Creative" carousel: slow idle turn, drag/swipe spins it with momentum, tap opens a work
-  const box=document.getElementById('cyl'), ring=document.getElementById('cyl-ring'), lb=document.getElementById('lightbox');
+  // Our work: gradient carousel (see the CSS note above .gc)
+  const box=document.getElementById('gc'), bg=document.querySelector('.gc-bg'), lb=document.getElementById('lightbox');
+  if(!box) return;
   document.body.appendChild(lb);
-  const card=p=>`<div class="card"><img src="${p.img}" alt="${p.t}" loading="lazy" draggable="false"><div class="cap"><h3 ${/^[A-Za-z]/.test(p.t)?'class="en"':''}>${p.t}</h3><p>${p.d}</p></div></div>`;
-  const list=projects.length>=12?projects:projects.concat(projects); // 12 faces like Xantiva (a second round only if there are fewer works)
-  ring.innerHTML=list.map((p,i)=>`<figure class="face" data-i="${i%projects.length}">${card(p)}</figure>`).join('');
-  const faces=[...ring.children], n=faces.length;
   const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let angle=0, vel=0, idle=still?0:-7, dragging=false, moved=0, px=0, lt=0, last=performance.now(), r=0, on=true;
-  function build(){
-    const cylW=(innerWidth<=640?1988:(innerWidth<=1024?3023:4050))*n/12, fw=cylW/n; r=cylW/(2*Math.PI); // same face size as Xantiva
-    ring.style.width=fw+'px'; ring.style.height=(fw*1.25)+'px';
-    faces.forEach((f,i)=>{ f.style.transform='rotateY('+(i*360/n)+'deg) translateZ('+r+'px)'; });
-    ring.style.transform='translateZ('+(-r*0.4333)+'px) rotateY('+angle+'deg)'; // right away, before the first frame
+  const card=p=>`<div class="card"><img src="${p.img}" alt="${p.t}" loading="lazy" draggable="false"><div class="cap"><h3 ${/^[A-Za-z]/.test(p.t)?'class="en"':''}>${p.t}</h3><p>${p.d}</p></div></div>`;
+  const n=projects.length, MAXROT=28, MAXDEPTH=200, MINSCALE=.85, GAP=15, FRICTION=.95;
+  box.innerHTML=projects.map((p,i)=>`<figure class="gc-card" data-i="${i}"><img src="${p.img}" alt="${p.t}" draggable="false" ${i>3?'loading="lazy"':''}></figure>`).join('');
+  const cards=[...box.children], tEl=document.getElementById('gc-t'), dEl=document.getElementById('gc-d');
+  const prev=document.getElementById('gc-prev'), next=document.getElementById('gc-next');
+
+  // brand shades the glow can take; each card gets the two closest to its own main color
+  const BRAND=['#5e2b8c','#7b3a9e','#9b6fd1','#b0458f','#d9739f','#e89ab8','#3d1a63'].map(h=>{ const v=parseInt(h.slice(1),16); return {h,r:v>>16,g:v>>8&255,b:v&255}; });
+  const hue=(r,g,b)=>{ r/=255;g/=255;b/=255; const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn; if(!d) return 0; let h=mx===r?((g-b)/d)%6:mx===g?(b-r)/d+2:(r-g)/d+4; return (h*60+360)%360; };
+  BRAND.forEach(c=>c.hue=hue(c.r,c.g,c.b));
+  const tint=new Array(n).fill(null);
+  function colorOf(i){
+    if(tint[i]) return tint[i];
+    const img=cards[i].querySelector('img');
+    if(!img.complete||!img.naturalWidth) return null;
+    try{
+      const c=document.createElement('canvas'); c.width=c.height=24; const x=c.getContext('2d',{willReadFrequently:true}); x.drawImage(img,0,0,24,24);
+      const d=x.getImageData(0,0,24,24).data; let R=0,G=0,B=0,W=0;
+      for(let k=0;k<d.length;k+=4){ const mx=Math.max(d[k],d[k+1],d[k+2]), mn=Math.min(d[k],d[k+1],d[k+2]), w=(mx-mn)/255+.05; R+=d[k]*w; G+=d[k+1]*w; B+=d[k+2]*w; W+=w; }
+      const h=hue(R/W,G/W,B/W), dist=c=>{ const a=Math.abs(c.hue-h); return Math.min(a,360-a); };
+      const sorted=[...BRAND].sort((a,b)=>dist(a)-dist(b));
+      return tint[i]=[sorted[0].h,sorted[1].h];
+    }catch(e){ return tint[i]=['#5e2b8c','#d9739f']; }
+  }
+
+  let pos=Math.min(1,n-1), vel=0, dragging=false, px=0, lt=0, moved=0, active=-1, on=true, last=performance.now();
+  const step=()=>cards[0].offsetWidth+GAP;
+  function setActive(i){
+    if(i===active) return; active=i;
+    const p=projects[i]; tEl.textContent=p.t; tEl.classList.toggle('en',/^[A-Za-z]/.test(p.t)); dEl.textContent=p.d;
+    prev.disabled=i===0; next.disabled=i===n-1;
+    const c=colorOf(i); if(c){ bg.style.setProperty('--g1',c[0]); bg.style.setProperty('--g2',c[1]); }
+    else cards[i].querySelector('img').addEventListener('load',()=>{ if(active===i){ active=-1; setActive(i); } },{once:true});
+  }
+  function render(){
+    const w=step();
+    cards.forEach((el,i)=>{
+      const d=i-pos, a=Math.min(1,Math.abs(d)), s=Math.sign(d);
+      const rot=-s*a*MAXROT, z=-Math.min(1.5,Math.abs(d))/1.5*MAXDEPTH, sc=1-(1-MINSCALE)*a;
+      el.style.transform=`translate3d(${d*w}px,0,${z}px) rotateY(${rot}deg) scale(${sc})`;
+      el.style.zIndex=String(100-Math.round(Math.abs(d)*10));
+      el.style.setProperty('--dim',(a*.35).toFixed(2));
+      el.style.visibility=Math.abs(d)>4?'hidden':'visible';
+    });
+    setActive(Math.max(0,Math.min(n-1,Math.round(pos))));
   }
   function tick(t){
-    const dt=Math.min(.05,(t-last)/1000); last=t;
-    const goal=document.documentElement.classList.contains('a11y-still')?0:idle; // "stop animations" in the accessibility menu
-    if(!dragging){ vel+=(goal-vel)*Math.min(1,dt*2.2); angle+=vel*dt; }
-    ring.style.transform='translateZ('+(-r*0.4333)+'px) rotateY('+angle+'deg)';
+    const dt=Math.min(3,(t-last)/16.67); last=t;
+    if(!dragging){
+      if(Math.abs(vel)>.002){ pos+=vel*dt; vel*=Math.pow(FRICTION,dt); }
+      else { vel=0; const goal=Math.max(0,Math.min(n-1,Math.round(pos))); pos+=(goal-pos)*Math.min(1,.14*dt); }
+      if(pos<0){ pos+=(0-pos)*.2*dt; vel*=.5; } if(pos>n-1){ pos+=(n-1-pos)*.2*dt; vel*=.5; }
+    }
+    render();
     if(on) requestAnimationFrame(tick);
   }
-  new IntersectionObserver(e=>{ const v=e[0].isIntersecting; if(v&&!on){ on=true; last=performance.now(); requestAnimationFrame(tick); } on=v; }).observe(box);
-  box.addEventListener('pointerdown',e=>{ dragging=true; moved=0; px=e.clientX; lt=performance.now(); box.classList.add('drag'); try{box.setPointerCapture(e.pointerId);}catch(err){} });
+  const go=k=>{ vel=0; const goal=Math.max(0,Math.min(n-1,Math.round(pos)+k)); if(still){ pos=goal; render(); } else vel=(goal-pos)*(1-FRICTION)*1.02; };
+  prev.addEventListener('click',()=>go(-1)); next.addEventListener('click',()=>go(1));
+  box.addEventListener('keydown',e=>{ if(e.key==='ArrowLeft'){ e.preventDefault(); go(-1); } if(e.key==='ArrowRight'){ e.preventDefault(); go(1); } if(e.key==='Enter'){ lb.innerHTML=card(projects[active]); lb.hidden=false; } });
+  box.addEventListener('wheel',e=>{ if(Math.abs(e.deltaX)>Math.abs(e.deltaY)){ e.preventDefault(); vel+=e.deltaX/step()*.6*.12; } },{passive:false}); // sideways trackpad swipes only; normal scrolling still scrolls the page
+  box.addEventListener('pointerdown',e=>{ dragging=true; moved=0; px=e.clientX; lt=performance.now(); vel=0; box.classList.add('drag'); try{box.setPointerCapture(e.pointerId);}catch(err){} });
   box.addEventListener('pointermove',e=>{
     if(!dragging) return;
-    const dx=e.clientX-px, now=performance.now(), dt=Math.max(.008,(now-lt)/1000);
-    angle+=dx*0.3; vel=Math.max(-400,Math.min(400,dx*0.3/dt)); moved+=Math.abs(dx); px=e.clientX; lt=now;
+    const dx=e.clientX-px, now=performance.now(), dt=Math.max(8,now-lt);
+    pos-=dx/step(); vel=-dx/step()/(dt/16.67)*.9; moved+=Math.abs(dx); px=e.clientX; lt=now;
+    if(still) render();
   });
   function end(e){
     if(!dragging) return; dragging=false; box.classList.remove('drag');
     if(moved<6){
-      const hit=document.elementsFromPoint(e.clientX,e.clientY).find(el=>el.classList&&el.classList.contains('face'));
-      if(hit){ lb.innerHTML=card(projects[+hit.dataset.i]); lb.hidden=false; }
+      const hit=document.elementsFromPoint(e.clientX,e.clientY).find(el=>el.classList&&el.classList.contains('gc-card'));
+      if(hit){ const i=+hit.dataset.i; if(i===active){ lb.innerHTML=card(projects[i]); lb.hidden=false; } else { pos=Math.round(pos); go(i-active); } }
     }
+    if(still){ pos=Math.max(0,Math.min(n-1,Math.round(pos))); render(); }
   }
   box.addEventListener('pointerup',end); box.addEventListener('pointercancel',()=>{ dragging=false; box.classList.remove('drag'); });
-  // Android sends a click right after the tap that opened it; ignore clicks in the first moment so it doesn't close at once
   new MutationObserver(()=>{ if(!lb.hidden) lb.__t=performance.now(); }).observe(lb,{attributes:true,attributeFilter:['hidden']});
   lb.addEventListener('click',()=>{ if(performance.now()-(lb.__t||0)<450) return; lb.hidden=true; });
   addEventListener('keydown',e=>{ if(e.key==='Escape') lb.hidden=true; });
-  addEventListener('resize',build); build(); requestAnimationFrame(tick);
+  addEventListener('resize',render);
+  render();
+  if(still){ on=false; } else {
+    new IntersectionObserver(es=>{ const v=es[0].isIntersecting; if(v&&!on){ on=true; last=performance.now(); requestAnimationFrame(tick); } on=v; }).observe(box);
+    requestAnimationFrame(tick);
+  }
 })();
 
 (function(){
