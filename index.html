@@ -341,7 +341,11 @@ header .bar > .logo{transition:opacity .3s}
 .logo .mark.mark-img{display:block;width:132px;aspect-ratio:601/203;background:currentColor;-webkit-mask:url('img/odd-logo-mask.png') center/contain no-repeat;mask:url('img/odd-logo-mask.png') center/contain no-repeat}
 @media (max-width:520px){.logo .mark.mark-img{width:112px}}
 /* home: "Let's create something ODD." sits in the middle of its card, like a slide of its own; the photo rows follow under it */
-.x-intro-in{min-height:calc(100svh - 2 * clamp(96px,12vw,160px));justify-content:center}
+/* "Let's create something ODD.": same title look and same top spacing as "Design. Plan. Build.", and the card is as tall as that first white card */
+#intro.x-intro{padding-block:clamp(80px,9vw,128px);display:flex;flex-direction:column;justify-content:center;min-height:var(--introh,auto)}
+.x-intro-in{gap:22px}
+#intro .x-chars{font-size:17px;font-weight:400;line-height:1.65;max-width:560px}
+#intro .x-rows{margin-top:clamp(48px,6vw,90px)}
 /* inner pages (menu items + catalog): the same cards as the home page.
    The page is the brand gradient, every part is a card with rounded top corners that slides over the one before it.
    First card white, the next one in the gradient, and so on. Titles big and centered, like on the home page */
@@ -615,9 +619,8 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 
   <section id="intro" class="x-dark x-sheet x-intro">
     <div class="wrap x-intro-in">
-      <h2 class="en x-huge x-grad-dark" data-fade style="--fy:40px">Let's create something ODD.</h2>
+      <h2 class="en x-huge x-center x-grad-dark" data-fade style="--fy:40px">Let's create something ODD.</h2>
       <p class="x-chars" data-chars>עיצוב ובנייה של חללים, אלמנטים וחוויות.</p>
-      <div data-fade style="--fd:.2s"><a class="x-cta en" href="https://wa.me/972500000000" target="_blank" rel="noopener">Let's talk</a></div>
     </div>
     <div class="x-rows" aria-hidden="true"><div class="x-row" data-dir="1"></div><div class="x-row" data-dir="-1"></div></div>
   </section>
@@ -1084,6 +1087,10 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
   slides.forEach((el,i)=>{ el.style.zIndex=String(i+1); if(i<slides.length-1){ const sh=document.createElement('div'); sh.className='x-shade'; sh.setAttribute('aria-hidden','true'); el.appendChild(sh); } });
   decks.slice(1).forEach(d=>d.forEach((el,i)=>{ el.style.zIndex=String(i+1); }));
   function place(){ const vh=innerHeight; decks.forEach(d=>d.forEach(el=>{ el.style.top=Math.min(0,vh-el.offsetHeight)+'px'; })); }
+  // the Let's create card is as tall as the first white card (Design. Plan. Build.)
+  const proc=document.getElementById('process'), intro=document.getElementById('intro');
+  function matchIntro(){ if(!proc||!intro||home.hidden) return; intro.style.removeProperty('--introh'); intro.style.setProperty('--introh',proc.offsetHeight+'px'); }
+  matchIntro(); addEventListener('resize',matchIntro); if(document.fonts) document.fonts.ready.then(matchIntro); addEventListener('hashchange',()=>setTimeout(matchIntro,60));
   place(); addEventListener('resize',place); if('ResizeObserver' in window){ const ro=new ResizeObserver(place); decks.forEach(d=>d.forEach(el=>ro.observe(el))); }
   addEventListener('hashchange',()=>setTimeout(()=>{ place(); req(); },50));
   let ticking=false;
