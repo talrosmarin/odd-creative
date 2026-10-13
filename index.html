@@ -323,7 +323,6 @@ header .bar > .logo{transition:opacity .3s}
 /* opening logo, made to sit inside the video instead of on top of it:
    it draws itself in white, then settles into a "glass" logo — the video shows through the letters, a little blurred and brighter,
    with only a faint white line left on top. A soft shade in the middle helps it read without a box */
-.hero::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(60% 42% at 50% 47%,rgba(46,16,72,.38),rgba(46,16,72,0) 70%)}
 .hero-center{position:absolute;z-index:2;left:50%;top:44%;width:min(62vw,580px);aspect-ratio:601/203;transform:translate(-50%,-50%) scale(var(--ls,1));opacity:var(--lo,1);will-change:transform,opacity}
 .hero-center .hero-mark{position:absolute;inset:0;left:0;top:0;width:100%;height:100%;transform:none;opacity:1;filter:none;mix-blend-mode:overlay}
 .hero-center .hero-mark{animation:mark-settle 1.2s ease 2.5s forwards}
