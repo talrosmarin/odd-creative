@@ -380,6 +380,13 @@ main.page .about-text .bts{justify-content:center}
 /* menu words: the same type as the big section titles ("Design. Plan. Build."): Panchang extra bold, uppercase, tight, purple-to-pink from left to right */
 .menu a.mitem{font-weight:800;letter-spacing:-.02em;line-height:.95;white-space:nowrap;font-size:clamp(30px,8.6vw,62px);padding:clamp(16px,2.4vw,24px) 0}
 .menu a.mitem span,.menu a.mitem b{background-image:linear-gradient(90deg,var(--purple),var(--pink));background-repeat:no-repeat;background-size:var(--gw,100%) 100%;background-position:var(--gx,0) 0}
+/* phones and tablets: no sticky slides. iPhone Safari paints its bottom bar with the color of any sticky block touching the bottom of the screen,
+   which made a flat colored strip under the address bar. Here the cards still have rounded tops and overlap a little, they just scroll normally */
+@media (hover:none) and (pointer:coarse){
+  #home > .hero,#home > section,main.page > section,#catalogView > .cat-sheet{position:relative!important;top:auto!important;transform:none!important}
+  #home > section,main.page > section{margin-top:-40px!important}
+  #home > * > .x-shade{display:none}
+}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
