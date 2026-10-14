@@ -1368,11 +1368,11 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
     const cylB=document.getElementById('cyl'), ba=document.getElementById('ba'), sk=document.getElementById('sketch'),
       lm=document.querySelector('#clients .x-lmarq'), tm=document.querySelector('#clients .x-tmarq'), qs=[...document.querySelectorAll('#faq .faq details')];
     homeCards.forEach(c=>c.style.minHeight=''); intro&&intro.style.removeProperty('--introh');
-    if(cylB) cylB.style.height=''; if(ba) ba.style.width=''; if(lm){ lm.style.marginTop=''; lm.style.removeProperty('--lb'); } if(tm) tm.style.marginTop=''; qs.forEach(q=>{ q.style.paddingTop=q.style.paddingBottom=''; });
+    if(cylB) cylB.style.height=''; if(ba){ ba.style.width=''; ba.style.marginLeft=ba.style.marginRight=''; } if(lm){ lm.style.marginTop=''; lm.style.removeProperty('--lb'); } if(tm) tm.style.marginTop=''; qs.forEach(q=>{ q.style.paddingTop=q.style.paddingBottom=''; });
     if(wideScr.matches){
       const H=Math.max(...homeCards.map(c=>c.offsetHeight)); let room;
       room=H-intro.offsetHeight; if(cylB&&room>0){ cylB.style.height=(cylB.offsetHeight+room)+'px'; window.cylBuild&&cylBuild(); }
-      room=H-sk.offsetHeight; if(ba&&room>0){ const ar=ba.offsetWidth/ba.offsetHeight; ba.style.width=Math.min(ba.parentElement.clientWidth,(ba.offsetHeight+room)*ar)+'px'; }
+      room=H-sk.offsetHeight; if(ba&&room>0){ const ar=ba.offsetWidth/ba.offsetHeight, w=Math.min(sk.clientWidth-80,(ba.offsetHeight+room)*ar); ba.style.width=w+'px'; ba.style.marginLeft=ba.style.marginRight='calc((100% - '+w+'px) / 2)'; } // may grow wider than the text column, always centred
       room=H-cl.offsetHeight; if(lm&&room>0){ const lb=parseFloat(getComputedStyle(lm.querySelector('img')).height)/parseFloat(lm.querySelector('img').style.getPropertyValue('--h')); lm.style.setProperty('--lb',Math.min(lb*2.1,lb+room*.2)+'px'); } // bigger logos first
       room=H-cl.offsetHeight; if(lm&&tm&&room>0){ lm.style.marginTop=(parseFloat(getComputedStyle(lm).marginTop)+room/2)+'px'; tm.style.marginTop=(parseFloat(getComputedStyle(tm).marginTop)+room/2)+'px'; }
       room=H-fq.offsetHeight; if(qs.length&&room>0){ qs.forEach(q=>{ const pt=parseFloat(getComputedStyle(q).paddingTop); q.style.paddingTop=q.style.paddingBottom=(pt+room/qs.length/2)+'px'; }); }
