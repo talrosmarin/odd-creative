@@ -626,6 +626,7 @@ footer .foot-apps svg{width:100%;height:100%;display:block}
 .items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
 .item{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
 .item .ph{border-radius:0;aspect-ratio:4/3}
+.item .ph,.req-items .ph{overflow:hidden;position:relative}.item .ph img,.req-items .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block} /* catalog photo fills its frame */
 .item .in{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
 .badge{align-self:flex-start;font-size:12px;padding:2px 10px;border-radius:999px;font-family:var(--body)}
 .badge.rent{background:var(--ok-bg);color:var(--ok)}
@@ -1484,16 +1485,16 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
   }
 })();
 
-const items=[
-  {id:1,n:"שער קשתות טרקוטה",m:"מידות לדוגמה: 4×3 מ׳ · אפשר למתג",k:"rent"},
-  {id:2,n:"בר עץ",m:"מידות לדוגמה: 2×1.1 מ׳ · אפשר למתג",k:"rent"},
-  {id:3,n:"קיר צילום Rock & Roll",m:"מידות לדוגמה: 3×2.5 מ׳",k:"rent"},
-  {id:4,n:"קופסת תאורה בחיפוי מראה",m:"מידות לדוגמה: 1×1 מ׳ · אפשר למתג",k:"rent"},
-  {id:5,n:"רקע במה דיסקו ירוק",m:"מידות לדוגמה: 6×3 מ׳",k:"rent"},
-  {id:6,n:"שלט כניסה ממותג",m:"מידות לפי הזמנה",k:"rent"},
-  {id:7,n:"iPod ענק — Our Mantra",m:"דוגמה למה שבנינו",k:"custom"},
-  {id:8,n:"שער כניסה — Garmin",m:"דוגמה למה שבנינו",k:"custom"},
-  {id:9,n:"שער שבטי — LOST TEMPLE",m:"דוגמה למה שבנינו",k:"custom"}
+const items=[ // photos: from @odd__creative on Instagram, each one shows that element
+  {id:1,img:"img/work/wedding-stage.jpg",n:"שער קשתות טרקוטה",m:"מידות לדוגמה: 4×3 מ׳ · אפשר למתג",k:"rent"},
+  {id:2,img:"img/work/bali.jpg",n:"בר עץ",m:"מידות לדוגמה: 2×1.1 מ׳ · אפשר למתג",k:"rent"},
+  {id:3,img:"img/work/rock-and-roll.jpg",n:"קיר צילום Rock & Roll",m:"מידות לדוגמה: 3×2.5 מ׳",k:"rent"},
+  {id:4,img:"img/work/make-sense.jpg",n:"קופסת תאורה בחיפוי מראה",m:"מידות לדוגמה: 1×1 מ׳ · אפשר למתג",k:"rent"},
+  {id:5,img:"img/work/dan-amit.jpg",n:"רקע במה דיסקו ירוק",m:"מידות לדוגמה: 6×3 מ׳",k:"rent"},
+  {id:6,img:"img/work/adamo.jpg",n:"שלט כניסה ממותג",m:"מידות לפי הזמנה",k:"rent"},
+  {id:7,img:"img/work/our-mantra.jpg",n:"iPod ענק — Our Mantra",m:"דוגמה למה שבנינו",k:"custom"},
+  {id:8,img:"img/work/garmin.jpg",n:"שער כניסה — Garmin",m:"דוגמה למה שבנינו",k:"custom"},
+  {id:9,img:"img/work/lost-temple.jpg",n:"שער שבטי — LOST TEMPLE",m:"דוגמה למה שבנינו",k:"custom"}
 ];
 const req=new Map();
 // the list is kept in this browser, so it is still there after a refresh or when coming back later
@@ -1505,7 +1506,7 @@ function drawItems(){
   itemsEl.innerHTML=items.filter(i=>catF==="all"||i.k===catF).map(i=>{
     const on=req.has(i.id);
     const label=i.k==="rent"?(on?"✓ נוסף לבקשה":"+ הוסף לבקשה"):(on?"✓ נוסף לבקשה":"בואו נבנה משהו כזה");
-    return `<div class="item"><div class="ph">תמונה: ${i.n}</div><div class="in"><span class="badge ${i.k}">${i.k==="rent"?"For Rent":"Custom Made"}</span><h3>${i.n}</h3><span class="meta">${i.m}</span><button class="btn ${on?'added':''}" data-id="${i.id}" style="justify-content:center">${label}</button></div></div>`;
+    return `<div class="item"><div class="ph">${i.img?`<img src="${i.img}" alt="${i.n}" loading="lazy">`:`תמונה: ${i.n}`}</div><div class="in"><span class="badge ${i.k}">${i.k==="rent"?"For Rent":"Custom Made"}</span><h3>${i.n}</h3><span class="meta">${i.m}</span><button class="btn ${on?'added':''}" data-id="${i.id}" style="justify-content:center">${label}</button></div></div>`;
   }).join('');
 }
 let lastCount=null;
@@ -1514,7 +1515,7 @@ function drawReq(){
   if(lastCount!==null&&req.size>lastCount){ rc.classList.remove('pop'); void rc.offsetWidth; rc.classList.add('pop'); } // small "pop" so you see it was added
   lastCount=req.size;
   const list=document.getElementById('reqList');
-  list.innerHTML=[...req.values()].map(i=>`<li><div class="ph">תמונה</div><div><b>${i.n}</b><span class="meta">${i.m}</span></div><button data-rm="${i.id}" aria-label="הסרה">×</button></li>`).join('');
+  list.innerHTML=[...req.values()].map(i=>`<li><div class="ph">${i.img?`<img src="${i.img}" alt="" loading="lazy">`:"תמונה"}</div><div><b>${i.n}</b><span class="meta">${i.m}</span></div><button data-rm="${i.id}" aria-label="הסרה">×</button></li>`).join('');
   document.getElementById('reqEmpty').hidden=req.size>0;
   document.getElementById('reqSendBox').hidden=req.size===0;
   const txt="היי ODD, אשמח להצעה על:\n"+[...req.values()].map(i=>"• "+i.n).join("\n");
