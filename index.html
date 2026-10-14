@@ -426,19 +426,19 @@ main.page .about-text .bts{justify-content:center}
    The text is a placeholder until the client sends real quotes (no invented reviews or stars) */
 /* Brands: one row of real client logos (white), sliding the opposite way to the review cards under it */
 .x-lmarq{direction:ltr;overflow:hidden;margin-top:clamp(48px,6vw,90px);padding-block:10px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.x-ltrack{display:flex;width:max-content;animation:x-lmarq 150s linear infinite}
+.x-ltrack{display:flex;width:max-content;will-change:transform} /* moved by JS: drifts on its own, can be dragged */
 .x-lset{display:flex;align-items:center;gap:clamp(56px,7vw,110px);padding-right:clamp(56px,7vw,110px)}
 .x-lset img{height:calc(var(--lb,clamp(30px,3.6vw,50px)) * var(--h));width:auto;display:block;opacity:.92;user-select:none;-webkit-user-select:none}
 @keyframes x-lmarq{from{transform:translateX(-50%)}to{transform:none}}
 @media (prefers-reduced-motion:reduce){.x-ltrack{animation:none}.x-lmarq{overflow-x:auto}}
 html.a11y-still .x-ltrack{animation:none!important}
 .x-tcard-top .x-tag{margin-inline-start:auto;align-self:flex-start;font-size:11px;line-height:1;padding:5px 9px;border-radius:999px;background:rgba(255,255,255,.22);color:#fff;white-space:nowrap} /* sample text until the real reviews arrive */
-.x-tmarq{direction:ltr;overflow:hidden;margin-top:clamp(40px,5vw,72px);padding-block:8px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
-.x-ttrack{display:flex;width:max-content;animation:x-tmarq 60s linear infinite}
-.x-tmarq:hover .x-ttrack,.x-tmarq:focus-within .x-ttrack{animation-play-state:paused}
+.x-tmarq{direction:ltr;overflow:hidden;margin-top:clamp(22px,3vw,40px);padding-block:8px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.x-ttrack{display:flex;width:max-content;will-change:transform}
+.x-lmarq,.x-tmarq{touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}.x-lmarq.drag,.x-tmarq.drag{cursor:grabbing}
 .x-tset{display:flex;gap:12px;padding-right:12px}
 @keyframes x-tmarq{to{transform:translateX(-50%)}}
-.x-tcard{flex:none;width:300px;border-radius:26px;padding:20px 22px;color:#fff;background:rgba(255,255,255,.12);-webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);border:1px solid rgba(255,255,255,.4);box-shadow:inset 1px 1px 1px rgba(255,255,255,.55),inset -1px -1px 1px rgba(255,255,255,.18),inset 0 0 18px rgba(255,255,255,.12),0 10px 30px rgba(46,16,72,.18)}
+.x-tcard{flex:none;width:300px;min-height:var(--tch,0px);box-sizing:border-box;border-radius:26px;padding:20px 22px;color:#fff;background:rgba(255,255,255,.12);-webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);border:1px solid rgba(255,255,255,.4);box-shadow:inset 1px 1px 1px rgba(255,255,255,.55),inset -1px -1px 1px rgba(255,255,255,.18),inset 0 0 18px rgba(255,255,255,.12),0 10px 30px rgba(46,16,72,.18)}
 .x-tcard-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .x-tav{width:40px;height:40px;flex:none;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.22);font-family:var(--display);font-weight:800;font-size:16px}
 .x-tcard b{display:block;font-family:var(--display);font-weight:500;font-size:14px;letter-spacing:.04em;text-align:left}
@@ -693,11 +693,16 @@ html .legal h2{font-size:clamp(22px,3.4vw,34px);font-weight:700}
 /* every home card starts its content at the same height as the first white card, and all cards share one height */
 html #home > section[id]{display:flex;flex-direction:column;justify-content:flex-start;padding-top:clamp(80px,9vw,128px);padding-bottom:clamp(80px,9vw,128px)}
 /* Events: a row of vertical videos that play while on screen (temporary clips for now) */
-.ev-row{display:grid;grid-template-columns:repeat(4,auto);justify-content:center;gap:14px;margin-top:clamp(32px,4vw,52px);direction:ltr} /* two rows of four */
-.ev{margin:0;flex:none;height:var(--evh,clamp(260px,34vw,420px));aspect-ratio:9/16;border-radius:18px;overflow:hidden;background:#140a1f;box-shadow:0 18px 40px rgba(46,16,72,.18)}
+.ev-car{margin-top:clamp(28px,3.4vw,44px);direction:ltr}
+.ev-row{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding:0 2px;-webkit-overflow-scrolling:touch} /* one moving row: arrows, swipe and a slow auto-advance */
+.ev-row::-webkit-scrollbar{display:none}
+.ev{margin:0;flex:none;scroll-snap-align:start;height:var(--evh,clamp(260px,34vw,380px));aspect-ratio:9/16;border-radius:18px;overflow:hidden;background:#140a1f;box-shadow:0 18px 40px rgba(46,16,72,.18)}
 .ev video{width:100%;height:100%;object-fit:cover;display:block}
-html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width:100%;box-sizing:border-box} /* a card's content may never make the page wider than the screen (the video row scrolls inside instead) */
-@media (max-width:640px){.ev-row{display:flex;justify-content:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 16px;margin-inline:-16px}.ev-row::-webkit-scrollbar{display:none}.ev{scroll-snap-align:center;height:var(--evh,min(58vh,420px))}}
+html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width:100%;box-sizing:border-box} /* a card's content may never make the page wider than the screen */
+.ev-nav{display:flex;justify-content:center;gap:14px;margin-top:16px}
+.ev-nav button{width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(94,43,140,.3);background:#fff;color:var(--purple);display:grid;place-items:center;cursor:pointer;transition:background-color .2s,border-color .2s}
+.ev-nav button svg{width:18px;height:18px}
+@media (hover:hover){.ev-nav button:hover{border-color:var(--purple);background:#f6eefb}}
 /* FAQ on purple (it now follows the white Events card) */
 #faq.x-dark details{border-color:rgba(255,255,255,.22)!important}
 #faq.x-dark summary{color:#fff}
@@ -837,7 +842,9 @@ html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width
       <span class="eyebrow en x-center" data-fade>Events</span>
       <h2 class="en x-huge x-center x-ink" data-fade style="--fy:40px">Moments we built</h2>
       <p class="x-center x-sub" data-fade style="--fd:.1s">אירועים, השקות וסרטוני תדמית. ככה זה נראה בשטח.</p>
-      <div class="ev-row" data-fade style="--fd:.2s"><!-- temporary clips until the real event and brand videos arrive --><figure class="ev"><video src="video/reel-1.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-2.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-3.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-4.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-3.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-4.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-1.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-2.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure></div>
+      <div class="ev-car" data-fade style="--fd:.2s"><div class="ev-row" tabindex="0" aria-label="סרטונים מאירועים"><!-- temporary clips until the real event and brand videos arrive --><figure class="ev"><video src="video/reel-1.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-2.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-3.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-4.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-3.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-4.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-1.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-2.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure></div>
+        <div class="ev-nav"><button type="button" class="ev-prev" aria-label="הקודם"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><button type="button" class="ev-next" aria-label="הבא"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
+      </div>
     </div>
   </section>
 
@@ -1121,6 +1128,49 @@ document.querySelectorAll('#sketch .ba').forEach(ba => {
   const still=()=>matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.contains('a11y-still');
   const io=new IntersectionObserver(es=>es.forEach(e=>{ const v=e.target; if(e.isIntersecting&&!still()) v.play().catch(()=>{}); else v.pause(); }),{threshold:.35});
   vids.forEach(v=>io.observe(v)); })();
+</script>
+<script>
+// Brands strip and review cards: they drift on their own and can be dragged or swiped either way, with momentum.
+// Moved by JavaScript (not a CSS animation), so a very wide strip still works on iPhone.
+(() => {
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches, still=()=>reduce||document.documentElement.classList.contains('a11y-still');
+  function loop(box, speed){ const track=box.firstElementChild, sets=track?track.children:[]; if(sets.length<2) return;
+    // Each logo / card is moved on its own (no single super-wide strip, which iPhone may fail to draw)
+    sets[1].style.display='none'; const set=sets[0], items=[...set.children];
+    set.style.position='relative'; set.style.paddingRight='0'; track.style.width='100%';
+    items.forEach(it=>{ it.style.position='absolute'; it.style.left='0'; it.style.top='0'; });
+    let x=0, v=speed, drag=false, px=0, lt=0, last=performance.now(), on=true, hover=false, base=[], total=0, maxW=0, boxW=0;
+    const measure=()=>{ const gap=parseFloat(getComputedStyle(set).columnGap)||0; let acc=0, mh=0; maxW=0; base=items.map(it=>{ const w=it.offsetWidth, b=acc; acc+=w+gap; mh=Math.max(mh,it.offsetHeight); maxW=Math.max(maxW,w); return b; });
+      total=acc; boxW=box.clientWidth; set.style.height=mh+'px'; items.forEach(it=>{ it.style.top=((mh-it.offsetHeight)/2)+'px'; }); };
+    measure(); box._measure=measure; addEventListener('resize',measure); items.forEach(it=>{ const im=it.tagName==='IMG'?it:null; if(im&&!im.complete) im.addEventListener('load',measure,{once:true}); });
+    if('ResizeObserver' in window) new ResizeObserver(measure).observe(items[0]);
+    const place=()=>{ if(!total) return; items.forEach((it,k)=>{ let p=((base[k]+x+maxW)%total+total)%total-maxW; it.style.transform='translate3d('+p.toFixed(1)+'px,0,0)'; }); };
+    function tick(t){ const dt=Math.min(.05,(t-last)/1000); last=t;
+      if(!drag){ const goal=(still()||hover)?0:speed; v+=(goal-v)*Math.min(1,dt*2.5); x+=v*dt; }
+      if(total) x%=total; place(); if(on) requestAnimationFrame(tick); }
+    new IntersectionObserver(e=>{ const vis=e[0].isIntersecting; if(vis&&!on){ on=true; last=performance.now(); requestAnimationFrame(tick); } on=vis; }).observe(box);
+    box.addEventListener('pointerdown',e=>{ drag=true; px=e.clientX; lt=performance.now(); box.classList.add('drag'); try{box.setPointerCapture(e.pointerId);}catch(_){} });
+    box.addEventListener('pointermove',e=>{ if(!drag) return; const dx=e.clientX-px, now=performance.now(), dt=Math.max(.008,(now-lt)/1000); x+=dx; v=Math.max(-2500,Math.min(2500,dx/dt)); px=e.clientX; lt=now; });
+    const end=()=>{ drag=false; box.classList.remove('drag'); }; box.addEventListener('pointerup',end); box.addEventListener('pointercancel',end);
+    if(matchMedia('(hover:hover)').matches){ box.addEventListener('mouseenter',()=>hover=true); box.addEventListener('mouseleave',()=>hover=false); }
+    requestAnimationFrame(tick); }
+  const lm=document.querySelector('#clients .x-lmarq'), tm=document.querySelector('#clients .x-tmarq');
+  if(lm) loop(lm, 34);   // logos drift right
+  if(tm) loop(tm, -38);  // reviews drift left
+  dispatchEvent(new Event('resize')); // let the card fitting re-measure with the new strip layout
+})();
+// Events: a row of videos with arrows; it also moves on by itself every few seconds (pauses while you use it)
+(() => { const row=document.querySelector('#events .ev-row'); if(!row) return;
+  const step=()=>{ const c=row.querySelector('.ev'); return c?c.getBoundingClientRect().width+14:300; };
+  const go=d=>{ const max=row.scrollWidth-row.clientWidth-2; if(d>0&&row.scrollLeft>=max) row.scrollTo({left:0}); else if(d<0&&row.scrollLeft<=2) row.scrollTo({left:max}); else row.scrollBy({left:d*step()}); };
+  let idle=0; const touch=()=>{ idle=performance.now(); };
+  document.querySelector('#events .ev-next').addEventListener('click',()=>{ touch(); go(1); });
+  document.querySelector('#events .ev-prev').addEventListener('click',()=>{ touch(); go(-1); });
+  ['pointerdown','wheel','touchstart','keydown'].forEach(ev=>row.addEventListener(ev,touch,{passive:true}));
+  let vis=false; new IntersectionObserver(e=>{ vis=e[0].isIntersecting; }).observe(row);
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  setInterval(()=>{ if(!vis||reduce||document.documentElement.classList.contains('a11y-still')||performance.now()-idle<6000) return; go(1); },3200);
+})();
 </script>
 <script type="importmap">
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
@@ -1416,8 +1466,8 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
     const evC=document.getElementById('events'), evRow=document.querySelector('#events .ev-row'), cylB=document.getElementById('cyl'), bas=[...document.querySelectorAll('#sketch .ba')], sk=document.getElementById('sketch'),
       lm=document.querySelector('#clients .x-lmarq'), tm=document.querySelector('#clients .x-tmarq'), steps=document.querySelector('#process .x-steps');
     homeCards.forEach(c=>{ c.style.minHeight=''; c.style.height=''; }); intro&&intro.style.removeProperty('--introh');
-    if(cylB) cylB.style.height=''; bas.forEach(b=>{ b.style.width=''; b.style.marginLeft=b.style.marginRight=''; }); if(evRow) evRow.style.removeProperty('--evh');
-    if(lm){ lm.style.marginTop=''; lm.style.removeProperty('--lb'); } if(tm) tm.style.marginTop=''; if(steps) steps.style.zoom='';
+    if(cylB) cylB.style.height=''; bas.forEach(b=>{ b.style.width=''; b.style.marginLeft=b.style.marginRight=''; }); if(evRow){ evRow.style.removeProperty('--evh'); evRow.parentElement.style.marginTop=''; }
+    if(lm){ lm.style.marginTop=''; lm.style.removeProperty('--lb'); } if(tm){ tm.style.marginTop=''; tm.style.removeProperty('--tch'); } if(steps) steps.style.zoom='';
     if(true){ // computers and phones alike
       if(evRow) evRow.style.setProperty('--evh','200px'); bas.forEach(b=>{ b.style.width='200px'; }); if(cylB) cylB.style.height='240px'; // start small, then grow into the room
       const H=fq.offsetHeight; let room;
@@ -1425,9 +1475,8 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
         for(let k=0;k<4;k++){ const r=steps.getBoundingClientRect(), top=proc.getBoundingClientRect().top, free=(top+H-pb)-r.bottom; if(Math.abs(free)<1) break; z=Math.max(.55,Math.min(1.3,z*(r.height+free)/r.height)); steps.style.zoom=z; } }
       room=H-intro.offsetHeight; if(cylB){ cylB.style.height=Math.max(240,cylB.offsetHeight+room)+'px'; window.cylBuild&&cylBuild(); }
       room=H-sk.offsetHeight; if(bas.length&&room>0){ const hs=bas.reduce((t,b)=>t+b.offsetHeight,0), inv=bas.reduce((t,b)=>t+b.offsetHeight/b.offsetWidth,0), w=Math.min(sk.clientWidth-80,(hs+room)/inv); bas.forEach(b=>{ b.style.width=w+'px'; b.style.marginLeft=b.style.marginRight='calc((100% - '+w+'px) / 2)'; }); }
-      room=evC?H-evC.offsetHeight:0; if(evRow&&room>0){ const gap=14, one=getComputedStyle(evRow).display==='flex', h=one?evRow.offsetHeight+room:(evRow.offsetHeight+room-gap)/2, maxH=one?innerHeight*.62:((evC.clientWidth-80)-gap*3)/4*16/9; evRow.style.setProperty('--evh',Math.min(h,maxH)+'px'); } // phones: one sideways row; computers: two rows of four
-      room=H-cl.offsetHeight; if(lm&&room>0){ const lb=parseFloat(getComputedStyle(lm.querySelector('img')).height)/parseFloat(lm.querySelector('img').style.getPropertyValue('--h')); lm.style.setProperty('--lb',Math.min(lb*2.1,lb+room*.2)+'px'); }
-      room=H-cl.offsetHeight; if(lm&&tm&&room){ lm.style.marginTop=Math.max(16,parseFloat(getComputedStyle(lm).marginTop)+room/2)+'px'; tm.style.marginTop=Math.max(16,parseFloat(getComputedStyle(tm).marginTop)+room/2)+'px'; }
+      room=evC?H-evC.offsetHeight:0; if(evRow&&room>0){ const car=evRow.parentElement, avail=evRow.offsetHeight+room, h=Math.min(avail,innerWidth<=640?340:380); evRow.style.setProperty('--evh',h+'px'); car.style.marginTop=(parseFloat(getComputedStyle(car).marginTop)+(avail-h)/2)+'px'; } // shorter videos; the spare room sits evenly above and below the carousel
+      room=H-cl.offsetHeight; if(tm&&room){ const c=tm.querySelector('.x-tcard'), grow=Math.max(0,Math.min(room*.75,220)); tm.style.setProperty('--tch',(c.offsetHeight+grow)+'px'); tm._measure&&tm._measure(); room=H-cl.offsetHeight; lm.style.marginTop=Math.max(16,parseFloat(getComputedStyle(lm).marginTop)+room/2)+'px'; tm.style.marginTop=Math.max(16,parseFloat(getComputedStyle(tm).marginTop)+room/2)+'px'; } // logos keep their normal size; review cards grow taller (room for longer reviews)
       homeCards.forEach(c=>{ if(c===fq) c.style.minHeight=H+'px'; else c.style.height=H+'px'; }); return; // exactly the Good questions height (it may still grow when a question is opened)
     }
     const h=Math.max(...homeCards.map(c=>c.offsetHeight)); homeCards.forEach(c=>c.style.minHeight=h+'px'); }
