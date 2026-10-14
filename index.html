@@ -667,8 +667,8 @@ footer .foot-apps svg{width:100%;height:100%;display:block}
 .filters,.logos{direction:ltr}
 .badge{align-self:flex-end}
 footer .en{text-align:center;font-size:12px}
-footer .logo3d{width:220px;height:100px;margin:-20px -44px;position:relative} /* the logo inside is exactly the header logo's size; the extra canvas (taken back by the negative margin) leaves room to turn without being cut */
-footer .logo3d.ready::after{content:"";position:absolute;left:50%;bottom:20px;width:110px;height:10px;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(20,10,31,.16),transparent);pointer-events:none} /* soft shadow on the page, so it sits on the footer and doesn't look pasted */
+footer .logo3d{width:284px;height:128px;margin:-26px -57px;position:relative} /* the logo inside is 170px wide; the extra canvas (taken back by the negative margin) leaves room to turn without being cut */
+footer .logo3d.ready::after{content:"";position:absolute;left:50%;bottom:26px;width:140px;height:12px;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(20,10,31,.16),transparent);pointer-events:none} /* soft shadow on the page, so it sits on the footer and doesn't look pasted */
 footer .logo3d canvas{display:block;width:100%;height:100%}
 footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 .chip,.badge,.logos span{font-family:var(--display);font-weight:500}
@@ -1108,20 +1108,24 @@ async function start() {
   const scene = new THREE.Scene();
   scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
   // The exact client logo (traced from the original file): its flat silhouette is stacked in thin slices to give it real
-  // thickness. Glossy black faces catch the light as it turns; the slices in between are a touch lighter so the depth shows.
+  // thickness. Polished chrome (the earlier look): the light sweeps over the faces as it turns; the slices in between are a
+  // touch darker so the depth shows.
   const tex = await new THREE.TextureLoader().loadAsync('img/odd-logo-mask.png');
   tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
   const W = 600, H = W * 812 / 2404, D = 22, N = 36;
   const plane = new THREE.PlaneGeometry(W, H);
-  const face = new THREE.MeshPhysicalMaterial({ map: tex, color: 0x111111, metalness: .25, roughness: .3, clearcoat: 1, clearcoatRoughness: .08, alphaTest: .5, alphaToCoverage: true, side: THREE.DoubleSide });
-  const side = new THREE.MeshPhysicalMaterial({ map: tex, color: 0x2b2b2b, metalness: .25, roughness: .45, clearcoat: .6, alphaTest: .5, alphaToCoverage: true, side: THREE.DoubleSide });
+  const face = new THREE.MeshPhysicalMaterial({ map: tex, color: 0xe2e2e2, metalness: .9, roughness: .3, clearcoat: 1, clearcoatRoughness: .1, alphaTest: .5, alphaToCoverage: true, side: THREE.DoubleSide });
+  const side = new THREE.MeshPhysicalMaterial({ map: tex, color: 0x9a9a9a, metalness: .9, roughness: .4, clearcoat: 1, alphaTest: .5, alphaToCoverage: true, side: THREE.DoubleSide });
   const logo = new THREE.Group();
   for (let k = 0; k <= N; k++) { const sl = new THREE.Mesh(plane, k === 0 || k === N ? face : side); sl.position.z = D / 2 - D * k / N; logo.add(sl); }
   scene.add(logo);
+  // a flat face only mirrors one spot of the room, so a soft key light keeps the chrome silver at every angle
+  const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(-300, 400, 900); scene.add(key);
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8580, 1.1));
   const camera = new THREE.PerspectiveCamera(30, box.clientWidth / box.clientHeight, 1, 5000);
-  // the flat logo is exactly as wide as the header logo (132px, 112px on phones); the canvas around it is bigger so the
+  // the flat logo is 170px wide (140px on phones); the canvas around it is bigger so the
   // near end never gets cut while it turns
-  const logoPx = innerWidth <= 520 ? 112 : 132, half = W * box.clientWidth / logoPx / 2;
+  const logoPx = innerWidth <= 520 ? 140 : 170, half = W * box.clientWidth / logoPx / 2;
   camera.position.set(0, 0, half / Math.tan(THREE.MathUtils.degToRad(15)) / camera.aspect);
   box.prepend(renderer.domElement); box.classList.add('ready');
 
