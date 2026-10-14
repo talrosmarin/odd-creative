@@ -462,6 +462,27 @@ html.a11y-still .x-ic,html.a11y-still .x-ic *{animation:none!important}
 .x-list li:last-child .x-rail::before{bottom:50%}
 .x-list li:last-child .x-rail::after{height:calc(var(--fill,0) * 50%)}
 main.page .about-text > .about-sub{font-size:clamp(17px,1.6vw,20px);font-weight:600;color:var(--purple);margin-top:4px}
+/* From sketch to stage: the client's own sketch and the built stage in one frame, with a handle to drag between them.
+   Six projects from their Instagram (Clique and Friends, Life is Simple); tabs switch the pair */
+#sketch .ba-tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:clamp(32px,4vw,52px) auto 22px;direction:ltr}
+.ba-tab{border:1.5px solid rgba(94,43,140,.25);background:#fff;color:var(--purple);border-radius:999px;padding:9px 16px;font-size:12px;letter-spacing:.08em;cursor:pointer;transition:background-color .25s,color .25s,border-color .25s}
+.ba-tab[aria-pressed="true"]{background:linear-gradient(90deg,var(--purple),var(--pink));color:#fff;border-color:transparent}
+@media (hover:hover){.ba-tab:not([aria-pressed="true"]):hover{border-color:var(--purple)}}
+.ba{--pos:50%;position:relative;margin:0 auto;aspect-ratio:var(--ar);width:min(100%,780px,calc(68svh * (var(--ar))));border-radius:clamp(22px,2.6vw,34px);overflow:hidden;box-shadow:0 24px 60px rgba(46,16,72,.18);touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:ew-resize;background:#fff;direction:ltr}
+.ba img{display:block;width:100%;height:100%;pointer-events:none}
+.ba-photo{position:absolute;inset:0;object-fit:cover}
+.ba-sketch{position:absolute;inset:0;background:#fff;clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
+.ba-sketch img{object-fit:contain;padding:4%;box-sizing:border-box}
+.ba-handle{position:absolute;top:0;bottom:0;left:var(--pos);width:44px;margin-left:-22px;display:grid;place-items:center;outline:none;z-index:2}
+.ba-handle::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:#fff;box-shadow:0 0 0 1px rgba(94,43,140,.25)}
+.ba-handle span{position:relative;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--pink));box-shadow:0 6px 18px rgba(46,16,72,.35);border:2px solid #fff}
+.ba-handle span::before,.ba-handle span::after{content:"";position:absolute;top:50%;width:0;height:0;border:6px solid transparent;margin-top:-6px}
+.ba-handle span::before{left:6px;border-right-color:#fff}
+.ba-handle span::after{right:6px;border-left-color:#fff}
+.ba-handle:focus-visible span{box-shadow:0 0 0 4px rgba(217,115,159,.45)}
+.ba-label{position:absolute;top:14px;z-index:1;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:6px 12px;border-radius:999px;pointer-events:none}
+.ba-l{left:14px;background:rgba(94,43,140,.1);color:var(--purple)}
+.ba-r{right:14px;background:rgba(0,0,0,.35);color:#fff;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
@@ -708,6 +729,21 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
     <div class="x-rows" aria-hidden="true"><div class="x-row" data-dir="1"></div><div class="x-row" data-dir="-1"></div></div>
   </section>
 
+
+  <section id="sketch" class="x-light x-sheet" aria-label="מסקיצה לבמה">
+    <div class="wrap">
+      <span class="eyebrow en x-center" data-fade>Before &amp; after</span>
+      <h2 class="en x-huge x-center x-ink" data-fade style="--fy:40px">From sketch to stage</h2>
+      <p class="x-center x-sub" data-fade style="--fd:.1s">כל במה מתחילה בסקיצה על דף. גררו את הפס כדי לראות איך היא נראתה באירוע.</p>
+      <div class="ba-tabs" role="group" aria-label="בחירת פרויקט" data-fade style="--fd:.15s"><button type="button" class="ba-tab en" data-k="booth" data-ar="923/678" aria-pressed="true">EXOTIC BOOTH</button><button type="button" class="ba-tab en" data-k="pirates" data-ar="650/921" aria-pressed="false">PIRATES SHIP</button><button type="button" class="ba-tab en" data-k="simple" data-ar="923/916" aria-pressed="false">LIFE IS SIMPLE</button><button type="button" class="ba-tab en" data-k="pagoda" data-ar="923/513" aria-pressed="false">PAGODA</button><button type="button" class="ba-tab en" data-k="book" data-ar="923/1053" aria-pressed="false">FAIRYTALE BOOK</button><button type="button" class="ba-tab en" data-k="torii" data-ar="923/1053" aria-pressed="false">TORII GATE</button></div>
+      <div class="ba" id="ba" data-fade style="--fd:.2s;--ar:923/678">
+        <img class="ba-photo" src="img/sketch/booth-photo.jpg" alt="הבמה באירוע" draggable="false">
+        <div class="ba-sketch"><img src="img/sketch/booth-sketch.jpg" alt="הסקיצה" draggable="false"></div>
+        <span class="ba-label ba-l en">Sketch</span><span class="ba-label ba-r en">Stage</span>
+        <div class="ba-handle" role="slider" tabindex="0" aria-label="גררו כדי להשוות בין הסקיצה לבמה" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span></span></div>
+      </div>
+    </div>
+  </section>
 
   <section id="clients" class="x-dark x-sheet x-clients">
     <div class="wrap">
@@ -961,6 +997,33 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
   });
   new IntersectionObserver(es => { visible = es[0].isIntersecting; if (tl) visible ? tl.play() : tl.pause(); }).observe(fig);
   play(0);
+})();
+</script>
+<script>
+// From sketch to stage: drag (or arrow keys) to move the line; tabs switch projects; a short sweep shows how it works the first time it is seen
+(() => {
+  const ba = document.getElementById('ba'); if (!ba) return;
+  const handle = ba.querySelector('.ba-handle'), photo = ba.querySelector('.ba-photo'), sk = ba.querySelector('.ba-sketch img');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let pos = 50, drag = false, anim = null;
+  const set = p => { pos = Math.max(0, Math.min(100, p)); ba.style.setProperty('--pos', pos + '%'); handle.setAttribute('aria-valuenow', Math.round(pos)); };
+  const fromX = x => { const r = ba.getBoundingClientRect(); set((x - r.left) / r.width * 100); };
+  ba.addEventListener('pointerdown', e => { drag = true; if (anim) cancelAnimationFrame(anim); try { ba.setPointerCapture(e.pointerId); } catch (_) {} fromX(e.clientX); });
+  ba.addEventListener('pointermove', e => { if (drag) fromX(e.clientX); });
+  ba.addEventListener('pointerup', () => { drag = false; }); ba.addEventListener('pointercancel', () => { drag = false; });
+  handle.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') { e.preventDefault(); set(pos - 5); } if (e.key === 'ArrowRight') { e.preventDefault(); set(pos + 5); } });
+  function sweep() { if (still) return; const keys = [[0, 50], [600, 18], [1500, 82], [2200, 50]], t0 = performance.now();
+    const step = t => { const dt = t - t0; let i = 0; while (i < keys.length - 2 && dt > keys[i + 1][0]) i++;
+      const [ta, a] = keys[i], [tb, b] = keys[i + 1], k = Math.min(1, (dt - ta) / (tb - ta)), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+      set(a + (b - a) * e); if (dt < keys[keys.length - 1][0]) anim = requestAnimationFrame(step); };
+    anim = requestAnimationFrame(step); }
+  document.querySelectorAll('.ba-tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.ba-tab').forEach(o => o.setAttribute('aria-pressed', o === t ? 'true' : 'false'));
+    const k = t.dataset.k; ba.style.setProperty('--ar', t.dataset.ar);
+    photo.src = 'img/sketch/' + k + '-photo.jpg'; sk.src = 'img/sketch/' + k + '-sketch.jpg'; set(50); sweep();
+  }));
+  ['img/sketch/booth-photo.jpg','img/sketch/booth-sketch.jpg','img/sketch/pirates-photo.jpg','img/sketch/pirates-sketch.jpg','img/sketch/simple-photo.jpg','img/sketch/simple-sketch.jpg','img/sketch/pagoda-photo.jpg','img/sketch/pagoda-sketch.jpg','img/sketch/book-photo.jpg','img/sketch/book-sketch.jpg','img/sketch/torii-photo.jpg','img/sketch/torii-sketch.jpg'].forEach(src => { new Image().src = src; }); // listed in full so the publish script copies them
+  const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); setTimeout(sweep, 500); } }, { threshold: .5 }); io.observe(ba);
 })();
 </script>
 <script type="importmap">
