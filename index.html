@@ -483,6 +483,22 @@ main.page .about-text > .about-sub{font-size:clamp(17px,1.6vw,20px);font-weight:
 .ba-label{position:absolute;top:14px;z-index:1;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:6px 12px;border-radius:999px;pointer-events:none}
 .ba-l{left:14px;background:rgba(94,43,140,.1);color:var(--purple)}
 .ba-r{right:14px;background:rgba(0,0,0,.35);color:#fff;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+/* Reels: four short vertical clips like Instagram reels; each plays only while on screen, a tap opens the Instagram profile */
+#reels .x-huge{font-size:clamp(2rem,6.4vw,96px);text-transform:none;letter-spacing:-.01em}
+#reels .rl-sub{color:rgba(255,255,255,.85)}
+.rl-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(10px,1.4vw,18px);margin:clamp(40px,5vw,72px) auto 0;max-width:1080px;direction:ltr}
+.rl{position:relative;display:block;aspect-ratio:9/16;border-radius:clamp(18px,2vw,28px);overflow:hidden;background:rgba(255,255,255,.12);box-shadow:0 18px 40px rgba(46,16,72,.28);transition:transform .5s var(--ease-out),box-shadow .5s var(--ease-out)}
+.rl:nth-child(even){margin-top:clamp(18px,3vw,48px)}
+.rl video{width:100%;height:100%;object-fit:cover;display:block}
+.rl-ic{position:absolute;top:12px;right:12px;width:22px;height:22px;fill:none;stroke:#fff;stroke-width:1.6;stroke-linejoin:round;filter:drop-shadow(0 1px 3px rgba(0,0,0,.4))}
+@media (hover:hover){.rl:hover{transform:translateY(-6px);box-shadow:0 26px 50px rgba(46,16,72,.36)}}
+.rl-cta{text-align:center;margin-top:clamp(36px,4vw,56px)}
+@media (max-width:760px){
+  .rl-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:6px;margin-left:-16px;margin-right:-16px;padding-inline:16px;scrollbar-width:none}
+  .rl-row::-webkit-scrollbar{display:none}
+  .rl{flex:none;width:62vw;scroll-snap-align:center}
+  .rl:nth-child(even){margin-top:0}
+}
 /* fade-in on scroll (once) */
 [data-fade]{opacity:0;transform:translate3d(var(--fx,0),var(--fy,30px),0);transition:opacity .7s var(--ease-out) var(--fd,0s),transform .7s var(--ease-out) var(--fd,0s)}
 [data-fade].in{opacity:1;transform:none}
@@ -772,6 +788,16 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
     </div>
   </section>
 
+  <section id="reels" class="x-dark x-sheet" aria-label="אינסטגרם">
+    <div class="wrap">
+      <span class="eyebrow en x-center" data-fade>Instagram</span>
+      <h2 class="en x-huge x-center x-grad-dark" data-fade style="--fy:40px">@odd__creative</h2>
+      <p class="x-center x-sub rl-sub" data-fade style="--fd:.1s">מאחורי הקלעים, בנייה בסדנה ואירועים. הכל אצלנו באינסטגרם.</p>
+      <div class="rl-row"><a class="rl" href="https://www.instagram.com/odd__creative/" target="_blank" rel="noopener" aria-label="רילס של ODD באינסטגרם" data-fade style="--fd:0.00s"><video src="video/reel-1.mp4" muted loop playsinline preload="metadata"></video><svg class="rl-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M3 8.5h18M8.5 3l3 5.5M14 3l3 5.5"/><path d="M10 12v5l4.2-2.5z" fill="currentColor" stroke="none"/></svg></a><a class="rl" href="https://www.instagram.com/odd__creative/" target="_blank" rel="noopener" aria-label="רילס של ODD באינסטגרם" data-fade style="--fd:0.08s"><video src="video/reel-2.mp4" muted loop playsinline preload="metadata"></video><svg class="rl-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M3 8.5h18M8.5 3l3 5.5M14 3l3 5.5"/><path d="M10 12v5l4.2-2.5z" fill="currentColor" stroke="none"/></svg></a><a class="rl" href="https://www.instagram.com/odd__creative/" target="_blank" rel="noopener" aria-label="רילס של ODD באינסטגרם" data-fade style="--fd:0.16s"><video src="video/reel-3.mp4" muted loop playsinline preload="metadata"></video><svg class="rl-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M3 8.5h18M8.5 3l3 5.5M14 3l3 5.5"/><path d="M10 12v5l4.2-2.5z" fill="currentColor" stroke="none"/></svg></a><a class="rl" href="https://www.instagram.com/odd__creative/" target="_blank" rel="noopener" aria-label="רילס של ODD באינסטגרם" data-fade style="--fd:0.24s"><video src="video/reel-4.mp4" muted loop playsinline preload="metadata"></video><svg class="rl-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M3 8.5h18M8.5 3l3 5.5M14 3l3 5.5"/><path d="M10 12v5l4.2-2.5z" fill="currentColor" stroke="none"/></svg></a></div>
+      <div class="rl-cta" data-fade><a class="x-cta en" href="https://www.instagram.com/odd__creative/" target="_blank" rel="noopener">Follow us</a></div>
+    </div>
+  </section>
+
 </main>
 
 <main class="page" id="page-about" hidden>
@@ -1024,6 +1050,15 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
   }));
   ['img/sketch/booth-photo.jpg','img/sketch/booth-sketch.jpg','img/sketch/pirates-photo.jpg','img/sketch/pirates-sketch.jpg','img/sketch/simple-photo.jpg','img/sketch/simple-sketch.jpg','img/sketch/pagoda-photo.jpg','img/sketch/pagoda-sketch.jpg','img/sketch/book-photo.jpg','img/sketch/book-sketch.jpg','img/sketch/torii-photo.jpg','img/sketch/torii-sketch.jpg'].forEach(src => { new Image().src = src; }); // listed in full so the publish script copies them
   const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); setTimeout(sweep, 500); } }, { threshold: .5 }); io.observe(ba);
+})();
+</script>
+<script>
+// Reels: play only the clips that are on screen (saves battery and data); "stop animations" in the accessibility menu pauses them
+(() => {
+  const vids = [...document.querySelectorAll('.rl video')]; if (!vids.length) return;
+  const io = new IntersectionObserver(es => es.forEach(e => { const v = e.target;
+    if (e.isIntersecting && !document.documentElement.classList.contains('a11y-still')) v.play().catch(() => {}); else v.pause(); }), { threshold: .35 });
+  vids.forEach(v => io.observe(v));
 })();
 </script>
 <script type="importmap">
