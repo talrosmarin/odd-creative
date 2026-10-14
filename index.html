@@ -675,6 +675,10 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 .chip{font-size:12px}
 
 
+/* One title size everywhere: every card title on home and every page title matches "Let's create something ODD." */
+html #home > section h2.x-huge,html main.page .sec-head h2.en,html main.page .about-text > h2.en,html #catalogView .cat-head > h2.en{font-size:clamp(22px,3.4vw,34px);font-weight:700;letter-spacing:-.01em;line-height:.95}
+html .legal h2{font-size:clamp(22px,3.4vw,34px);font-weight:700}
+@media (min-width:900px) and (hover:hover){#home > section{display:flex;flex-direction:column;justify-content:center}}
 </style>
 </head>
 <body>
@@ -1363,8 +1367,13 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
   // and the Brands card is as tall as the Good questions card
   const cl=document.getElementById('clients'), fq=document.getElementById('faq');
   function matchClients(){ if(!cl||!fq||home.hidden) return; cl.style.minHeight=fq.offsetHeight+'px'; }
-  matchClients(); addEventListener('resize',matchClients); if(document.fonts) document.fonts.ready.then(matchClients); addEventListener('hashchange',()=>setTimeout(matchClients,60));
-  matchIntro(); addEventListener('resize',matchIntro); if(document.fonts) document.fonts.ready.then(matchIntro); addEventListener('hashchange',()=>setTimeout(matchIntro,60));
+  // On computers every home card is as tall as the tallest one, so the stacked slides all match (content centred).
+  // Phones keep the two pairs above: equal cards there would leave big empty gaps.
+  const wideScr=matchMedia('(min-width:900px) and (hover:hover)'), homeCards=[...document.querySelectorAll('#home > section')];
+  function equalSlides(){ if(home.hidden) return; homeCards.forEach(c=>c.style.minHeight=''); intro&&intro.style.removeProperty('--introh');
+    if(!wideScr.matches){ matchClients(); matchIntro(); return; }
+    const h=Math.max(...homeCards.map(c=>c.offsetHeight)); homeCards.forEach(c=>c.style.minHeight=h+'px'); }
+  equalSlides(); addEventListener('resize',equalSlides); if(document.fonts) document.fonts.ready.then(equalSlides); addEventListener('hashchange',()=>setTimeout(equalSlides,60));
   place(); addEventListener('resize',place); if('ResizeObserver' in window){ const ro=new ResizeObserver(place); decks.forEach(d=>d.forEach(el=>ro.observe(el))); }
   addEventListener('hashchange',()=>setTimeout(()=>{ place(); req(); },50));
   let ticking=false;
@@ -1385,7 +1394,7 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
         const p=Math.min(1,Math.max(0,1-nx.getBoundingClientRect().top/vh));
         el.style.setProperty('--sc',(1-.06*p).toFixed(4));
         el.style.setProperty('--dim',(.5*p).toFixed(3));
-        if(el.classList.contains('hero')&&mark){ el.style.setProperty('--ls',(1+.6*p).toFixed(3)); el.style.setProperty('--lo',Math.max(0,1-p*1.4).toFixed(3)); }
+        // (the hero logo no longer zooms or fades on scroll: after its intro it just stays put)
       });
     }
     if(film&&!still){
