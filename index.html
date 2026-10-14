@@ -667,7 +667,7 @@ footer .foot-apps svg{width:100%;height:100%;display:block}
 .filters,.logos{direction:ltr}
 .badge{align-self:flex-end}
 footer .en{text-align:center;font-size:12px}
-footer .logo3d{width:240px;height:110px;position:relative}
+footer .logo3d{width:132px;height:60px;position:relative} /* the same size as the logo in the header */
 footer .logo3d canvas{display:block;width:100%;height:100%}
 footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 .chip,.badge,.logos span{font-family:var(--display);font-weight:500}
@@ -1087,7 +1087,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
 </script>
 <script type="module">
-// 3D ODD logo in the footer: each 18px stroke of the wordmark becomes a chrome tube, spinning slowly.
+// 3D ODD logo in the footer: the real logo shape with thickness, matte black, spinning slowly.
 // three.js loads only when the footer comes near the screen, and rendering stops when it scrolls away.
 const box = document.getElementById('logo3d');
 const io = new IntersectionObserver(async ([e]) => {
@@ -1100,37 +1100,23 @@ io.observe(box);
 async function start() {
   const THREE = await import('three');
   const { RoomEnvironment } = await import('three/addons/environments/RoomEnvironment.js');
-  const R = 9, CX = 298, CY = 100;
-  const PATHS = ['M446 0V73Q446 93 426 93H372Q352 93 352 73V54Q352 34 372 34H446','M576 0V73Q576 93 556 93H502Q482 93 482 73V54Q482 34 502 34H576','M78 135H30Q7 135 7 158V167Q7 190 30 190H78','M97 197V137H140Q153 135 153 148V151Q153 164 140 164H97M140 164Q153 164 153 177V197','M234 135H177V190H234M177 162.5H228','M250 197L279 137H291L320 197M264 174H306','M336 135H402M369 135V197','M419 128V197','M443 128L477 189L511 128','M592 135H535V190H592M535 162.5H586'];
-  const v = (x, y) => new THREE.Vector3(x - CX, CY - y, 0);
-  const geos = [];
-  for (const d of PATHS) {             // absolute M/H/V/L/Q only, which is all the wordmark uses
-    const tok = d.match(/[MHVLQ]|-?\d*\.?\d+/g); let i = 0, x = 0, y = 0, cmd;
-    const n = () => parseFloat(tok[i++]);
-    const ball = p => geos.push(new THREE.SphereGeometry(R, 24, 12).translate(p.x, p.y, 0));
-    while (i < tok.length) {
-      if (/[MHVLQ]/.test(tok[i])) cmd = tok[i++];
-      const a = v(x, y);
-      if (cmd === 'M') { x = n(); y = n(); ball(v(x, y)); continue; }
-      if (cmd === 'H') x = n(); else if (cmd === 'V') y = n(); else if (cmd === 'L') { x = n(); y = n(); }
-      if (cmd === 'Q') { const c = v(n(), n()); x = n(); y = n(); geos.push(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(a, c, v(x, y)), 16, R, 24)); }
-      else geos.push(new THREE.TubeGeometry(new THREE.LineCurve3(a, v(x, y)), 1, R, 24));
-      ball(v(x, y));
-    }
-  }
-  const pts = [], r = 29.5, cy = 63.5;   // the top bar is a pill
-  for (let k = 0; k <= 30; k++) { const t = -Math.PI / 2 + Math.PI * k / 30; pts.push(v(291.5 + r * Math.cos(t), cy + r * Math.sin(t))); }
-  for (let k = 0; k <= 30; k++) { const t = Math.PI / 2 + Math.PI * k / 30; pts.push(v(38.5 + r * Math.cos(t), cy + r * Math.sin(t))); }
-  geos.push(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts, true, 'centripetal'), 200, R, 24, true));
-
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
   renderer.setSize(box.clientWidth, box.clientHeight);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   const scene = new THREE.Scene();
   scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
-  const mat = new THREE.MeshPhysicalMaterial({ color: 0xd8d8d8, metalness: 1, roughness: .14, clearcoat: 1 });
-  const logo = new THREE.Group(); geos.forEach(g => logo.add(new THREE.Mesh(g, mat))); scene.add(logo);
+  // The exact client logo (traced from the original file): its flat silhouette is stacked in thin slices to give it real
+  // thickness. Matte black faces, and slightly lighter slices in between so the depth shows while it turns.
+  const tex = await new THREE.TextureLoader().loadAsync('img/odd-logo-mask.png');
+  tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  const W = 600, H = W * 812 / 2404, D = 22, N = 36;
+  const plane = new THREE.PlaneGeometry(W, H);
+  const face = new THREE.MeshBasicMaterial({ map: tex, color: 0x161616, alphaTest: .5, side: THREE.DoubleSide, toneMapped: false });
+  const side = new THREE.MeshBasicMaterial({ map: tex, color: 0x3a3a3a, alphaTest: .5, side: THREE.DoubleSide, toneMapped: false });
+  const logo = new THREE.Group();
+  for (let k = 0; k <= N; k++) { const sl = new THREE.Mesh(plane, k === 0 || k === N ? face : side); sl.position.z = D / 2 - D * k / N; logo.add(sl); }
+  scene.add(logo);
   const camera = new THREE.PerspectiveCamera(30, box.clientWidth / box.clientHeight, 1, 5000);
   camera.position.set(0, 0, 330 / Math.tan(THREE.MathUtils.degToRad(15)) / camera.aspect + 40);
   box.prepend(renderer.domElement); box.classList.add('ready');
