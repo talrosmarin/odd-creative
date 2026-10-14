@@ -667,6 +667,8 @@ footer .foot-apps svg{width:100%;height:100%;display:block}
 .filters,.logos{direction:ltr}
 .badge{align-self:flex-end}
 footer .en{text-align:center;font-size:12px}
+footer .foot-legal{font-size:12px;line-height:1.7;margin:0;color:var(--muted)} footer .foot-credit{opacity:.75} /* copyright + site credit under the spinning logo */
+.x-sub.x-sub-light{color:rgba(255,255,255,.85)} /* subtitle on a purple card */
 footer .logo3d{width:284px;height:128px;margin:-26px -57px;position:relative} /* the logo inside is 170px wide; the extra canvas (taken back by the negative margin) leaves room to turn without being cut */
 footer .logo3d.ready::after{content:"";position:absolute;left:50%;bottom:26px;width:140px;height:12px;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(20,10,31,.16),transparent);pointer-events:none} /* soft shadow on the page, so it sits on the footer and doesn't look pasted */
 footer .logo3d canvas{display:block;width:100%;height:100%}
@@ -678,7 +680,8 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 /* One title size everywhere: every card title on home and every page title matches "Let's create something ODD." */
 html #home > section h2.x-huge,html main.page .sec-head h2.en,html main.page .about-text > h2.en,html #catalogView .cat-head > h2.en{font-size:clamp(22px,3.4vw,34px);font-weight:700;letter-spacing:-.01em;line-height:.95}
 html .legal h2{font-size:clamp(22px,3.4vw,34px);font-weight:700}
-@media (min-width:900px) and (hover:hover){#home > section{display:flex;flex-direction:column;justify-content:center}}
+/* every home card starts its content at the same height as the first white card, and all cards share one height */
+html #home > section[id]{display:flex;flex-direction:column;justify-content:flex-start;padding-top:clamp(80px,9vw,128px)}
 </style>
 </head>
 <body>
@@ -764,7 +767,7 @@ html .legal h2{font-size:clamp(22px,3.4vw,34px);font-weight:700}
     <div class="wrap x-intro-in">
       <span class="eyebrow en x-center" data-fade>Projects</span>
       <h2 class="en x-huge x-center x-grad-dark" data-fade style="--fy:40px">Our work</h2>
-      <p class="x-chars" data-chars>עיצוב ובנייה של חללים, אלמנטים וחוויות.</p>
+      <p class="x-chars">עיצוב ובנייה של חללים, אלמנטים וחוויות.</p>
     </div>
     <div class="cyl" id="cyl" aria-label="הפרויקטים שלנו. גוררים לצדדים כדי לסובב, לוחצים על פרויקט כדי לפתוח">
       <div class="cyl-ring" id="cyl-ring"></div>
@@ -791,6 +794,7 @@ html .legal h2{font-size:clamp(22px,3.4vw,34px);font-weight:700}
     <div class="wrap">
       <span class="eyebrow en x-center" data-fade>Clients</span>
       <h2 class="en x-huge x-center x-grad-dark" data-fade style="--fy:40px">Brands we worked with</h2>
+      <p class="x-center x-sub x-sub-light" data-fade style="--fd:.1s">השקות, אירועי חברה ופתיחות סניפים, למותגים שאוהבים לעשות דברים אחרת.</p>
     </div>
     <ul class="sr-only" aria-label="לקוחות"><li>GARMIN</li><li>BANANHOT</li><li>ADMAVEN</li><li>LILLET</li><li>CANDID</li><li>קניון TLV</li><li>CLIQUE</li><li>Playtika</li><li>Stay Wavy</li><li>RUDY PROJECT</li><li>OUR MANTRA</li><li>franui</li><li>DE APARTMENT</li><li>BALI</li><li>am:pm</li><li>:story</li><li>MAKE SENSE</li><li>TAMU</li><li>Wonderland</li><li>TRIPPERS</li><li>CONNECTION</li><li>OTENTI</li><li>BALANCE</li><li>better</li><li>AROUND THE SUN</li></ul>
     <div class="x-lmarq" aria-hidden="true"><div class="x-ltrack"><div class="x-lset"><img src="img/brands/garmin.png" alt="" style="--h:0.65" draggable="false"><img src="img/brands/symbol-o.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/bananhot.png" alt="" style="--h:0.59" draggable="false"><img src="img/brands/admaven.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/lillet.png" alt="" style="--h:0.64" draggable="false"><img src="img/brands/candid.png" alt="" style="--h:0.85" draggable="false"><img src="img/brands/kanyontlv.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/clique.png" alt="" style="--h:0.99" draggable="false"><img src="img/brands/playtika.png" alt="" style="--h:0.88" draggable="false"><img src="img/brands/staywavy.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/rudy.png" alt="" style="--h:0.76" draggable="false"><img src="img/brands/mantra.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/franui.png" alt="" style="--h:0.9" draggable="false"><img src="img/brands/symbol-angel.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/deapartment.png" alt="" style="--h:0.86" draggable="false"><img src="img/brands/bali.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/ampm.png" alt="" style="--h:1.13" draggable="false"><img src="img/brands/story.png" alt="" style="--h:0.85" draggable="false"><img src="img/brands/makesense.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/tamu.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/wonderland.png" alt="" style="--h:0.82" draggable="false"><img src="img/brands/trippers.png" alt="" style="--h:0.74" draggable="false"><img src="img/brands/connection.png" alt="" style="--h:0.81" draggable="false"><img src="img/brands/otenti.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/symbol-stripes.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/balance.png" alt="" style="--h:0.71" draggable="false"><img src="img/brands/better.png" alt="" style="--h:0.9" draggable="false"><img src="img/brands/aroundthesun.png" alt="" style="--h:0.83" draggable="false"></div><div class="x-lset"><img src="img/brands/garmin.png" alt="" style="--h:0.65" draggable="false"><img src="img/brands/symbol-o.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/bananhot.png" alt="" style="--h:0.59" draggable="false"><img src="img/brands/admaven.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/lillet.png" alt="" style="--h:0.64" draggable="false"><img src="img/brands/candid.png" alt="" style="--h:0.85" draggable="false"><img src="img/brands/kanyontlv.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/clique.png" alt="" style="--h:0.99" draggable="false"><img src="img/brands/playtika.png" alt="" style="--h:0.88" draggable="false"><img src="img/brands/staywavy.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/rudy.png" alt="" style="--h:0.76" draggable="false"><img src="img/brands/mantra.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/franui.png" alt="" style="--h:0.9" draggable="false"><img src="img/brands/symbol-angel.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/deapartment.png" alt="" style="--h:0.86" draggable="false"><img src="img/brands/bali.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/ampm.png" alt="" style="--h:1.13" draggable="false"><img src="img/brands/story.png" alt="" style="--h:0.85" draggable="false"><img src="img/brands/makesense.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/tamu.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/wonderland.png" alt="" style="--h:0.82" draggable="false"><img src="img/brands/trippers.png" alt="" style="--h:0.74" draggable="false"><img src="img/brands/connection.png" alt="" style="--h:0.81" draggable="false"><img src="img/brands/otenti.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/symbol-stripes.png" alt="" style="--h:1.3" draggable="false"><img src="img/brands/balance.png" alt="" style="--h:0.71" draggable="false"><img src="img/brands/better.png" alt="" style="--h:0.9" draggable="false"><img src="img/brands/aroundthesun.png" alt="" style="--h:0.83" draggable="false"></div></div></div>
@@ -804,6 +808,7 @@ html .legal h2{font-size:clamp(22px,3.4vw,34px);font-weight:700}
     <div class="wrap">
       <span class="eyebrow en x-center" data-fade>FAQ</span>
       <h2 class="en x-huge x-center x-ink" data-fade style="--fy:40px">Good questions</h2>
+      <p class="x-center x-sub" data-fade style="--fd:.1s">התשובות לשאלות ששואלים אותנו הכי הרבה.</p>
       <div class="faq">
         <details data-fade style="--fd:0.0s"><summary>באיזה אזורים אתם עובדים?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
         <details data-fade style="--fd:0.1s"><summary>כמה זמן מראש צריך להזמין?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
@@ -1014,6 +1019,7 @@ html .legal h2{font-size:clamp(22px,3.4vw,34px);font-weight:700}
     </div>
     <nav class="legal-links" aria-label="מידע משפטי"><a href="#privacy">מדיניות פרטיות</a> · <a href="#accessibility">הצהרת נגישות</a> · <a href="#cookies">מדיניות עוגיות</a></nav>
     <div class="logo3d" id="logo3d" role="img" aria-label="ODD CREATIVE"><span class="en">ODD CREATIVE · Let's create something ODD</span></div>
+    <p class="en foot-legal">© <span id="yr">2026</span> ODD CREATIVE. All rights reserved.<br><span class="foot-credit">Website by Tal Rosmarin</span></p>
   </div>
 </footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -1360,18 +1366,16 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
   if(mark) [...mark.children].slice(3).forEach((el,k)=>el.style.setProperty('--k',k));
   slides.forEach((el,i)=>{ el.style.zIndex=String(i+1); if(i<slides.length-1){ const sh=document.createElement('div'); sh.className='x-shade'; sh.setAttribute('aria-hidden','true'); el.appendChild(sh); } });
   decks.slice(1).forEach(d=>d.forEach((el,i)=>{ el.style.zIndex=String(i+1); }));
-  function place(){ const vh=innerHeight; decks.forEach(d=>d.forEach(el=>{ el.style.top=Math.min(0,vh-el.offsetHeight)+'px'; })); }
+  function place(){ const vh=innerHeight; decks.forEach(d=>d.forEach(el=>{ el.style.top=getComputedStyle(el).position==='sticky'?Math.min(0,vh-el.offsetHeight)+'px':''; })); } // only stuck cards get an offset; the last card scrolls normally, so no gap opens under it
   // the Let's create card is as tall as the first white card (Design. Plan. Build.)
   const proc=document.getElementById('process'), intro=document.getElementById('intro');
   function matchIntro(){ if(!proc||!intro||home.hidden) return; intro.style.removeProperty('--introh'); intro.style.setProperty('--introh',proc.offsetHeight+'px'); }
   // and the Brands card is as tall as the Good questions card
   const cl=document.getElementById('clients'), fq=document.getElementById('faq');
   function matchClients(){ if(!cl||!fq||home.hidden) return; cl.style.minHeight=fq.offsetHeight+'px'; }
-  // On computers every home card is as tall as the tallest one, so the stacked slides all match (content centred).
-  // Phones keep the two pairs above: equal cards there would leave big empty gaps.
+  // Every home card (computer and phone) is as tall as the tallest one; content starts at the top like the first card.
   const wideScr=matchMedia('(min-width:900px) and (hover:hover)'), homeCards=[...document.querySelectorAll('#home > section')];
   function equalSlides(){ if(home.hidden) return; homeCards.forEach(c=>c.style.minHeight=''); intro&&intro.style.removeProperty('--introh');
-    if(!wideScr.matches){ matchClients(); matchIntro(); return; }
     const h=Math.max(...homeCards.map(c=>c.offsetHeight)); homeCards.forEach(c=>c.style.minHeight=h+'px'); }
   equalSlides(); addEventListener('resize',equalSlides); if(document.fonts) document.fonts.ready.then(equalSlides); addEventListener('hashchange',()=>setTimeout(equalSlides,60));
   place(); addEventListener('resize',place); if('ResizeObserver' in window){ const ro=new ResizeObserver(place); decks.forEach(d=>d.forEach(el=>ro.observe(el))); }
@@ -1559,6 +1563,7 @@ window.addEventListener('scroll',hdrState,{passive:true});
 window.addEventListener('hashchange',()=>{route();hdrState();});route();hdrState();
 // the logo at the top (and "Home" in the menu) always goes back to the opening screen, from anywhere
 function goHome(e){ e.preventDefault(); if(typeof setMenu==='function') setMenu(false); if(location.hash&&location.hash!=='#top'){ location.hash='#top'; } jumpTo(0); }
+(document.getElementById('yr')||{}).textContent=new Date().getFullYear();
 document.querySelectorAll('header .logo, #menu .logo, #menu a[href="#top"]').forEach(a=>a.addEventListener('click',goHome));
 
 // contact form: the browser checks name + phone are filled, then the form is swapped for the thank-you (sending comes later)
