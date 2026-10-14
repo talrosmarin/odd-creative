@@ -346,6 +346,15 @@ header .bar > .logo{transition:opacity .3s}
 .x-intro-in{gap:22px}
 #intro .x-chars{font-size:17px;font-weight:400;line-height:1.65;max-width:560px}
 #intro .x-rows{margin-top:clamp(48px,6vw,90px)}
+/* Our work: a corridor of work photos riding toward the viewer on two rails (adapted from the "image stream hero").
+   The box keeps the exact height the two photo rows had, so the card does not change size. */
+#intro .x-corr{display:block;position:relative;overflow:hidden;container-type:inline-size;height:calc(clamp(240px,29vw,420px) * 270 / 420 * 2 + 12px)}
+.x-corr-p,.x-corr-3d{position:absolute;inset:0;pointer-events:none}
+.x-corr-3d{transform-style:preserve-3d}
+.x-cc{position:absolute;left:50%;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;will-change:transform}
+.x-cc img{width:100%;height:100%;object-fit:cover;display:block}
+.x-corr.off .x-cc,html.a11y-still .x-cc{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){.x-cc{animation-play-state:paused}}
 /* inner pages (menu items + catalog): the same cards as the home page.
    The page is the brand gradient, every part is a card with rounded top corners that slides over the one before it.
    First card white, the next one in the gradient, and so on. Titles big and centered, like on the home page */
@@ -754,7 +763,7 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
       <h2 class="en x-huge x-center x-grad-dark" data-fade style="--fy:40px">Our work</h2>
       <p class="x-chars" data-chars>עיצוב ובנייה של חללים, אלמנטים וחוויות.</p>
     </div>
-    <div class="x-rows" aria-hidden="true"><div class="x-row" data-dir="1"></div><div class="x-row" data-dir="-1"></div></div>
+    <div class="x-rows x-corr" aria-hidden="true"></div>
   </section>
 
 
@@ -1284,6 +1293,38 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
   const rows=[...document.querySelectorAll('.x-row')], half=Math.ceil(projects.length/2);
   rows.forEach((r,k)=>{ const set=(k?projects.slice(half):projects.slice(0,half)).map(p=>`<img src="${p.img}" alt="" loading="lazy" draggable="false">`).join(''); r.innerHTML=set+set+set; });
   const rowsBox=document.querySelector('.x-rows');
+
+  // 2b. Our work corridor: cards are born small at the centre and fly outward toward the viewer on two mirrored rails.
+  // Depth grows geometrically in on-screen size so the ribbon never tears; the newest card is born across the axis so the
+  // centre never opens. Lengths are cqw (percent of the box width), and the exit size is capped to the box height.
+  (function(){
+    const box=document.querySelector('#intro .x-corr'); if(!box||!projects.length) return;
+    const P={perspective:30,cardWidth:18,cardHeight:25,cardRadius:1.1,birthHeight:2.6,railBirth:-13,fan:3.3,turnBirth:6,turnExit:28,stops:24}, N=9, SPEED=18;
+    const pane=document.createElement('div'), deck=document.createElement('div'), sheet=document.createElement('style');
+    pane.className='x-corr-p'; deck.className='x-corr-3d'; pane.appendChild(deck); box.appendChild(pane); document.head.appendChild(sheet);
+    const kf=(dir,name,p)=>{ const st=[]; for(let k=0;k<=p.stops;k++){ const u=k/p.stops;
+      const sc=(p.birthHeight/p.cardHeight)*Math.pow(p.exitHeight/p.birthHeight,u), z=p.perspective*(1-1/sc);
+      const rail=p.railExit-(p.railExit-p.railBirth)*Math.pow(1-u,p.fan), turn=p.turnBirth+(p.turnExit-p.turnBirth)*u;
+      st.push((u*100).toFixed(2)+'%{transform:translate3d('+(dir*rail).toFixed(2)+'cqw,0,'+z.toFixed(2)+'cqw) rotateY('+(-dir*turn).toFixed(2)+'deg)}'); }
+      return '@keyframes '+name+'{'+st.join('')+'}'; };
+    let lastExit=0;
+    function shape(){
+      const w=box.clientWidth, h=box.clientHeight; if(!w) return;
+      const exit=Math.min(46,h/w*100*0.92); if(Math.abs(exit-lastExit)<0.5) return; lastExit=exit;
+      const sc=exit/P.cardHeight, p={...P,exitHeight:exit,railExit:Math.max(44,52/sc+P.cardWidth/2+2)};
+      sheet.textContent=kf(1,'xcR',p)+kf(-1,'xcL',p);
+    }
+    shape();
+    pane.style.perspective=P.perspective+'cqw'; pane.style.perspectiveOrigin='50% 50%';
+    ['xcR','xcL'].forEach((name,side)=>{ for(let i=0;i<N;i++){
+      const c=document.createElement('div'), pr=projects[(i+side*N)%projects.length];
+      c.className='x-cc';
+      c.style.cssText='top:50%;width:'+P.cardWidth+'cqw;height:'+P.cardHeight+'cqw;margin-left:'+(-P.cardWidth/2)+'cqw;margin-top:'+(-P.cardHeight/2)+'cqw;border-radius:'+P.cardRadius+'cqw;animation:'+name+' '+SPEED+'s linear infinite;animation-delay:'+(-(i*SPEED)/N)+'s';
+      c.innerHTML='<img src="'+pr.img+'" alt="" loading="lazy" decoding="async" draggable="false">';
+      deck.appendChild(c); } });
+    let rt; addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(shape,200); });
+    new IntersectionObserver(es=>box.classList.toggle('off',!es[0].isIntersecting)).observe(box);
+  })();
 
   // 3. the intro line lights up letter by letter as it moves up the screen (words stay whole)
   const chars=[];
