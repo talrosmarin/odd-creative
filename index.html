@@ -154,7 +154,11 @@ main > section + section::before{content:"";position:absolute;left:0;right:0;top
 @media (max-width:640px){.cyl{height:360px}}
 .cyl-ring{position:relative;transform-style:preserve-3d;will-change:transform}
 .face{position:absolute;inset:0;margin:0;padding:6px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.face .card{position:relative;width:100%;height:100%;border-radius:8px;overflow:hidden;box-shadow:0 14px 30px rgba(40,20,60,.22);pointer-events:none}
+.face{display:flex;flex-direction:column}
+.face .card{position:relative;width:100%;flex:1;min-height:0;border-radius:8px;overflow:hidden;box-shadow:0 14px 30px rgba(40,20,60,.22);pointer-events:none}
+.face .fcap{flex:none;height:52px;padding-top:10px;color:#fff;text-align:center;display:flex;flex-direction:column;gap:2px;pointer-events:none} /* caption under the photo, part of the turning face */
+.face .fcap h3{font-size:15px;font-weight:700;margin:0;line-height:1.2}.face .fcap h3.en{font-size:13px;font-weight:500;text-align:center}
+.face .fcap p{font-size:12px;opacity:.8;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .face img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .face .cap{position:absolute;left:0;right:0;bottom:0;padding:14px;background:linear-gradient(to top,rgba(30,12,48,.8),rgba(30,12,48,0));color:#fff;display:flex;flex-direction:column;gap:3px}
 .face h3{font-size:16px;font-weight:700}
@@ -479,6 +483,7 @@ main.page .about-text > .about-sub{font-size:clamp(17px,1.6vw,20px);font-weight:
 /* From sketch to stage: the client's own sketch and the built stage in one frame, with a handle to drag between them.
    Six projects from their Instagram (Clique and Friends, Life is Simple); tabs switch the pair */
 #sketch .ba{margin-top:clamp(32px,4vw,52px)}
+#sketch .ba + .ba{margin-top:16px} /* second project right under the first */
 .ba{--pos:50%;position:relative;margin:0 auto;aspect-ratio:var(--ar);width:min(100%,780px,calc(68svh * (var(--ar))));border-radius:clamp(22px,2.6vw,34px);overflow:hidden;box-shadow:0 24px 60px rgba(46,16,72,.18);touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:ew-resize;background:#fff;direction:ltr}
 .ba img{display:block;width:100%;height:100%;pointer-events:none}
 .ba-photo{position:absolute;inset:0;object-fit:cover}
@@ -685,6 +690,17 @@ html .legal h2{font-size:clamp(22px,3.4vw,34px);font-weight:700}
 #intro .x-chars{color:rgba(255,255,255,.85)}
 /* every home card starts its content at the same height as the first white card, and all cards share one height */
 html #home > section[id]{display:flex;flex-direction:column;justify-content:flex-start;padding-top:clamp(80px,9vw,128px);padding-bottom:clamp(80px,9vw,128px)}
+/* Events: a row of vertical videos that play while on screen (temporary clips for now) */
+.ev-row{display:grid;grid-template-columns:repeat(4,auto);justify-content:center;gap:14px;margin-top:clamp(32px,4vw,52px);direction:ltr} /* two rows of four */
+.ev{margin:0;flex:none;height:var(--evh,clamp(260px,34vw,420px));aspect-ratio:9/16;border-radius:18px;overflow:hidden;background:#140a1f;box-shadow:0 18px 40px rgba(46,16,72,.18)}
+.ev video{width:100%;height:100%;object-fit:cover;display:block}
+@media (max-width:640px){.ev-row{display:flex;justify-content:flex-start;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 16px;margin-inline:-16px}.ev-row::-webkit-scrollbar{display:none}.ev{scroll-snap-align:center;height:min(58vh,420px)}}
+/* FAQ on purple (it now follows the white Events card) */
+#faq.x-dark details{border-color:rgba(255,255,255,.22)!important}
+#faq.x-dark summary{color:#fff}
+#faq.x-dark summary::after{border-color:rgba(255,255,255,.45);background:linear-gradient(#fff,#fff) center/12px 1.5px no-repeat,linear-gradient(#fff,#fff) center/1.5px 12px no-repeat}
+#faq.x-dark details[open] summary::after{background-color:rgba(255,255,255,.16)}
+#faq.x-dark details p{color:rgba(255,255,255,.85)}
 </style>
 </head>
 <body>
@@ -790,6 +806,12 @@ html #home > section[id]{display:flex;flex-direction:column;justify-content:flex
         <span class="ba-label ba-l en">Sketch</span><span class="ba-label ba-r en">Stage</span>
         <div class="ba-handle" role="slider" tabindex="0" aria-label="גררו כדי להשוות בין הסקיצה לבמה" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span></span></div>
       </div>
+      <div class="ba" id="ba2" data-fade style="--fd:.3s;--ar:923/513">
+        <img class="ba-photo" src="img/sketch/pagoda-photo.jpg" alt="הבמה באירוע" draggable="false">
+        <div class="ba-sketch"><img src="img/sketch/pagoda-sketch.jpg" alt="הסקיצה" draggable="false"></div>
+        <span class="ba-label ba-l en">Sketch</span><span class="ba-label ba-r en">Stage</span>
+        <div class="ba-handle" role="slider" tabindex="0" aria-label="גררו כדי להשוות בין הסקיצה לבמה" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span></span></div>
+      </div>
     </div>
   </section>
 
@@ -807,11 +829,20 @@ html #home > section[id]{display:flex;flex-direction:column;justify-content:flex
   </section>
 
 
-  <section id="faq" class="x-light x-sheet x-faq">
+  <section id="events" class="x-light x-sheet" aria-label="אירועים">
+    <div class="wrap">
+      <span class="eyebrow en x-center" data-fade>Events</span>
+      <h2 class="en x-huge x-center x-ink" data-fade style="--fy:40px">Moments we built</h2>
+      <p class="x-center x-sub" data-fade style="--fd:.1s">אירועים, השקות וסרטוני תדמית. ככה זה נראה בשטח.</p>
+      <div class="ev-row" data-fade style="--fd:.2s"><!-- temporary clips until the real event and brand videos arrive --><figure class="ev"><video src="video/reel-1.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-2.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-3.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-4.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-3.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-4.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-1.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-2.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure></div>
+    </div>
+  </section>
+
+  <section id="faq" class="x-dark x-sheet x-faq">
     <div class="wrap">
       <span class="eyebrow en x-center" data-fade>FAQ</span>
-      <h2 class="en x-huge x-center x-ink" data-fade style="--fy:40px">Good questions</h2>
-      <p class="x-center x-sub" data-fade style="--fd:.1s">התשובות לשאלות ששואלים אותנו הכי הרבה.</p>
+      <h2 class="en x-huge x-center x-grad-dark" data-fade style="--fy:40px">Good questions</h2>
+      <p class="x-center x-sub x-sub-light" data-fade style="--fd:.1s">התשובות לשאלות ששואלים אותנו הכי הרבה.</p>
       <div class="faq">
         <details data-fade style="--fd:0.0s"><summary>באיזה אזורים אתם עובדים?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
         <details data-fade style="--fd:0.1s"><summary>כמה זמן מראש צריך להזמין?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
@@ -1054,8 +1085,7 @@ html #home > section[id]{display:flex;flex-direction:column;justify-content:flex
 </script>
 <script>
 // From sketch to stage: drag (or arrow keys) to move the line; tabs switch projects; a short sweep shows how it works the first time it is seen
-(() => {
-  const ba = document.getElementById('ba'); if (!ba) return;
+document.querySelectorAll('#sketch .ba').forEach(ba => {
   const handle = ba.querySelector('.ba-handle'), photo = ba.querySelector('.ba-photo'), sk = ba.querySelector('.ba-sketch img');
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let pos = 50, drag = false, anim = null;
@@ -1071,7 +1101,7 @@ html #home > section[id]{display:flex;flex-direction:column;justify-content:flex
       set(a + (b - a) * e); if (dt < keys[keys.length - 1][0]) anim = requestAnimationFrame(step); };
     anim = requestAnimationFrame(step); }
   const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); setTimeout(sweep, 500); } }, { threshold: .5 }); io.observe(ba);
-})();
+});
 </script>
 <script>
 // Reels: play only the clips that are on screen (saves battery and data); "stop animations" in the accessibility menu pauses them
@@ -1081,6 +1111,13 @@ html #home > section[id]{display:flex;flex-direction:column;justify-content:flex
     if (e.isIntersecting && !document.documentElement.classList.contains('a11y-still')) v.play().catch(() => {}); else v.pause(); }), { threshold: .35 });
   vids.forEach(v => io.observe(v));
 })();
+</script>
+<script>
+// Events: each clip plays only while it is on screen; "stop animations" or reduced motion keeps them still
+(() => { const vids=[...document.querySelectorAll('#events video')]; if(!vids.length) return;
+  const still=()=>matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.contains('a11y-still');
+  const io=new IntersectionObserver(es=>es.forEach(e=>{ const v=e.target; if(e.isIntersecting&&!still()) v.play().catch(()=>{}); else v.pause(); }),{threshold:.35});
+  vids.forEach(v=>io.observe(v)); })();
 </script>
 <script type="importmap">
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
@@ -1293,14 +1330,19 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
     const box=document.getElementById('cyl'), ring=document.getElementById('cyl-ring'), lb=document.getElementById('lightbox');
     document.body.appendChild(lb);
     const card=p=>`<div class="card"><img src="${p.img}" alt="${p.t}" loading="lazy" draggable="false"><div class="cap"><h3 ${/^[A-Za-z]/.test(p.t)?'class="en"':''}>${p.t}</h3><p>${p.d}</p></div></div>`;
+    const faceCard=p=>`<div class="card"><img src="${p.img}" alt="${p.t}" loading="lazy" draggable="false"></div><div class="fcap"><h3 ${/^[A-Za-z]/.test(p.t)?'class="en"':''}>${p.t}</h3><p>${p.d}</p></div>`; // on the wheel the words sit under the photo and turn with it
     const list=projects.length>=12?projects:projects.concat(projects); // 12 faces like Xantiva (a second round only if there are fewer works)
-    ring.innerHTML=list.map((p,i)=>`<figure class="face" data-i="${i%projects.length}">${card(p)}</figure>`).join('');
+    ring.innerHTML=list.map((p,i)=>`<figure class="face" data-i="${i%projects.length}">${faceCard(p)}</figure>`).join('');
     const faces=[...ring.children], n=faces.length;
     const stillC=matchMedia('(prefers-reduced-motion: reduce)').matches;
     let angle=0, vel=0, idle=stillC?0:-7, dragging=false, moved=0, px=0, lt=0, last=performance.now(), r=0, on=true;
+    const CAP=58; // room for the caption under each photo
     function build(){ window.cylBuild=build;
-      const base=(innerWidth<=640?1988:(innerWidth<=1024?3023:4050))/12, fw=Math.min(base*1.6,Math.max(base,box.clientHeight*.82/1.25)); r=fw*n/(2*Math.PI); // Xantiva face size, grown to fill a taller card
-      ring.style.width=fw+'px'; ring.style.height=(fw*1.25)+'px';
+      // the front card is nearer the viewer, so it shows bigger than its real size: pick the largest card whose
+      // on-screen size (photo + caption) still fits the box
+      const proj=w=>(w*1.25+CAP)*1000/(1000-.5667*w*n/(2*Math.PI)), base=(innerWidth<=640?1988:(innerWidth<=1024?3023:4050))/12;
+      let fw=base*1.6; while(fw>base*.6&&(proj(fw)>box.clientHeight*.94||fw*1000/(1000-.5667*fw*n/(2*Math.PI))>box.clientWidth*.55)) fw-=2; r=fw*n/(2*Math.PI);
+      ring.style.width=fw+'px'; ring.style.height=(fw*1.25+CAP)+'px'; // photo + the caption under it
       faces.forEach((f,i)=>{ f.style.transform='rotateY('+(i*360/n)+'deg) translateZ('+r+'px)'; });
       ring.style.transform='translateZ('+(-r*0.4333)+'px) rotateY('+angle+'deg)'; // right away, before the first frame
     }
@@ -1365,14 +1407,17 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
   // Fit: on computers every card is as tall as the tallest one, and the extra room goes INTO the content
   // (taller project wheel, bigger sketch viewer, more air around the logos, roomier questions), so no card ends in empty space.
   function equalSlides(){ if(home.hidden) return;
-    const cylB=document.getElementById('cyl'), ba=document.getElementById('ba'), sk=document.getElementById('sketch'),
+    const evC=document.getElementById('events'), evRow=document.querySelector('#events .ev-row'), cylB=document.getElementById('cyl'), bas=[...document.querySelectorAll('#sketch .ba')], sk=document.getElementById('sketch'),
       lm=document.querySelector('#clients .x-lmarq'), tm=document.querySelector('#clients .x-tmarq'), qs=[...document.querySelectorAll('#faq .faq details')];
     homeCards.forEach(c=>c.style.minHeight=''); intro&&intro.style.removeProperty('--introh');
-    if(cylB) cylB.style.height=''; if(ba){ ba.style.width=''; ba.style.marginLeft=ba.style.marginRight=''; } if(lm){ lm.style.marginTop=''; lm.style.removeProperty('--lb'); } if(tm) tm.style.marginTop=''; qs.forEach(q=>{ q.style.paddingTop=q.style.paddingBottom=''; });
+    if(cylB) cylB.style.height=''; bas.forEach(b=>{ b.style.width=''; b.style.marginLeft=b.style.marginRight=''; }); if(evRow) evRow.style.removeProperty('--evh'); if(lm){ lm.style.marginTop=''; lm.style.removeProperty('--lb'); } if(tm) tm.style.marginTop=''; qs.forEach(q=>{ q.style.paddingTop=q.style.paddingBottom=''; });
     if(wideScr.matches){
+      if(evRow) evRow.style.setProperty('--evh','200px');
+      bas.forEach(b=>{ b.style.width='200px'; }); // start the viewers small so the sketch card never sets the height; they grow into the room below
       const H=Math.max(...homeCards.map(c=>c.offsetHeight)); let room;
       room=H-intro.offsetHeight; if(cylB&&room>0){ cylB.style.height=(cylB.offsetHeight+room)+'px'; window.cylBuild&&cylBuild(); }
-      room=H-sk.offsetHeight; if(ba&&room>0){ const ar=ba.offsetWidth/ba.offsetHeight, w=Math.min(sk.clientWidth-80,(ba.offsetHeight+room)*ar); ba.style.width=w+'px'; ba.style.marginLeft=ba.style.marginRight='calc((100% - '+w+'px) / 2)'; } // may grow wider than the text column, always centred
+      room=H-sk.offsetHeight; if(bas.length&&room>0){ const hs=bas.reduce((t,b)=>t+b.offsetHeight,0), inv=bas.reduce((t,b)=>t+b.offsetHeight/b.offsetWidth,0), w=Math.min(sk.clientWidth-80,(hs+room)/inv); bas.forEach(b=>{ b.style.width=w+'px'; b.style.marginLeft=b.style.marginRight='calc((100% - '+w+'px) / 2)'; }); } // the viewers share one width and fill the card, centred
+      room=evC?H-evC.offsetHeight:0; if(evRow&&room>0){ const gap=14, h=(evRow.offsetHeight+room-gap)/2, maxH=((evC.clientWidth-80)-gap*3)/4*16/9; evRow.style.setProperty('--evh',Math.min(h,maxH)+'px'); } // two rows of four videos fill the card
       room=H-cl.offsetHeight; if(lm&&room>0){ const lb=parseFloat(getComputedStyle(lm.querySelector('img')).height)/parseFloat(lm.querySelector('img').style.getPropertyValue('--h')); lm.style.setProperty('--lb',Math.min(lb*2.1,lb+room*.2)+'px'); } // bigger logos first
       room=H-cl.offsetHeight; if(lm&&tm&&room>0){ lm.style.marginTop=(parseFloat(getComputedStyle(lm).marginTop)+room/2)+'px'; tm.style.marginTop=(parseFloat(getComputedStyle(tm).marginTop)+room/2)+'px'; }
       room=H-fq.offsetHeight; if(qs.length&&room>0){ qs.forEach(q=>{ const pt=parseFloat(getComputedStyle(q).paddingTop); q.style.paddingTop=q.style.paddingBottom=(pt+room/qs.length/2)+'px'; }); }
