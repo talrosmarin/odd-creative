@@ -801,7 +801,7 @@ html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width
   <section id="sketch" class="x-light x-sheet" aria-label="מסקיצה לבמה">
     <div class="wrap">
       <span class="eyebrow en x-center" data-fade>Before &amp; after</span>
-      <h2 class="en x-huge x-center x-ink" data-fade style="--fy:40px">From sketch to stage</h2>
+      <h2 class="en x-huge x-center x-ink" data-fade style="--fy:40px">From sketch to reality</h2>
       <p class="x-center x-sub" data-fade style="--fd:.1s">מסקיצה על דף לבמה אמיתית. גררו את הפס.</p>
       <div class="ba" id="ba" data-fade style="--fd:.2s;--ar:923/678">
         <img class="ba-photo" src="img/sketch/booth-photo.jpg" alt="הבמה באירוע" draggable="false">
@@ -809,7 +809,7 @@ html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width
         <span class="ba-label ba-l en">Sketch</span><span class="ba-label ba-r en">Stage</span>
         <div class="ba-handle" role="slider" tabindex="0" aria-label="גררו כדי להשוות בין הסקיצה לבמה" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span></span></div>
       </div>
-      <div class="ba" id="ba2" data-fade style="--fd:.3s;--ar:923/513">
+      <div class="ba" id="ba2" data-fade style="--fd:.3s;--ar:923/678">
         <img class="ba-photo" src="img/sketch/pagoda-photo.jpg" alt="הבמה באירוע" draggable="false">
         <div class="ba-sketch"><img src="img/sketch/pagoda-sketch.jpg" alt="הסקיצה" draggable="false"></div>
         <span class="ba-label ba-l en">Sketch</span><span class="ba-label ba-r en">Stage</span>
@@ -1409,21 +1409,26 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
   const wideScr=matchMedia('(min-width:900px) and (hover:hover)'), homeCards=[...document.querySelectorAll('#home > section')];
   // Fit: on computers every card is as tall as the tallest one, and the extra room goes INTO the content
   // (taller project wheel, bigger sketch viewer, more air around the logos, roomier questions), so no card ends in empty space.
+  // Fit (computers): every card is exactly as tall as "Good questions" at its natural size. Inside each other card the
+  // content grows or shrinks to fit that height: the steps list scales, the project wheel, the sketch viewer and the
+  // event videos resize, and the logos get more or less air. No card ends in empty space.
   function equalSlides(){ if(home.hidden) return;
     const evC=document.getElementById('events'), evRow=document.querySelector('#events .ev-row'), cylB=document.getElementById('cyl'), bas=[...document.querySelectorAll('#sketch .ba')], sk=document.getElementById('sketch'),
-      lm=document.querySelector('#clients .x-lmarq'), tm=document.querySelector('#clients .x-tmarq'), qs=[...document.querySelectorAll('#faq .faq details')];
-    homeCards.forEach(c=>c.style.minHeight=''); intro&&intro.style.removeProperty('--introh');
-    if(cylB) cylB.style.height=''; bas.forEach(b=>{ b.style.width=''; b.style.marginLeft=b.style.marginRight=''; }); if(evRow) evRow.style.removeProperty('--evh'); if(lm){ lm.style.marginTop=''; lm.style.removeProperty('--lb'); } if(tm) tm.style.marginTop=''; qs.forEach(q=>{ q.style.paddingTop=q.style.paddingBottom=''; });
+      lm=document.querySelector('#clients .x-lmarq'), tm=document.querySelector('#clients .x-tmarq'), steps=document.querySelector('#process .x-steps');
+    homeCards.forEach(c=>{ c.style.minHeight=''; c.style.height=''; }); intro&&intro.style.removeProperty('--introh');
+    if(cylB) cylB.style.height=''; bas.forEach(b=>{ b.style.width=''; b.style.marginLeft=b.style.marginRight=''; }); if(evRow) evRow.style.removeProperty('--evh');
+    if(lm){ lm.style.marginTop=''; lm.style.removeProperty('--lb'); } if(tm) tm.style.marginTop=''; if(steps) steps.style.zoom='';
     if(wideScr.matches){
-      if(evRow) evRow.style.setProperty('--evh','200px');
-      bas.forEach(b=>{ b.style.width='200px'; }); // start the viewers small so the sketch card never sets the height; they grow into the room below
-      const H=Math.max(...homeCards.map(c=>c.offsetHeight)); let room;
-      room=H-intro.offsetHeight; if(cylB&&room>0){ cylB.style.height=(cylB.offsetHeight+room)+'px'; window.cylBuild&&cylBuild(); }
-      room=H-sk.offsetHeight; if(bas.length&&room>0){ const hs=bas.reduce((t,b)=>t+b.offsetHeight,0), inv=bas.reduce((t,b)=>t+b.offsetHeight/b.offsetWidth,0), w=Math.min(sk.clientWidth-80,(hs+room)/inv); bas.forEach(b=>{ b.style.width=w+'px'; b.style.marginLeft=b.style.marginRight='calc((100% - '+w+'px) / 2)'; }); } // the viewers share one width and fill the card, centred
-      room=evC?H-evC.offsetHeight:0; if(evRow&&room>0){ const gap=14, h=(evRow.offsetHeight+room-gap)/2, maxH=((evC.clientWidth-80)-gap*3)/4*16/9; evRow.style.setProperty('--evh',Math.min(h,maxH)+'px'); } // two rows of four videos fill the card
-      room=H-cl.offsetHeight; if(lm&&room>0){ const lb=parseFloat(getComputedStyle(lm.querySelector('img')).height)/parseFloat(lm.querySelector('img').style.getPropertyValue('--h')); lm.style.setProperty('--lb',Math.min(lb*2.1,lb+room*.2)+'px'); } // bigger logos first
-      room=H-cl.offsetHeight; if(lm&&tm&&room>0){ lm.style.marginTop=(parseFloat(getComputedStyle(lm).marginTop)+room/2)+'px'; tm.style.marginTop=(parseFloat(getComputedStyle(tm).marginTop)+room/2)+'px'; }
-      room=H-fq.offsetHeight; if(qs.length&&room>0){ qs.forEach(q=>{ const pt=parseFloat(getComputedStyle(q).paddingTop); q.style.paddingTop=q.style.paddingBottom=(pt+room/qs.length/2)+'px'; }); }
+      if(evRow) evRow.style.setProperty('--evh','200px'); bas.forEach(b=>{ b.style.width='200px'; }); if(cylB) cylB.style.height='240px'; // start small, then grow into the room
+      const H=fq.offsetHeight; let room;
+      if(steps){ const pb=parseFloat(getComputedStyle(proc).paddingBottom); let z=1; // scale the steps list until it ends exactly at the card's bottom margin
+        for(let k=0;k<4;k++){ const r=steps.getBoundingClientRect(), top=proc.getBoundingClientRect().top, free=(top+H-pb)-r.bottom; if(Math.abs(free)<1) break; z=Math.max(.55,Math.min(1.3,z*(r.height+free)/r.height)); steps.style.zoom=z; } }
+      room=H-intro.offsetHeight; if(cylB){ cylB.style.height=Math.max(240,cylB.offsetHeight+room)+'px'; window.cylBuild&&cylBuild(); }
+      room=H-sk.offsetHeight; if(bas.length&&room>0){ const hs=bas.reduce((t,b)=>t+b.offsetHeight,0), inv=bas.reduce((t,b)=>t+b.offsetHeight/b.offsetWidth,0), w=Math.min(sk.clientWidth-80,(hs+room)/inv); bas.forEach(b=>{ b.style.width=w+'px'; b.style.marginLeft=b.style.marginRight='calc((100% - '+w+'px) / 2)'; }); }
+      room=evC?H-evC.offsetHeight:0; if(evRow&&room>0){ const gap=14, h=(evRow.offsetHeight+room-gap)/2, maxH=((evC.clientWidth-80)-gap*3)/4*16/9; evRow.style.setProperty('--evh',Math.min(h,maxH)+'px'); }
+      room=H-cl.offsetHeight; if(lm&&room>0){ const lb=parseFloat(getComputedStyle(lm.querySelector('img')).height)/parseFloat(lm.querySelector('img').style.getPropertyValue('--h')); lm.style.setProperty('--lb',Math.min(lb*2.1,lb+room*.2)+'px'); }
+      room=H-cl.offsetHeight; if(lm&&tm&&room){ lm.style.marginTop=Math.max(16,parseFloat(getComputedStyle(lm).marginTop)+room/2)+'px'; tm.style.marginTop=Math.max(16,parseFloat(getComputedStyle(tm).marginTop)+room/2)+'px'; }
+      homeCards.forEach(c=>{ if(c===fq) c.style.minHeight=H+'px'; else c.style.height=H+'px'; }); return; // exactly the Good questions height (it may still grow when a question is opened)
     }
     const h=Math.max(...homeCards.map(c=>c.offsetHeight)); homeCards.forEach(c=>c.style.minHeight=h+'px'); }
   equalSlides(); addEventListener('resize',equalSlides); if(document.fonts) document.fonts.ready.then(equalSlides); addEventListener('hashchange',()=>setTimeout(equalSlides,60));
