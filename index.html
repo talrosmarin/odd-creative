@@ -385,7 +385,7 @@ main.page .about-text .bts{justify-content:center}
 #work.x-light .gc:focus-visible{outline-color:var(--purple)}
 #work.x-light .gc-bg{opacity:.45}
 /* menu words: the same type as the big section titles ("Design. Plan. Build."): Panchang extra bold, uppercase, tight, purple-to-pink from left to right */
-.menu a.mitem{font-weight:800;letter-spacing:-.02em;line-height:.95;white-space:nowrap;font-size:clamp(30px,8.6vw,62px);padding:clamp(16px,2.4vw,24px) 0}
+.menu a.mitem{font-weight:500;letter-spacing:0;line-height:1;white-space:nowrap;font-size:clamp(24px,6vw,40px);padding:clamp(16px,2.4vw,24px) 0} /* lighter and smaller: a calmer menu */
 .menu a.mitem span,.menu a.mitem b{background-image:linear-gradient(90deg,var(--purple),var(--pink));background-repeat:no-repeat;background-size:var(--gw,100%) 100%;background-position:var(--gx,0) 0}
 /* menu panel = the same cream as behind the spinning 3D footer logo (--paper); menu words back to plain black */
 .menu{background:var(--paper)} .menu-curve{fill:var(--paper)}
@@ -879,7 +879,8 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
   <section class="sec-contact">
     <div class="wrap">
       <div class="sec-head">
-        <h2 data-fade class="en">Contact</h2>
+        <span class="eyebrow en">Contact</span>
+        <h2 data-fade class="en">Get in touch</h2>
         <p class="muted">ספרו לנו על האירוע, ונחזור אליכם.</p>
       </div>
       <!-- lead form: for now it only shows the thank-you; where it sends (email / WhatsApp) is decided later -->
