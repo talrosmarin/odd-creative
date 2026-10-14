@@ -438,12 +438,12 @@ html.a11y-still .x-ltrack{animation:none!important}
 .x-lmarq,.x-tmarq{touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}.x-lmarq.drag,.x-tmarq.drag{cursor:grabbing}
 .x-tset{display:flex;gap:12px;padding-right:12px}
 @keyframes x-tmarq{to{transform:translateX(-50%)}}
-.x-tcard{flex:none;width:300px;min-height:var(--tch,0px);box-sizing:border-box;border-radius:26px;padding:20px 22px;color:#fff;background:rgba(255,255,255,.12);-webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);border:1px solid rgba(255,255,255,.4);box-shadow:inset 1px 1px 1px rgba(255,255,255,.55),inset -1px -1px 1px rgba(255,255,255,.18),inset 0 0 18px rgba(255,255,255,.12),0 10px 30px rgba(46,16,72,.18)}
-.x-tcard-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.x-tcard{flex:none;width:248px;min-height:var(--tch,0px);box-sizing:border-box;border-radius:22px;padding:16px 18px;color:#fff;background:rgba(255,255,255,.12);-webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);border:1px solid rgba(255,255,255,.4);box-shadow:inset 1px 1px 1px rgba(255,255,255,.55),inset -1px -1px 1px rgba(255,255,255,.18),inset 0 0 18px rgba(255,255,255,.12),0 10px 30px rgba(46,16,72,.18)}
+.x-tcard-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .x-tav{width:40px;height:40px;flex:none;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.22);font-family:var(--display);font-weight:800;font-size:16px}
 .x-tcard b{display:block;font-family:var(--display);font-weight:500;font-size:14px;letter-spacing:.04em;text-align:left}
 .x-tcard small{display:block;font-size:12px;opacity:.8;direction:rtl;text-align:left}
-.x-tcard p{margin:0;direction:rtl;text-align:right;font-size:15px;line-height:1.6}
+.x-tcard p{margin:0;direction:rtl;text-align:right;font-size:14px;line-height:1.55}
 @media (prefers-reduced-motion:reduce){.x-ttrack{animation:none}.x-tmarq{overflow-x:auto}}
 html.a11y-still .x-ttrack{animation:none!important}
 /* How it works: a small animated icon in brand colors before each step title (bulb, pencil, hammer, truck) */
@@ -694,9 +694,10 @@ html .legal h2{font-size:clamp(22px,3.4vw,34px);font-weight:700}
 html #home > section[id]{display:flex;flex-direction:column;justify-content:flex-start;padding-top:clamp(80px,9vw,128px);padding-bottom:clamp(80px,9vw,128px)}
 /* Events: a row of vertical videos that play while on screen (temporary clips for now) */
 .ev-car{margin-top:clamp(28px,3.4vw,44px);direction:ltr}
-.ev-row{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding:0 2px;-webkit-overflow-scrolling:touch} /* one moving row: arrows, swipe and a slow auto-advance */
+.ev-row{position:relative;height:var(--evh,clamp(260px,34vw,380px));overflow:hidden;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none} /* endless row: arrows, swipe and a slow auto-advance; after the last clip comes the first */
+.ev-row.drag{cursor:grabbing}
 .ev-row::-webkit-scrollbar{display:none}
-.ev{margin:0;flex:none;scroll-snap-align:start;height:var(--evh,clamp(260px,34vw,380px));aspect-ratio:9/16;border-radius:18px;overflow:hidden;background:#140a1f;box-shadow:0 18px 40px rgba(46,16,72,.18)}
+.ev{position:absolute;left:0;top:0;margin:0;height:100%;aspect-ratio:9/16;border-radius:18px;overflow:hidden;background:#f3f2ef;will-change:transform}
 .ev video{width:100%;height:100%;object-fit:cover;display:block}
 html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width:100%;box-sizing:border-box} /* a card's content may never make the page wider than the screen */
 .ev-nav{display:flex;justify-content:center;gap:14px;margin-top:16px}
@@ -815,8 +816,8 @@ html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width
         <div class="ba-handle" role="slider" tabindex="0" aria-label="גררו כדי להשוות בין הסקיצה לבמה" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span></span></div>
       </div>
       <div class="ba" id="ba2" data-fade style="--fd:.3s;--ar:923/678">
-        <img class="ba-photo" src="img/sketch/pagoda-photo.jpg" alt="הבמה באירוע" draggable="false">
-        <div class="ba-sketch"><img src="img/sketch/pagoda-sketch.jpg" alt="הסקיצה" draggable="false"></div>
+        <img class="ba-photo" src="img/sketch/book-photo.jpg" alt="ספר האגדות עם הליין-אפ באירוע" draggable="false" style="object-position:50% 42%">
+        <div class="ba-sketch"><img src="img/sketch/book-sketch.jpg" alt="הסקיצה של ספר האגדות" draggable="false"></div>
         <span class="ba-label ba-l en">Sketch</span><span class="ba-label ba-r en">Stage</span>
         <div class="ba-handle" role="slider" tabindex="0" aria-label="גררו כדי להשוות בין הסקיצה לבמה" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span></span></div>
       </div>
@@ -1159,17 +1160,29 @@ document.querySelectorAll('#sketch .ba').forEach(ba => {
   if(tm) loop(tm, -38);  // reviews drift left
   dispatchEvent(new Event('resize')); // let the card fitting re-measure with the new strip layout
 })();
-// Events: a row of videos with arrows; it also moves on by itself every few seconds (pauses while you use it)
-(() => { const row=document.querySelector('#events .ev-row'); if(!row) return;
-  const step=()=>{ const c=row.querySelector('.ev'); return c?c.getBoundingClientRect().width+14:300; };
-  const go=d=>{ const max=row.scrollWidth-row.clientWidth-2; if(d>0&&row.scrollLeft>=max) row.scrollTo({left:0}); else if(d<0&&row.scrollLeft<=2) row.scrollTo({left:max}); else row.scrollBy({left:d*step()}); };
-  let idle=0; const touch=()=>{ idle=performance.now(); };
+// Events: an endless row of videos. Arrows, swipe/drag and a slow auto-advance; after the last clip the first one comes again
+(() => { const row=document.querySelector('#events .ev-row'); if(!row) return; const items=[...row.querySelectorAll('.ev')]; if(!items.length) return;
+  const GAP=14, reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let cw=0, total=0, x=0, goal=null, drag=false, px=0, lt=0, v=0, last=performance.now(), on=false, idle=0;
+  const measure=()=>{ const old=cw; cw=items[0].offsetWidth+GAP; total=cw*items.length; if(old&&cw) { x=Math.round(x/old)*cw; if(goal!==null) goal=Math.round(goal/old)*cw; } place(); };
+  const place=()=>{ if(!total) return; items.forEach((it,k)=>{ const p=((k*cw+x+cw)%total+total)%total-cw; it.style.transform='translate3d('+p.toFixed(1)+'px,0,0)'; }); };
+  const go=d=>{ const from=goal!==null?goal:Math.round(x/cw)*cw; goal=from-d*cw; if(reduce){ x=goal; goal=null; place(); } wake(); };
+  function tick(t){ const dt=Math.min(.05,(t-last)/1000); last=t;
+    if(!drag&&goal!==null){ x+=(goal-x)*Math.min(1,dt*7); if(Math.abs(goal-x)<.4){ x=goal; goal=null; } }
+    if(total&&goal===null&&!drag){ const k=Math.round(x/total)*total; x-=k; } place();
+    if(on&&(drag||goal!==null)) requestAnimationFrame(tick); else run=false; }
+  let run=false; const wake=()=>{ if(!run){ run=true; last=performance.now(); requestAnimationFrame(tick); } };
+  const touch=()=>{ idle=performance.now(); };
   document.querySelector('#events .ev-next').addEventListener('click',()=>{ touch(); go(1); });
   document.querySelector('#events .ev-prev').addEventListener('click',()=>{ touch(); go(-1); });
-  ['pointerdown','wheel','touchstart','keydown'].forEach(ev=>row.addEventListener(ev,touch,{passive:true}));
-  let vis=false; new IntersectionObserver(e=>{ vis=e[0].isIntersecting; }).observe(row);
-  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  setInterval(()=>{ if(!vis||reduce||document.documentElement.classList.contains('a11y-still')||performance.now()-idle<6000) return; go(1); },3200);
+  row.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'){ e.preventDefault(); touch(); go(1); } if(e.key==='ArrowLeft'){ e.preventDefault(); touch(); go(-1); } });
+  row.addEventListener('pointerdown',e=>{ drag=true; goal=null; v=0; px=e.clientX; lt=performance.now(); touch(); row.classList.add('drag'); try{row.setPointerCapture(e.pointerId);}catch(_){} wake(); });
+  row.addEventListener('pointermove',e=>{ if(!drag) return; const dx=e.clientX-px, now=performance.now(); v=dx/Math.max(.008,(now-lt)/1000); x+=dx; px=e.clientX; lt=now; });
+  const end=()=>{ if(!drag) return; drag=false; row.classList.remove('drag'); touch(); goal=Math.round((x+Math.max(-1,Math.min(1,v/1500))*cw*.6)/cw)*cw; wake(); };
+  row.addEventListener('pointerup',end); row.addEventListener('pointercancel',end);
+  measure(); addEventListener('resize',measure); if('ResizeObserver' in window) new ResizeObserver(measure).observe(items[0]);
+  new IntersectionObserver(e=>{ on=e[0].isIntersecting; if(on&&goal!==null) wake(); }).observe(row);
+  setInterval(()=>{ if(!on||reduce||document.documentElement.classList.contains('a11y-still')||drag||performance.now()-idle<6000) return; go(1); },3200);
 })();
 </script>
 <script type="importmap">
@@ -1476,7 +1489,7 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
       room=H-intro.offsetHeight; if(cylB){ cylB.style.height=Math.max(240,cylB.offsetHeight+room)+'px'; window.cylBuild&&cylBuild(); }
       room=H-sk.offsetHeight; if(bas.length&&room>0){ const hs=bas.reduce((t,b)=>t+b.offsetHeight,0), inv=bas.reduce((t,b)=>t+b.offsetHeight/b.offsetWidth,0), w=Math.min(sk.clientWidth-80,(hs+room)/inv); bas.forEach(b=>{ b.style.width=w+'px'; b.style.marginLeft=b.style.marginRight='calc((100% - '+w+'px) / 2)'; }); }
       room=evC?H-evC.offsetHeight:0; if(evRow&&room>0){ const car=evRow.parentElement, avail=evRow.offsetHeight+room, h=Math.min(avail,innerWidth<=640?340:380); evRow.style.setProperty('--evh',h+'px'); car.style.marginTop=(parseFloat(getComputedStyle(car).marginTop)+(avail-h)/2)+'px'; } // shorter videos; the spare room sits evenly above and below the carousel
-      room=H-cl.offsetHeight; if(tm&&room){ const c=tm.querySelector('.x-tcard'), grow=Math.max(0,Math.min(room*.75,220)); tm.style.setProperty('--tch',(c.offsetHeight+grow)+'px'); tm._measure&&tm._measure(); room=H-cl.offsetHeight; lm.style.marginTop=Math.max(16,parseFloat(getComputedStyle(lm).marginTop)+room/2)+'px'; tm.style.marginTop=Math.max(16,parseFloat(getComputedStyle(tm).marginTop)+room/2)+'px'; } // logos keep their normal size; review cards grow taller (room for longer reviews)
+      room=H-cl.offsetHeight; if(tm&&room){ const c=tm.querySelector('.x-tcard'), grow=Math.max(0,Math.min(room*.2,36)); tm.style.setProperty('--tch',(c.offsetHeight+grow)+'px'); tm._measure&&tm._measure(); room=H-cl.offsetHeight; lm.style.marginTop=Math.max(16,parseFloat(getComputedStyle(lm).marginTop)+room/2)+'px'; tm.style.marginTop=Math.max(16,parseFloat(getComputedStyle(tm).marginTop)+room/2)+'px'; } // logos keep their normal size; review cards stay compact, in proportion to the logo row
       homeCards.forEach(c=>{ if(c===fq) c.style.minHeight=H+'px'; else c.style.height=H+'px'; }); return; // exactly the Good questions height (it may still grow when a question is opened)
     }
     const h=Math.max(...homeCards.map(c=>c.offsetHeight)); homeCards.forEach(c=>c.style.minHeight=h+'px'); }
