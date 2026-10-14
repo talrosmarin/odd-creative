@@ -819,15 +819,6 @@ html #home > section[id]{display:flex;flex-direction:column;justify-content:flex
     </div>
   </section>
 
-  <section id="reels" class="x-dark x-sheet" aria-label="אינסטגרם">
-    <div class="wrap">
-      <span class="eyebrow en x-center" data-fade>Instagram</span>
-      <h2 class="en x-huge x-center x-grad-dark" data-fade style="--fy:40px">@odd__creative</h2>
-      <p class="x-center x-sub rl-sub" data-fade style="--fd:.1s">מאחורי הקלעים, בנייה בסדנה ואירועים. הכל אצלנו באינסטגרם.</p>
-      <div class="rl-row rl-row-ig"><div class="rl-ig"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DbqaHnpqDsw/?utm_source=ig_embed" data-instgrm-version="14"><a href="https://www.instagram.com/reel/DbqaHnpqDsw/" target="_blank" rel="noopener">רילס של ODD באינסטגרם</a></blockquote></div><div class="rl-ig"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/Da9mNitMD6L/?utm_source=ig_embed" data-instgrm-version="14"><a href="https://www.instagram.com/reel/Da9mNitMD6L/" target="_blank" rel="noopener">רילס של ODD באינסטגרם</a></blockquote></div><div class="rl-ig"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DadWWmHALCv/?utm_source=ig_embed" data-instgrm-version="14"><a href="https://www.instagram.com/reel/DadWWmHALCv/" target="_blank" rel="noopener">רילס של ODD באינסטגרם</a></blockquote></div><div class="rl-ig"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DXrt2nKDI5C/?utm_source=ig_embed" data-instgrm-version="14"><a href="https://www.instagram.com/reel/DXrt2nKDI5C/" target="_blank" rel="noopener">רילס של ODD באינסטגרם</a></blockquote></div></div>
-      <div class="rl-cta" data-fade><a class="x-cta en" href="https://www.instagram.com/odd__creative/" target="_blank" rel="noopener">Follow us</a></div>
-    </div>
-  </section>
 
 </main>
 
@@ -1087,13 +1078,6 @@ html #home > section[id]{display:flex;flex-direction:column;justify-content:flex
     if (e.isIntersecting && !document.documentElement.classList.contains('a11y-still')) v.play().catch(() => {}); else v.pause(); }), { threshold: .35 });
   vids.forEach(v => io.observe(v));
 })();
-</script>
-<script>
-// Load Instagram's embed script only when the reels card gets near the screen
-(() => { const sec = document.getElementById('reels'); if (!sec || !sec.querySelector('.instagram-media')) return;
-  const io = new IntersectionObserver(es => { if (!es[0].isIntersecting) return; io.disconnect();
-    const sc = document.createElement('script'); sc.async = true; sc.src = 'https://www.instagram.com/embed.js'; document.body.appendChild(sc); }, { rootMargin: '600px 0px' });
-  io.observe(sec); })();
 </script>
 <script type="importmap">
 {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
