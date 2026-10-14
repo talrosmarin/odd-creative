@@ -346,15 +346,8 @@ header .bar > .logo{transition:opacity .3s}
 .x-intro-in{gap:22px}
 #intro .x-chars{font-size:17px;font-weight:400;line-height:1.65;max-width:560px}
 #intro .x-rows{margin-top:clamp(48px,6vw,90px)}
-/* Our work: a corridor of work photos riding toward the viewer on two rails (adapted from the "image stream hero").
-   The box keeps the exact height the two photo rows had, so the card does not change size. */
-#intro .x-corr{display:block;position:relative;overflow:hidden;container-type:inline-size;height:calc(clamp(240px,29vw,420px) * 270 / 420 * 2 + 12px)}
-.x-corr-p,.x-corr-3d{position:absolute;inset:0;pointer-events:none}
-.x-corr-3d{transform-style:preserve-3d}
-.x-cc{position:absolute;left:50%;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;will-change:transform}
-.x-cc img{width:100%;height:100%;object-fit:cover;display:block}
-.x-corr.off .x-cc,html.a11y-still .x-cc{animation-play-state:paused!important}
-@media (prefers-reduced-motion:reduce){.x-cc{animation-play-state:paused}}
+/* Our projects: the Xantiva "Creative" 3D cylinder. Same height as the photo band it replaced, so the card keeps its size */
+#intro .cyl{margin-top:clamp(48px,6vw,90px);height:calc(clamp(240px,29vw,420px) * 270 / 420 * 2 + 12px)}
 /* inner pages (menu items + catalog): the same cards as the home page.
    The page is the brand gradient, every part is a card with rounded top corners that slides over the one before it.
    First card white, the next one in the gradient, and so on. Titles big and centered, like on the home page */
@@ -760,10 +753,13 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 
   <section id="intro" class="x-dark x-sheet x-intro">
     <div class="wrap x-intro-in">
-      <h2 class="en x-huge x-center x-grad-dark" data-fade style="--fy:40px">Our work</h2>
+      <h2 class="en x-huge x-center x-grad-dark" data-fade style="--fy:40px">Our projects</h2>
       <p class="x-chars" data-chars>עיצוב ובנייה של חללים, אלמנטים וחוויות.</p>
     </div>
-    <div class="x-rows x-corr" aria-hidden="true"></div>
+    <div class="cyl" id="cyl" aria-label="הפרויקטים שלנו. גוררים לצדדים כדי לסובב, לוחצים על פרויקט כדי לפתוח">
+      <div class="cyl-ring" id="cyl-ring"></div>
+    </div>
+    <div class="lightbox" id="lightbox" hidden></div>
   </section>
 
 
@@ -1294,36 +1290,50 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
   rows.forEach((r,k)=>{ const set=(k?projects.slice(half):projects.slice(0,half)).map(p=>`<img src="${p.img}" alt="" loading="lazy" draggable="false">`).join(''); r.innerHTML=set+set+set; });
   const rowsBox=document.querySelector('.x-rows');
 
-  // 2b. Our work corridor: cards are born small at the centre and fly outward toward the viewer on two mirrored rails.
-  // Depth grows geometrically in on-screen size so the ribbon never tears; the newest card is born across the axis so the
-  // centre never opens. Lengths are cqw (percent of the box width), and the exit size is capped to the box height.
+  // 2b.
   (function(){
-    const box=document.querySelector('#intro .x-corr'); if(!box||!projects.length) return;
-    const P={perspective:30,cardWidth:18,cardHeight:25,cardRadius:1.1,birthHeight:2.6,railBirth:-13,fan:3.3,turnBirth:6,turnExit:28,stops:24}, N=9, SPEED=18;
-    const pane=document.createElement('div'), deck=document.createElement('div'), sheet=document.createElement('style');
-    pane.className='x-corr-p'; deck.className='x-corr-3d'; pane.appendChild(deck); box.appendChild(pane); document.head.appendChild(sheet);
-    const kf=(dir,name,p)=>{ const st=[]; for(let k=0;k<=p.stops;k++){ const u=k/p.stops;
-      const sc=(p.birthHeight/p.cardHeight)*Math.pow(p.exitHeight/p.birthHeight,u), z=p.perspective*(1-1/sc);
-      const rail=p.railExit-(p.railExit-p.railBirth)*Math.pow(1-u,p.fan), turn=p.turnBirth+(p.turnExit-p.turnBirth)*u;
-      st.push((u*100).toFixed(2)+'%{transform:translate3d('+(dir*rail).toFixed(2)+'cqw,0,'+z.toFixed(2)+'cqw) rotateY('+(-dir*turn).toFixed(2)+'deg)}'); }
-      return '@keyframes '+name+'{'+st.join('')+'}'; };
-    let lastExit=0;
-    function shape(){
-      const w=box.clientWidth, h=box.clientHeight; if(!w) return;
-      const exit=Math.min(46,h/w*100*0.92); if(Math.abs(exit-lastExit)<0.5) return; lastExit=exit;
-      const sc=exit/P.cardHeight, p={...P,exitHeight:exit,railExit:Math.max(44,52/sc+P.cardWidth/2+2)};
-      sheet.textContent=kf(1,'xcR',p)+kf(-1,'xcL',p);
+    // Our projects cylinder, the same motion as the Xantiva "Creative" carousel: slow idle turn, drag/swipe spins it with momentum, tap opens a work
+    const box=document.getElementById('cyl'), ring=document.getElementById('cyl-ring'), lb=document.getElementById('lightbox');
+    document.body.appendChild(lb);
+    const card=p=>`<div class="card"><img src="${p.img}" alt="${p.t}" loading="lazy" draggable="false"><div class="cap"><h3 ${/^[A-Za-z]/.test(p.t)?'class="en"':''}>${p.t}</h3><p>${p.d}</p></div></div>`;
+    const list=projects.length>=12?projects:projects.concat(projects); // 12 faces like Xantiva (a second round only if there are fewer works)
+    ring.innerHTML=list.map((p,i)=>`<figure class="face" data-i="${i%projects.length}">${card(p)}</figure>`).join('');
+    const faces=[...ring.children], n=faces.length;
+    const stillC=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let angle=0, vel=0, idle=stillC?0:-7, dragging=false, moved=0, px=0, lt=0, last=performance.now(), r=0, on=true;
+    function build(){
+      const cylW=(innerWidth<=640?1988:(innerWidth<=1024?3023:4050))*n/12, fw=cylW/n; r=cylW/(2*Math.PI); // same face size as Xantiva
+      ring.style.width=fw+'px'; ring.style.height=(fw*1.25)+'px';
+      faces.forEach((f,i)=>{ f.style.transform='rotateY('+(i*360/n)+'deg) translateZ('+r+'px)'; });
+      ring.style.transform='translateZ('+(-r*0.4333)+'px) rotateY('+angle+'deg)'; // right away, before the first frame
     }
-    shape();
-    pane.style.perspective=P.perspective+'cqw'; pane.style.perspectiveOrigin='50% 50%';
-    ['xcR','xcL'].forEach((name,side)=>{ for(let i=0;i<N;i++){
-      const c=document.createElement('div'), pr=projects[(i+side*N)%projects.length];
-      c.className='x-cc';
-      c.style.cssText='top:50%;width:'+P.cardWidth+'cqw;height:'+P.cardHeight+'cqw;margin-left:'+(-P.cardWidth/2)+'cqw;margin-top:'+(-P.cardHeight/2)+'cqw;border-radius:'+P.cardRadius+'cqw;animation:'+name+' '+SPEED+'s linear infinite;animation-delay:'+(-(i*SPEED)/N)+'s';
-      c.innerHTML='<img src="'+pr.img+'" alt="" loading="lazy" decoding="async" draggable="false">';
-      deck.appendChild(c); } });
-    let rt; addEventListener('resize',()=>{ clearTimeout(rt); rt=setTimeout(shape,200); });
-    new IntersectionObserver(es=>box.classList.toggle('off',!es[0].isIntersecting)).observe(box);
+    function tick(t){
+      const dt=Math.min(.05,(t-last)/1000); last=t;
+      const goal=document.documentElement.classList.contains('a11y-still')?0:idle; // "stop animations" in the accessibility menu
+      if(!dragging){ vel+=(goal-vel)*Math.min(1,dt*2.2); angle+=vel*dt; }
+      ring.style.transform='translateZ('+(-r*0.4333)+'px) rotateY('+angle+'deg)';
+      if(on) requestAnimationFrame(tick);
+    }
+    new IntersectionObserver(e=>{ const v=e[0].isIntersecting; if(v&&!on){ on=true; last=performance.now(); requestAnimationFrame(tick); } on=v; }).observe(box);
+    box.addEventListener('pointerdown',e=>{ dragging=true; moved=0; px=e.clientX; lt=performance.now(); box.classList.add('drag'); try{box.setPointerCapture(e.pointerId);}catch(err){} });
+    box.addEventListener('pointermove',e=>{
+      if(!dragging) return;
+      const dx=e.clientX-px, now=performance.now(), dt=Math.max(.008,(now-lt)/1000);
+      angle+=dx*0.3; vel=Math.max(-400,Math.min(400,dx*0.3/dt)); moved+=Math.abs(dx); px=e.clientX; lt=now;
+    });
+    function end(e){
+      if(!dragging) return; dragging=false; box.classList.remove('drag');
+      if(moved<6){
+        const hit=document.elementsFromPoint(e.clientX,e.clientY).find(el=>el.classList&&el.classList.contains('face'));
+        if(hit){ lb.innerHTML=card(projects[+hit.dataset.i]); lb.hidden=false; }
+      }
+    }
+    box.addEventListener('pointerup',end); box.addEventListener('pointercancel',()=>{ dragging=false; box.classList.remove('drag'); });
+    // Android sends a click right after the tap that opened it; ignore clicks in the first moment so it doesn't close at once
+    new MutationObserver(()=>{ if(!lb.hidden) lb.__t=performance.now(); }).observe(lb,{attributes:true,attributeFilter:['hidden']});
+    lb.addEventListener('click',()=>{ if(performance.now()-(lb.__t||0)<450) return; lb.hidden=true; });
+    addEventListener('keydown',e=>{ if(e.key==='Escape') lb.hidden=true; });
+    addEventListener('resize',build); build(); requestAnimationFrame(tick);
   })();
 
   // 3. the intro line lights up letter by letter as it moves up the screen (words stay whole)
