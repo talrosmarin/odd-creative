@@ -343,8 +343,8 @@ header .bar > .logo{transition:opacity .3s}
 /* home: "Let's create something ODD." sits in the middle of its card, like a slide of its own; the photo rows follow under it */
 /* "Let's create something ODD.": same title look and same top spacing as "Design. Plan. Build.", and the card is as tall as that first white card */
 #intro.x-intro{padding-block:clamp(80px,9vw,128px);display:flex;flex-direction:column;justify-content:center;min-height:var(--introh,auto)}
-.x-intro-in{gap:22px}
-#intro .eyebrow{margin-bottom:-4px} /* same eyebrow-to-title gap as the other cards */
+.x-intro-in{gap:0}
+#intro .eyebrow{margin-bottom:18px} /* same eyebrow-to-title gap as the other cards */
 #intro .x-chars{font-size:17px;font-weight:400;line-height:1.65;max-width:560px}
 #intro .x-rows{margin-top:clamp(48px,6vw,90px)}
 /* Our projects: the Xantiva "Creative" 3D cylinder. Same height as the photo band it replaced, so the card keeps its size */
@@ -424,7 +424,7 @@ main.page .about-text .bts{justify-content:center}
 .x-lmarq{direction:ltr;overflow:hidden;margin-top:clamp(48px,6vw,90px);padding-block:10px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
 .x-ltrack{display:flex;width:max-content;animation:x-lmarq 150s linear infinite}
 .x-lset{display:flex;align-items:center;gap:clamp(56px,7vw,110px);padding-right:clamp(56px,7vw,110px)}
-.x-lset img{height:calc(clamp(30px,3.6vw,50px) * var(--h));width:auto;display:block;opacity:.92;user-select:none;-webkit-user-select:none}
+.x-lset img{height:calc(var(--lb,clamp(30px,3.6vw,50px)) * var(--h));width:auto;display:block;opacity:.92;user-select:none;-webkit-user-select:none}
 @keyframes x-lmarq{from{transform:translateX(-50%)}to{transform:none}}
 @media (prefers-reduced-motion:reduce){.x-ltrack{animation:none}.x-lmarq{overflow-x:auto}}
 html.a11y-still .x-ltrack{animation:none!important}
@@ -680,8 +680,11 @@ footer .logo3d.ready .en{position:absolute;width:1px;height:1px;overflow:hidden;
 /* One title size everywhere: every card title on home and every page title matches "Let's create something ODD." */
 html #home > section h2.x-huge,html main.page .sec-head h2.en,html main.page .about-text > h2.en,html #catalogView .cat-head > h2.en{font-size:clamp(22px,3.4vw,34px);font-weight:700;letter-spacing:-.01em;line-height:.95}
 html .legal h2{font-size:clamp(22px,3.4vw,34px);font-weight:700}
+/* identical header block on every home card: eyebrow, title, one-line subtitle */
+#home .x-sub,#intro .x-chars{max-width:min(100%,920px);font-size:17px;font-weight:400;line-height:1.65;margin-top:22px!important}
+#intro .x-chars{color:rgba(255,255,255,.85)}
 /* every home card starts its content at the same height as the first white card, and all cards share one height */
-html #home > section[id]{display:flex;flex-direction:column;justify-content:flex-start;padding-top:clamp(80px,9vw,128px)}
+html #home > section[id]{display:flex;flex-direction:column;justify-content:flex-start;padding-top:clamp(80px,9vw,128px);padding-bottom:clamp(80px,9vw,128px)}
 </style>
 </head>
 <body>
@@ -1295,8 +1298,8 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
     const faces=[...ring.children], n=faces.length;
     const stillC=matchMedia('(prefers-reduced-motion: reduce)').matches;
     let angle=0, vel=0, idle=stillC?0:-7, dragging=false, moved=0, px=0, lt=0, last=performance.now(), r=0, on=true;
-    function build(){
-      const cylW=(innerWidth<=640?1988:(innerWidth<=1024?3023:4050))*n/12, fw=cylW/n; r=cylW/(2*Math.PI); // same face size as Xantiva
+    function build(){ window.cylBuild=build;
+      const base=(innerWidth<=640?1988:(innerWidth<=1024?3023:4050))/12, fw=Math.min(base*1.6,Math.max(base,box.clientHeight*.82/1.25)); r=fw*n/(2*Math.PI); // Xantiva face size, grown to fill a taller card
       ring.style.width=fw+'px'; ring.style.height=(fw*1.25)+'px';
       faces.forEach((f,i)=>{ f.style.transform='rotateY('+(i*360/n)+'deg) translateZ('+r+'px)'; });
       ring.style.transform='translateZ('+(-r*0.4333)+'px) rotateY('+angle+'deg)'; // right away, before the first frame
@@ -1359,7 +1362,21 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
   function matchClients(){ if(!cl||!fq||home.hidden) return; cl.style.minHeight=fq.offsetHeight+'px'; }
   // Every home card (computer and phone) is as tall as the tallest one; content starts at the top like the first card.
   const wideScr=matchMedia('(min-width:900px) and (hover:hover)'), homeCards=[...document.querySelectorAll('#home > section')];
-  function equalSlides(){ if(home.hidden) return; homeCards.forEach(c=>c.style.minHeight=''); intro&&intro.style.removeProperty('--introh');
+  // Fit: on computers every card is as tall as the tallest one, and the extra room goes INTO the content
+  // (taller project wheel, bigger sketch viewer, more air around the logos, roomier questions), so no card ends in empty space.
+  function equalSlides(){ if(home.hidden) return;
+    const cylB=document.getElementById('cyl'), ba=document.getElementById('ba'), sk=document.getElementById('sketch'),
+      lm=document.querySelector('#clients .x-lmarq'), tm=document.querySelector('#clients .x-tmarq'), qs=[...document.querySelectorAll('#faq .faq details')];
+    homeCards.forEach(c=>c.style.minHeight=''); intro&&intro.style.removeProperty('--introh');
+    if(cylB) cylB.style.height=''; if(ba) ba.style.width=''; if(lm){ lm.style.marginTop=''; lm.style.removeProperty('--lb'); } if(tm) tm.style.marginTop=''; qs.forEach(q=>{ q.style.paddingTop=q.style.paddingBottom=''; });
+    if(wideScr.matches){
+      const H=Math.max(...homeCards.map(c=>c.offsetHeight)); let room;
+      room=H-intro.offsetHeight; if(cylB&&room>0){ cylB.style.height=(cylB.offsetHeight+room)+'px'; window.cylBuild&&cylBuild(); }
+      room=H-sk.offsetHeight; if(ba&&room>0){ const ar=ba.offsetWidth/ba.offsetHeight; ba.style.width=Math.min(ba.parentElement.clientWidth,(ba.offsetHeight+room)*ar)+'px'; }
+      room=H-cl.offsetHeight; if(lm&&room>0){ const lb=parseFloat(getComputedStyle(lm.querySelector('img')).height)/parseFloat(lm.querySelector('img').style.getPropertyValue('--h')); lm.style.setProperty('--lb',Math.min(lb*2.1,lb+room*.2)+'px'); } // bigger logos first
+      room=H-cl.offsetHeight; if(lm&&tm&&room>0){ lm.style.marginTop=(parseFloat(getComputedStyle(lm).marginTop)+room/2)+'px'; tm.style.marginTop=(parseFloat(getComputedStyle(tm).marginTop)+room/2)+'px'; }
+      room=H-fq.offsetHeight; if(qs.length&&room>0){ qs.forEach(q=>{ const pt=parseFloat(getComputedStyle(q).paddingTop); q.style.paddingTop=q.style.paddingBottom=(pt+room/qs.length/2)+'px'; }); }
+    }
     const h=Math.max(...homeCards.map(c=>c.offsetHeight)); homeCards.forEach(c=>c.style.minHeight=h+'px'); }
   equalSlides(); addEventListener('resize',equalSlides); if(document.fonts) document.fonts.ready.then(equalSlides); addEventListener('hashchange',()=>setTimeout(equalSlides,60));
   place(); addEventListener('resize',place); if('ResizeObserver' in window){ const ro=new ResizeObserver(place); decks.forEach(d=>d.forEach(el=>ro.observe(el))); }
