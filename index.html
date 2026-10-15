@@ -626,15 +626,17 @@ footer .foot-apps svg{width:100%;height:100%;display:block}
 /* catalog view */
 .cat-head{padding-block:40px 24px;display:flex;flex-direction:column;gap:14px}
 .cat-layout{padding-bottom:72px}
-.items{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.item{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.items{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px} /* smaller cards: four in a row on a computer, three on a tablet, two on a phone */
+.item{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
 .item .ph{border-radius:0;aspect-ratio:4/3}
 .item .ph,.req-items .ph{overflow:hidden;position:relative}.item .ph img,.req-items .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block} /* catalog photo fills its frame */
-.item .in{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.item .in{padding:12px 12px 14px;display:flex;flex-direction:column;gap:5px;flex:1}
+.item h3{font-size:15px;line-height:1.35;margin:0}
+.item .btn{font-size:13px;padding:9px 12px;min-height:0}
 .badge{align-self:flex-start;font-size:12px;padding:2px 10px;border-radius:999px;font-family:var(--body)}
 .badge.rent{background:var(--ok-bg);color:var(--ok)}
 .badge.custom{background:var(--tint);color:var(--accent)}
-.item .meta{font-size:13px;color:var(--muted)}
+.item .meta{font-size:12px;color:var(--muted)}
 .item button{margin-top:auto}
 .item button.added{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 /* request list page: everything picked in the catalog, then one button that sends it all on WhatsApp */
@@ -654,10 +656,15 @@ footer .foot-apps svg{width:100%;height:100%;display:block}
 
 @media (max-width:860px){
   .about,.contact,.cat-layout{grid-template-columns:1fr}
-  .grid3,.biz,.items{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid3,.biz{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .items{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
 @media (max-width:520px){
-  .grid3,.biz,.items{grid-template-columns:1fr}
+  .grid3,.biz{grid-template-columns:1fr}
+  .items{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .item .in{padding:10px 10px 12px}
+  .item h3{font-size:14px}
+  .item .btn{font-size:12px;padding:8px 8px}
   form{grid-template-columns:1fr}
   section{padding-block:56px}
 }
@@ -1590,8 +1597,9 @@ const items=[ // photos: from @odd__creative on Instagram, each one shows that e
   {id:5,img:"img/work/dan-amit.jpg",n:"רקע במה דיסקו ירוק",m:"מידות לדוגמה: 6×3 מ׳",k:"rent"},
   {id:6,img:"img/work/adamo.jpg",n:"שלט כניסה ממותג",m:"מידות לפי הזמנה",k:"rent"},
   {id:7,img:"img/work/our-mantra.jpg",n:"iPod ענק — Our Mantra",m:"דוגמה למה שבנינו",k:"custom"},
-  {id:8,img:"img/work/garmin.jpg",n:"שער כניסה — Garmin",m:"דוגמה למה שבנינו",k:"custom"},
-  {id:9,img:"img/work/lost-temple.jpg",n:"שער שבטי — LOST TEMPLE",m:"דוגמה למה שבנינו",k:"custom"}
+  {id:10,img:"img/work/staywavey-dj.jpg",n:"עמדת DJ עם שער פרחים — Stay Wavey",m:"דוגמה למה שבנינו",k:"custom"},
+  {id:11,img:"img/work/mirror-sign.jpg",n:"מראה קמורה ממותגת",m:"דוגמה למה שבנינו",k:"custom"},
+  {id:12,img:"img/work/trippers-neon.jpg",n:"מנהרת טבעות ניאון — Trippers",m:"דוגמה למה שבנינו",k:"custom"}
 ];
 const req=new Map();
 // the list is kept in this browser, so it is still there after a refresh or when coming back later
