@@ -658,7 +658,8 @@ footer .foot-apps svg{width:100%;height:100%;display:block}
 .req-items b{display:block;font-weight:700}
 .req-items .meta{font-size:13px;color:var(--muted)}
 .req-items button{width:44px;height:44px;background:none;border:1px solid var(--line);border-radius:999px;color:var(--muted);cursor:pointer;font-size:18px}
-.req-empty{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+.req-empty{display:flex;flex-direction:column;align-items:stretch;gap:14px}
+.req-empty .btn{justify-content:center;width:100%;max-width:420px} /* same look as the send button */
 .req-send{display:flex;flex-direction:column;gap:10px}
 .req-send .btn{justify-content:center;width:100%;max-width:420px}
 @keyframes countPop{from{transform:scale(.85)}to{transform:scale(1)}}
@@ -973,7 +974,7 @@ html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width
       <ul class="req-items" id="reqList"></ul>
       <div class="req-empty" id="reqEmpty">
         <p class="muted">עוד לא בחרתם אלמנטים.</p>
-        <a class="btn" href="#catalog">לקטלוג</a>
+        <a class="btn solid" href="#catalog">לקטלוג</a>
       </div>
       <div class="req-send" id="reqSendBox" hidden>
         <a class="btn solid" id="reqSend" href="https://wa.me/972500000000">שליחת בקשה</a>
