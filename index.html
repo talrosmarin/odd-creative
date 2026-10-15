@@ -380,7 +380,8 @@ main.page .about-text .bts{justify-content:center}
 /* About: the workshop video next to the text (it used to be a slide on the home page) */
 .about-video{width:100%;aspect-ratio:2.1/1;object-fit:cover;display:block;border-radius:0;background:#3b3935;margin-top:36px} /* edge to edge, like the photo on the contact page */
 #page-about{display:flex;flex-direction:column} #page-about .sec-about{flex:1;display:flex;flex-direction:column;padding-bottom:0!important;border-bottom:0}
-#page-about .about-video{flex:1 0 calc(100vw / 2.1);height:0;aspect-ratio:auto;min-height:calc(100vw / 2.1)} /* fills the rest of the screen, no empty band */ #page-about .sec-about > .wrap{margin-bottom:36px;width:100%;box-sizing:border-box} /* the video sits at the bottom and meets the footer */
+#page-about .about-video{margin-top:auto} /* same size as the contact photo: full width, 2.1 : 1, meeting the footer */
+#page-about .sec-about > .wrap{margin-block:auto 36px} #page-about .sec-about > .wrap{margin-bottom:36px;width:100%;box-sizing:border-box} /* the video sits at the bottom and meets the footer */
 #page-about .about{grid-template-columns:1fr}
 /* Contact: the team photo in the ODD shirt, wide, under the form */
 #page-contact .sec-contact{padding-bottom:0!important;border-bottom:0} /* the photo meets the footer, no white strip */
@@ -631,6 +632,8 @@ footer .foot-apps svg{width:100%;height:100%;display:block}
 /* catalog view */
 .cat-head{padding-block:40px 24px;display:flex;flex-direction:column;gap:14px}
 .cat-layout{padding-bottom:72px}
+.cat-cta{display:flex;justify-content:center;margin-top:clamp(28px,4vw,44px)}
+.cat-cta .btn{justify-content:center;min-width:220px}
 .items{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px} /* smaller cards: four in a row on a computer, three on a tablet, two on a phone */
 .item{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
 .item .ph{border-radius:0;aspect-ratio:4/3}
@@ -1059,6 +1062,7 @@ html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width
   </div>
   <div class="wrap cat-layout">
     <div class="items" id="items"></div>
+    <div class="cat-cta"><a class="btn solid" href="#request">קח אותי לרשימה</a></div>
   </div>
   </section>
 </main>
@@ -1593,8 +1597,7 @@ const items=[ // photos: from @odd__creative on Instagram, each one shows that e
   {id:1,img:"img/work/wedding-stage.jpg",n:"שער קשתות טרקוטה",m:"מידות לדוגמה: 4×3 מ׳ · אפשר למתג",k:"rent"},
   {id:6,img:"img/work/adamo.jpg",n:"שער כניסה מעוצב",m:"מידות לפי הזמנה",k:"rent"},
   {id:10,img:"img/work/staywavey-dj.jpg",n:"עמדת DJ מעוצבת",m:"דוגמה למה שבנינו",k:"custom"},
-  {id:12,img:"img/work/trippers-neon.jpg",n:"מנהרת טבעות ניאון",m:"דוגמה למה שבנינו",k:"custom"},
-  {id:13,img:"img/work/clique-saloon-wide.jpg",n:"במה מעוצבת לפי קונספט",m:"דוגמה למה שבנינו",k:"custom"}
+  {id:12,img:"img/work/trippers-neon.jpg",n:"מנהרת טבעות ניאון",m:"דוגמה למה שבנינו",k:"custom"}
 ];
 const req=new Map();
 // the list is kept in this browser, so it is still there after a refresh or when coming back later
