@@ -380,6 +380,7 @@ main.page .about-text .bts{justify-content:center}
 /* About: the workshop video next to the text (it used to be a slide on the home page) */
 .about-video{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:clamp(22px,2.6vw,34px);background:#3b3935;box-shadow:0 24px 60px rgba(30,10,50,.18)}
 /* Contact: the team photo in the ODD shirt, wide, under the form */
+#page-contact .sec-contact{padding-bottom:0!important;border-bottom:0} /* the photo meets the footer, no white strip */
 .contact-photo{display:block;width:100%;aspect-ratio:2.1/1;object-fit:cover;object-position:50% 31.5%;border-radius:0;margin-top:36px} /* edge to edge, wall to wall */
 /* Our work on white: dark text and purple arrows, the color glow behind the carousel stays but lighter */
 #work.x-light .gc-cap{color:var(--ink)}
@@ -1589,15 +1590,9 @@ const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"C
 
 const items=[ // photos: from @odd__creative on Instagram, each one shows that element
   {id:1,img:"img/work/wedding-stage.jpg",n:"שער קשתות טרקוטה",m:"מידות לדוגמה: 4×3 מ׳ · אפשר למתג",k:"rent"},
-  {id:2,img:"img/work/bali.jpg",n:"בר עץ",m:"מידות לדוגמה: 2×1.1 מ׳ · אפשר למתג",k:"rent"},
-  {id:3,img:"img/work/rock-and-roll.jpg",n:"קיר צילום Rock & Roll",m:"מידות לדוגמה: 3×2.5 מ׳",k:"rent"},
-  {id:4,img:"img/work/make-sense.jpg",n:"קופסת תאורה בחיפוי מראה",m:"מידות לדוגמה: 1×1 מ׳ · אפשר למתג",k:"rent"},
-  {id:5,img:"img/work/dan-amit.jpg",n:"רקע במה דיסקו ירוק",m:"מידות לדוגמה: 6×3 מ׳",k:"rent"},
-  {id:6,img:"img/work/adamo.jpg",n:"שלט כניסה ממותג",m:"מידות לפי הזמנה",k:"rent"},
-  {id:7,img:"img/work/our-mantra.jpg",n:"iPod ענק — Our Mantra",m:"דוגמה למה שבנינו",k:"custom"},
-  {id:10,img:"img/work/staywavey-dj.jpg",n:"עמדת DJ עם שער פרחים — Stay Wavey",m:"דוגמה למה שבנינו",k:"custom"},
-  {id:11,img:"img/work/mirror-sign.jpg",n:"מראה קמורה ממותגת",m:"דוגמה למה שבנינו",k:"custom"},
-  {id:12,img:"img/work/trippers-neon.jpg",n:"מנהרת טבעות ניאון — Trippers",m:"דוגמה למה שבנינו",k:"custom"}
+  {id:6,img:"img/work/adamo.jpg",n:"שער כניסה מעוצב",m:"מידות לפי הזמנה",k:"rent"},
+  {id:10,img:"img/work/staywavey-dj.jpg",n:"עמדת DJ מעוצבת",m:"דוגמה למה שבנינו",k:"custom"},
+  {id:12,img:"img/work/trippers-neon.jpg",n:"מנהרת טבעות ניאון",m:"דוגמה למה שבנינו",k:"custom"}
 ];
 const req=new Map();
 // the list is kept in this browser, so it is still there after a refresh or when coming back later
