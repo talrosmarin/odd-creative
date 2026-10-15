@@ -632,7 +632,8 @@ footer .foot-apps svg{width:100%;height:100%;display:block}
 /* catalog view */
 .cat-head{padding-block:40px 24px;display:flex;flex-direction:column;gap:14px}
 .cat-layout{padding-bottom:72px}
-.cat-cta{display:flex;justify-content:center;margin-top:clamp(28px,4vw,44px)}
+.cat-cta{display:flex;justify-content:center;margin-top:clamp(44px,5vw,60px)}
+#catalogView .cat-layout{padding-bottom:0} #catalogView > .cat-sheet{padding-bottom:clamp(44px,5vw,60px)} /* less white under the button */
 .cat-cta .btn{justify-content:center;min-width:220px}
 .items{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px} /* smaller cards: four in a row on a computer, three on a tablet, two on a phone */
 .item{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
@@ -649,7 +650,8 @@ footer .foot-apps svg{width:100%;height:100%;display:block}
 .item button.added{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 /* request list page: everything picked in the catalog, then one button that sends it all on WhatsApp */
 .req-page{max-width:720px}
-#page-request{display:flex;flex-direction:column} #page-request > .sec-request{flex:1} /* the white page runs down to the footer, no purple strip */
+#page-request{display:flex;flex-direction:column} #page-request > .sec-request{flex:1;display:flex;flex-direction:column;padding-bottom:0!important}
+#page-request .sec-request > .wrap{width:100%;box-sizing:border-box;margin-bottom:36px} #page-request .contact-photo{margin-top:auto} /* same photo shape as contact and about, meeting the footer */ /* the white page runs down to the footer, no purple strip */
 .req-items{list-style:none;margin:0 0 28px;padding:0;display:flex;flex-direction:column}
 .req-items li{display:grid;grid-template-columns:64px minmax(0,1fr) 44px;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
 .req-items .ph{aspect-ratio:1;border-radius:10px;padding:4px;font-size:10px}
@@ -978,6 +980,7 @@ html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width
         <span class="muted" style="font-size:13px">ההודעה תכלול את רשימת האלמנטים.</span>
       </div>
     </div>
+    <img class="contact-photo" src="img/request-build.jpg" alt="צוות ODD בונה אלמנט עץ בשטח" loading="lazy">
   </section>
 </main>
 
