@@ -1308,7 +1308,7 @@ window.scrollTo(0,0);
 const lenis=(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&window.Lenis)?new Lenis({autoRaf:true}):null;
 function jumpTo(y){ if(lenis) lenis.scrollTo(y,{immediate:true,force:true}); window.scrollTo({top:y,behavior:'instant'}); } // native jump too, in case Lenis hasn't caught up with the page yet
 const projects=[ // photos: cropped from @odd__creative Instagram screenshots Tal sent (2026-10-15) until the client sends originals
-  {t:"TSIPOR",d:"במה · פסטיבל פורים",c:"party",img:"img/work/tsipor.jpg"},
+  {t:"TSIPOR",d:"במה · פסטיבל פורים",c:"party",img:"img/work/tsipor-clean.jpg"},
   {t:"ADMAVEN",d:"אירוע חברה · לוקיישן טרופי",c:"corp",img:"img/work/admaven-hall.jpg"},
   {t:"Stay Wavy",d:"פסטיבל · ארוגם ביי, סרי לנקה",c:"party",img:"img/work/staywavy.jpg"},
   {t:"ADAMO",d:"שער כניסה · הר החרמון",c:"party",img:"img/work/adamo-gate.jpg"},
@@ -1625,9 +1625,27 @@ function drawReq(){
 itemsEl.addEventListener('click',e=>{
   const b=e.target.closest('[data-id]'); if(!b) return;
   const it=items.find(x=>x.id==b.dataset.id);
-  req.has(it.id)?req.delete(it.id):req.set(it.id,it);
-  drawItems();drawReq();
+  if(req.has(it.id)){ req.delete(it.id); drawItems(); drawReq(); return; }
+  const ph=b.closest('.item').querySelector('.ph img'), from=ph&&ph.getBoundingClientRect(), src=ph&&(ph.currentSrc||ph.src); // measure before the list is redrawn
+  req.set(it.id,it); drawItems();
+  flyToList(src,from,()=>drawReq()); // the count goes up when the photo lands
 });
+// "Add to request": a small copy of the photo flies in an arc into the list icon at the top, shrinks into it, and the icon pops
+function flyToList(src,a,done){
+  const to=document.querySelector('.req-link'), still=matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.contains('a11y-still');
+  if(!src||!a||!to||still){ done(); return; }
+  const z=to.getBoundingClientRect(); if(!a.width||!z.width){ done(); return; }
+  const f=document.createElement('img'); f.src=src; f.alt=''; f.setAttribute('aria-hidden','true');
+  f.style.cssText='position:fixed;left:0;top:0;width:'+a.width+'px;height:'+a.height+'px;object-fit:cover;border-radius:14px;z-index:70;pointer-events:none;box-shadow:0 18px 40px rgba(46,16,72,.3);will-change:transform,opacity';
+  document.body.appendChild(f);
+  const x0=a.left+a.width/2, y0=a.top+a.height/2, x1=z.left+z.width/2, y1=z.top+z.height/2, lift=Math.min(160,Math.max(70,Math.abs(y0-y1)*.35)), t0=performance.now(), D=760;
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  (function step(now){ const t=Math.min(1,(now-t0)/D), e=ease(t), x=x0+(x1-x0)*e, y=y0+(y1-y0)*e-Math.sin(Math.PI*e)*lift, sc=1-e*.9;
+    f.style.transform='translate('+(x-a.width/2)+'px,'+(y-a.height/2)+'px) scale('+sc+') rotate('+(-12*e)+'deg)';
+    f.style.opacity=t>.85?String((1-t)/.15):'1';
+    if(t<1) requestAnimationFrame(step); else { f.remove(); done();
+      to.animate([{transform:'scale(1)'},{transform:'scale(1.35)'},{transform:'scale(.92)'},{transform:'scale(1)'}],{duration:440,easing:'cubic-bezier(.34,1.56,.64,1)'}); } })(t0);
+}
 document.getElementById('reqList').addEventListener('click',e=>{
   const b=e.target.closest('[data-rm]'); if(!b) return;
   req.delete(+b.dataset.rm);drawItems();drawReq();
