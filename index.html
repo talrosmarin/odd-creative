@@ -1156,8 +1156,8 @@ document.querySelectorAll('#sketch .ba').forEach(ba => {
     if(matchMedia('(hover:hover)').matches){ box.addEventListener('mouseenter',()=>hover=true); box.addEventListener('mouseleave',()=>hover=false); }
     requestAnimationFrame(tick); }
   const lm=document.querySelector('#clients .x-lmarq'), tm=document.querySelector('#clients .x-tmarq');
-  if(lm) loop(lm, 34);   // logos drift right
-  if(tm) loop(tm, -38);  // reviews drift left
+  if(lm) loop(lm, -34);  // logos drift left
+  if(tm) loop(tm, 38);   // reviews drift right
   dispatchEvent(new Event('resize')); // let the card fitting re-measure with the new strip layout
 })();
 // Events: an endless row of videos. Arrows, swipe/drag and a slow auto-advance; after the last clip the first one comes again
