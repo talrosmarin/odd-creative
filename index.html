@@ -700,11 +700,18 @@ html #home > section[id]{display:flex;flex-direction:column;justify-content:flex
 .ev-row{position:relative;height:var(--evh,clamp(260px,34vw,380px));touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;outline:none} /* a stacked deck like the Xantiva merch: the front clip in the middle, the others fan out, tilt and dim */
 .ev-row.drag{cursor:grabbing}
 .ev-row::-webkit-scrollbar{display:none}
-.ev{position:absolute;left:50%;top:0;margin:0 0 0 calc(var(--evh,clamp(260px,34vw,380px)) * -9 / 32);height:var(--evh,clamp(260px,34vw,380px));width:calc(var(--evh,clamp(260px,34vw,380px)) * 9 / 16);border-radius:18px;overflow:hidden;background:#f3f2ef;box-shadow:0 24px 50px -24px rgba(46,16,72,.45);will-change:transform,opacity}
+.ev{position:absolute;left:50%;top:0;margin:0 0 0 calc(var(--evh,clamp(260px,34vw,380px)) * -9 / 32);height:var(--evh,clamp(260px,34vw,380px));width:calc(var(--evh,clamp(260px,34vw,380px)) * 9 / 16);border-radius:18px;overflow:hidden;background:#140a1f;box-shadow:0 24px 50px -24px rgba(46,16,72,.45);will-change:transform,opacity;cursor:pointer}
 .ev i{position:absolute;inset:0;background:#140a1f;opacity:0;pointer-events:none}
-.ev video{width:100%;height:100%;object-fit:cover;display:block}
+.ev video{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.015)} /* a hair bigger than the card, so no light line shows at the rounded, tilted edges */
+.ev-lb video{display:block;height:min(84vh,calc((100vw - 48px) * 16 / 9));width:auto;aspect-ratio:9/16;background:#140a1f;cursor:auto}
+.ev-lb .x{position:absolute;top:10px;right:10px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(20,10,31,.55);color:#fff;display:grid;place-items:center;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.ev-lb .x svg{width:18px;height:18px}
 html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width:100%;box-sizing:border-box} /* a card's content may never make the page wider than the screen */
-.ev-nav{display:flex;justify-content:center;gap:14px;margin-top:clamp(36px,4vw,48px)}
+.ev-nav{display:flex;justify-content:center;align-items:center;gap:18px;margin-top:clamp(36px,4vw,48px);direction:ltr}
+.ev-dots{display:flex;gap:10px}
+.ev-nav .ev-dots button,.ev-nav .ev-dots button:hover{width:9px;height:9px;padding:0;border:0;border-radius:50%;background:var(--purple);opacity:.22;cursor:pointer;transition:opacity .3s,transform .3s}
+.ev-nav .ev-dots button[aria-current="true"]{opacity:1;transform:scale(1.15)}
+.ev-nav button{touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none} /* quick repeated taps move on, never zoom the page */
 .ev-nav button{width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(94,43,140,.3);background:#fff;color:var(--purple);display:grid;place-items:center;cursor:pointer;transition:background-color .2s,border-color .2s}
 .ev-nav button svg{width:18px;height:18px}
 @media (hover:hover){.ev-nav button:hover{border-color:var(--purple);background:#f6eefb}}
@@ -846,10 +853,11 @@ html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width
       <h2 class="en x-huge x-center x-ink" data-fade style="--fy:40px">Moments we built</h2>
       <p class="x-center x-sub" data-fade style="--fd:.1s">אירועים, השקות וסרטוני תדמית. ככה זה נראה בשטח.</p>
       <div class="ev-car" data-fade style="--fd:.2s"><div class="ev-row" tabindex="0" aria-label="סרטונים מאירועים"><!-- real reels from ODD's Instagram --><figure class="ev"><video data-ev src="video/reel-bali.mp4" poster="img/reels/reel-bali.jpg" muted playsinline preload="metadata" aria-hidden="true"></video><i></i></figure><figure class="ev"><video data-ev src="video/reel-makesense.mp4" poster="img/reels/reel-makesense.jpg" muted playsinline preload="metadata" aria-hidden="true"></video><i></i></figure><figure class="ev"><video data-ev src="video/reel-premiere.mp4" poster="img/reels/reel-premiere.jpg" muted playsinline preload="metadata" aria-hidden="true"></video><i></i></figure><figure class="ev"><video data-ev src="video/reel-rocknroll.mp4" poster="img/reels/reel-rocknroll.jpg" muted playsinline preload="metadata" aria-hidden="true"></video><i></i></figure><figure class="ev"><video data-ev src="video/reel-mantra.mp4" poster="img/reels/reel-mantra.jpg" muted playsinline preload="metadata" aria-hidden="true"></video><i></i></figure></div>
-        <div class="ev-nav"><button type="button" class="ev-prev" aria-label="הקודם"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><button type="button" class="ev-next" aria-label="הבא"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
+        <div class="ev-nav"><button type="button" class="ev-prev" aria-label="הקודם"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><div class="ev-dots" role="tablist" aria-label="איזה סרטון"></div><button type="button" class="ev-next" aria-label="הבא"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
       </div>
     </div>
   </section>
+  <div class="lightbox" id="ev-lightbox" hidden></div>
 
   <section id="faq" class="x-dark x-sheet x-faq">
     <div class="wrap">
@@ -1161,7 +1169,7 @@ document.querySelectorAll('#sketch .ba').forEach(ba => {
 (() => { const row=document.querySelector('#events .ev-row'); if(!row) return; const cards=[...row.querySelectorAll('.ev')], n=cards.length; if(!n) return;
   const vids=cards.map(c=>c.querySelector('video')), dims=cards.map(c=>c.querySelector('i')), reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const still=()=>reduce||document.documentElement.classList.contains('a11y-still');
-  let p=0, v=0, target=0, raf=null, drag=null, cfg, on=false, cur=-1, guard=0;
+  let p=0, v=0, target=0, raf=null, drag=null, cfg, on=false, cur=-1, guard=0, lbOpen=false;
   function conf(){ const w=innerWidth, sw=cards[0].offsetWidth||200;
     cfg=w<640?{x:.5,y:14,rot:6,sc:.06,sens:180,dist:110,vel:500}:(w<1024?{x:.52,y:20,rot:8,sc:.08,sens:220,dist:150,vel:650}:{x:.56,y:26,rot:9,sc:.1,sens:250,dist:190,vel:800}); cfg.x*=sw; }
   const off=i=>{ let d=(i-p)%n; if(d>n/2) d-=n; if(d<-n/2) d+=n; return d; };
@@ -1169,28 +1177,39 @@ document.querySelectorAll('#sketch .ba').forEach(ba => {
     c.style.transform='translate('+(o*cfg.x).toFixed(1)+'px,'+(flat?0:a*cfg.y).toFixed(1)+'px) rotate('+(flat?0:o*cfg.rot).toFixed(2)+'deg) scale('+(1-a*cfg.sc).toFixed(4)+')';
     c.style.opacity=op.toFixed(3); c.style.zIndex=Math.round(100-a*10); dims[i].style.opacity=Math.min(.5,a<.5?a*.4:.2+(a-.5)*.2).toFixed(3); }); }
   const front=()=>((Math.round(target)%n)+n)%n;
+  const dotBox=document.querySelector('#events .ev-dots'), dots=dotBox?cards.map((_,k)=>{ const b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label','סרטון '+(k+1)); b.addEventListener('click',()=>{ let d=k-front(); if(d>n/2) d-=n; if(d<-n/2) d+=n; go(Math.round(target)+d); }); dotBox.appendChild(b); return b; }):[];
+  const dotsOn=()=>{ const f=front(); dots.forEach((b,k)=>b.setAttribute('aria-current',k===f?'true':'false')); };
   function sync(){ const f=front(); // play only the front clip, from its start; the others wait on their first scene
     if(f!==cur){ vids.forEach((vd,k)=>{ if(k!==f){ vd.pause(); if(vd.currentTime>0) try{ vd.currentTime=0; }catch(_){} } }); cur=f; try{ vids[f].currentTime=0; }catch(_){} }
     clearTimeout(guard); const vd=vids[f];
-    if(on&&!still()){ vd.play().catch(()=>{}); guard=setTimeout(()=>{ if(front()===f&&on&&!drag) go(Math.round(target)+1); },((vd.duration||20)+4)*1000); } else vd.pause(); }
+    if(on&&!still()&&!lbOpen){ vd.play().catch(()=>{}); guard=setTimeout(()=>{ if(front()===f&&on&&!drag) go(Math.round(target)+1); },((vd.duration||20)+4)*1000); } else vd.pause(); }
   function spring(){ if(raf) cancelAnimationFrame(raf); let last=performance.now(); // stiffness 200, damping 30, like the Xantiva deck
     if(reduce){ p=target; v=0; paint(); return; }
     (function step(now){ const dt=Math.min(.032,(now-last)/1000); last=now; v+=(200*(target-p)-30*v)*dt; p+=v*dt; paint();
       if(Math.abs(target-p)<.0005&&Math.abs(v)<.001){ p=target; v=0; paint(); raf=null; return; } raf=requestAnimationFrame(step); })(last); }
-  function go(t){ target=t; spring(); sync(); }
+  function go(t){ target=t; spring(); sync(); dotsOn(); }
   vids.forEach((vd,k)=>vd.addEventListener('ended',()=>{ if(k===front()&&!drag) go(Math.round(target)+1); }));
   row.addEventListener('pointerdown',e=>{ if(raf){ cancelAnimationFrame(raf); raf=null; } v=0; drag={id:e.pointerId,x0:e.clientX,x:e.clientX,start:p,t:performance.now(),vx:0,moved:0}; try{row.setPointerCapture(e.pointerId);}catch(_){} row.classList.add('drag'); });
   row.addEventListener('pointermove',e=>{ if(!drag||drag.id!==e.pointerId) return; const dx=e.clientX-drag.x, now=performance.now(); drag.vx=dx/Math.max(.008,(now-drag.t)/1000); drag.t=now; drag.x=e.clientX;
     drag.moved=Math.max(drag.moved,Math.abs(e.clientX-drag.x0)); p-=dx/cfg.sens; paint(); });
   function end(e){ if(!drag||drag.id!==e.pointerId) return; const d=drag; drag=null; row.classList.remove('drag');
-    if(d.moved<6){ const hit=document.elementsFromPoint(e.clientX,e.clientY).find(el=>el.classList&&el.classList.contains('ev')), i=cards.indexOf(hit); // tap a side card: bring it to the front
-      go(Math.round(p)+(i>=0?Math.round(off(i)):0)); return; }
+    if(d.moved<6){ const hit=document.elementsFromPoint(e.clientX,e.clientY).find(el=>el.classList&&el.classList.contains('ev')), i=cards.indexOf(hit); // tap the front clip: open it big with sound; tap a side clip: bring it to the front
+      if(i>=0&&i===front()){ open(i); return; } go(Math.round(p)+(i>=0?Math.round(off(i)):0)); return; }
     let shift=Math.round(-(d.x-d.x0)/cfg.dist-d.vx/cfg.vel); shift=Math.max(-2,Math.min(2,shift)); go(Math.round(d.start)+shift); }
   row.addEventListener('pointerup',end); row.addEventListener('pointercancel',end);
-  row.addEventListener('keydown',e=>{ if(e.key==='ArrowLeft'){ e.preventDefault(); go(Math.round(target)-1); } else if(e.key==='ArrowRight'){ e.preventDefault(); go(Math.round(target)+1); } });
+  // lightbox: the whole clip, big, with sound and controls; tap outside, the X or Esc closes it and the deck carries on
+  const lb=document.getElementById('ev-lightbox');
+  function open(i){ if(!lb) return; const src=vids[i].getAttribute('src'), poster=vids[i].getAttribute('poster');
+    vids.forEach(vd=>vd.pause()); clearTimeout(guard); lbOpen=true;
+    lb.innerHTML='<div class="card ev-lb"><video src="'+src+'" poster="'+poster+'" controls autoplay playsinline></video><button type="button" class="x" aria-label="סגירה"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>';
+    lb.hidden=false; lb.__t=performance.now(); window.lenis&&lenis.stop&&lenis.stop();
+    const v2=lb.querySelector('video'); v2.addEventListener('click',e=>e.stopPropagation()); v2.play().catch(()=>{}); }
+  function close(){ if(!lbOpen) return; lbOpen=false; const v2=lb.querySelector('video'); if(v2) v2.pause(); lb.hidden=true; lb.innerHTML=''; window.lenis&&lenis.start&&lenis.start(); cur=-1; sync(); }
+  if(lb){ lb.addEventListener('click',()=>{ if(performance.now()-(lb.__t||0)<450) return; close(); }); addEventListener('keydown',e=>{ if(e.key==='Escape') close(); }); }
+  row.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); open(front()); return; } if(e.key==='ArrowLeft'){ e.preventDefault(); go(Math.round(target)-1); } else if(e.key==='ArrowRight'){ e.preventDefault(); go(Math.round(target)+1); } });
   document.querySelector('#events .ev-next').addEventListener('click',()=>go(Math.round(target)+1));
   document.querySelector('#events .ev-prev').addEventListener('click',()=>go(Math.round(target)-1));
-  const re=()=>{ conf(); paint(); }; addEventListener('resize',re); if('ResizeObserver' in window) new ResizeObserver(re).observe(cards[0]); conf(); paint();
+  const re=()=>{ conf(); paint(); }; addEventListener('resize',re); if('ResizeObserver' in window) new ResizeObserver(re).observe(cards[0]); conf(); paint(); dotsOn();
   new IntersectionObserver(e=>{ on=e[e.length-1].isIntersecting; sync(); },{threshold:.35}).observe(row);
 })();
 </script>
