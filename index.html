@@ -1299,19 +1299,14 @@ window.scrollTo(0,0);
 // smooth "buttery" scrolling on computers; phones keep their own native scroll, and "reduce motion" gets normal scrolling
 const lenis=(!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&window.Lenis)?new Lenis({autoRaf:true}):null;
 function jumpTo(y){ if(lenis) lenis.scrollTo(y,{immediate:true,force:true}); window.scrollTo({top:y,behavior:'instant'}); } // native jump too, in case Lenis hasn't caught up with the page yet
-const projects=[ // photos: temporary, from @odd__creative on Instagram (2026-10-12) until the client sends originals
-  {t:"במת חתונה",d:"קשתות טרקוטה וצמחייה",c:"wed",img:"img/work/wedding-stage.jpg"},
-  {t:"Garmin FENIX 9",d:"השקה · שער ממותג",c:"brand",img:"img/work/garmin.jpg"},
-  {t:"LOST TEMPLE",d:"במה · חמת גדר",c:"party",img:"img/work/lost-temple.jpg"},
-  {t:"Candid",d:"פתיחת סניף · ראשון לציון",c:"brand",img:"img/work/candid.jpg"},
-  {t:"Dan & Amit",d:"חתונה · דיסקו ירוק במטע זיתים",c:"wed",img:"img/work/dan-amit.jpg"},
-  {t:"Bali",d:"בר ממותג",c:"brand",img:"img/work/bali.jpg"},
-  {t:"ADMAVEN",d:"אירוע חברה · לוקיישן טרופי",c:"corp",img:"img/work/admaven.jpg"},
-  {t:"Rock & Roll",d:"קיר צילום",c:"party",img:"img/work/rock-and-roll.jpg"},
-  {t:"ADAMO",d:"שער כניסה · הר החרמון",c:"party",img:"img/work/adamo.jpg"},
-  {t:"Our Mantra",d:"iPod ענק",c:"brand",img:"img/work/our-mantra.jpg"},
-  {t:"Connections",d:"",c:"party",img:"img/work/premiere.jpg"},
-  {t:"MAKE SENSE",d:"קופסאות תאורה בחיפוי מראה",c:"brand",img:"img/work/make-sense.jpg"}
+const projects=[ // photos: cropped from @odd__creative Instagram screenshots Tal sent (2026-10-15) until the client sends originals
+  {t:"TSIPOR",d:"במה · פסטיבל פורים",c:"party",img:"img/work/tsipor.jpg"},
+  {t:"ADMAVEN",d:"אירוע חברה · לוקיישן טרופי",c:"corp",img:"img/work/admaven-hall.jpg"},
+  {t:"Stay Wavy",d:"פסטיבל · ארוגם ביי, סרי לנקה",c:"party",img:"img/work/staywavy.jpg"},
+  {t:"ADAMO",d:"שער כניסה · הר החרמון",c:"party",img:"img/work/adamo-gate.jpg"},
+  {t:"CLIQUE",d:"בית אגדות",c:"party",img:"img/work/clique-house.jpg"},
+  {t:"Garmin FENIX 9",d:"השקה · שער ממותג",c:"brand",img:"img/work/garmin-gate.jpg"},
+  {t:"Candid",d:"פתיחת סניף · ראשון לציון",c:"brand",img:"img/work/candid-store.jpg"}
 ];
 const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"Corporate"};
 
