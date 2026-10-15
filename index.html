@@ -446,12 +446,14 @@ html.a11y-still .x-ltrack{animation:none!important}
 .x-tcard p{margin:0;direction:rtl;text-align:right;font-size:14px;line-height:1.55}
 @media (prefers-reduced-motion:reduce){.x-ttrack{animation:none}.x-tmarq{overflow-x:auto}}
 html.a11y-still .x-ttrack{animation:none!important}
-/* How it works: a small animated icon in brand colors before each step title (clipboard, pencil, hammer, truck) */
+/* How it works: a small animated icon in brand colors before each step title (phone, pencil, hammer, truck) */
 .x-list h3{display:flex;align-items:center;gap:.45em}
 .x-list h3 .x-ic{order:2} /* icon on the right of the title */
 .x-ic{width:1.5em;height:1.5em;margin-block:-.15em;flex:none;fill:none;stroke:url(#x-icg);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
-.ic-plan .ck{stroke-dasharray:7;stroke-dashoffset:7;animation:ic-check 2.8s ease-in-out infinite}.ic-plan .ck2{animation-delay:.4s}
-@keyframes ic-check{0%,8%{stroke-dashoffset:7}35%,80%{stroke-dashoffset:0}100%{stroke-dashoffset:7}}
+.ic-call .hand{transform-box:fill-box;transform-origin:50% 50%;animation:ic-ring 2.4s ease-in-out infinite}
+@keyframes ic-ring{0%,40%,100%{transform:rotate(0)}5%,15%,25%{transform:rotate(-10deg)}10%,20%,30%{transform:rotate(10deg)}}
+.ic-call .w1,.ic-call .w2{animation:ic-wave 2.4s ease-out infinite}.ic-call .w2{animation-delay:.15s}
+@keyframes ic-wave{0%,100%{opacity:0}10%,35%{opacity:1}55%{opacity:0}}
 .ic-design{animation:ic-sketch 2.8s ease-in-out infinite;transform-origin:20% 85%}
 @keyframes ic-sketch{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}50%{transform:rotate(4deg)}75%{transform:rotate(-3deg)}}
 .ic-design .line{stroke-dasharray:8;stroke-dashoffset:8;animation:ic-line 2.8s ease-in-out infinite}
@@ -770,7 +772,7 @@ html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width
       <p class="x-center x-sub" data-fade style="--fd:.1s">עיצוב, תכנון וייצור – הכל אצלנו ב־ODD.</p>
       <div class="x-steps">
         <ol class="x-list">
-        <li tabindex="0" data-fade style="--fd:0s"><span class="x-num en">01</span><span class="x-rail" aria-hidden="true"><i></i></span><div><h3 class="en"><svg class="x-ic ic-plan" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4.2H7.2A2.2 2.2 0 0 0 5 6.4v12.4A2.2 2.2 0 0 0 7.2 21h9.6a2.2 2.2 0 0 0 2.2-2.2V6.4a2.2 2.2 0 0 0-2.2-2.2H15"/><rect x="9" y="2.6" width="6" height="3.2" rx="1.1"/><path class="ck" d="M8.4 11.2l1.6 1.6 2.6-2.9"/><path d="M14.4 11.6h2"/><path class="ck ck2" d="M8.4 16.2l1.6 1.6 2.6-2.9"/><path d="M14.4 16.6h2"/></svg>Plan</h3><p>שיחה על האירוע, המקום והאווירה.</p></div></li>
+        <li tabindex="0" data-fade style="--fd:0s"><span class="x-num en">01</span><span class="x-rail" aria-hidden="true"><i></i></span><div><h3 class="en"><svg class="x-ic ic-call" viewBox="0 0 24 24" aria-hidden="true"><path class="hand" d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/><path class="w1" d="M15 7a2 2 0 0 1 2 2"/><path class="w2" d="M15 3a6 6 0 0 1 6 6"/></svg>Plan</h3><p>שיחה על האירוע, המקום והאווירה.</p></div></li>
         <li tabindex="0" data-fade style="--fd:.1s"><span class="x-num en">02</span><span class="x-rail" aria-hidden="true"><i></i></span><div><h3 class="en"><svg class="x-ic ic-design" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.2-4.6L16.4 4.2a2 2 0 0 1 2.8 0l.6.6a2 2 0 0 1 0 2.8L8.6 18.8 4 20z"/><path d="M14.5 6.1l3.4 3.4"/><path class="line" d="M13 21h8"/></svg>Design</h3><p>קונספט והדמיה של מה שנבנה.</p></div></li>
         <li tabindex="0" data-fade style="--fd:.2s"><span class="x-num en">03</span><span class="x-rail" aria-hidden="true"><i></i></span><div><h3 class="en"><svg class="x-ic ic-build" viewBox="0 0 24 24" aria-hidden="true"><g class="head"><path d="M13.5 3.5l7 7-2.6 2.6-7-7z"/><path d="M15.2 5.2l-1.7-1.7"/></g><path d="M12.2 8.8L3.6 17.4a1.8 1.8 0 0 0 2.5 2.5l8.6-8.6"/></svg>Build</h3><p>מייצרים את האלמנטים בסדנה שלנו.</p></div></li>
         <li tabindex="0" data-fade style="--fd:.3s"><span class="x-num en">04</span><span class="x-rail" aria-hidden="true"><i></i></span><div><h3 class="en"><svg class="x-ic ic-install" viewBox="0 0 24 24" aria-hidden="true"><g class="truck"><path d="M2.5 6.5h11v9.5h-11z"/><path d="M13.5 9.5h4.2l3.3 3.6v2.9h-7.5"/><circle cx="7" cy="17.6" r="1.9"/><circle cx="17.2" cy="17.6" r="1.9"/></g><path class="road" d="M1 21.5h4M9 21.5h6M19 21.5h4"/></svg>Install</h3><p>מגיעים, מקימים ומפרקים בסוף.</p></div></li>
@@ -853,11 +855,11 @@ html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width
       <h2 class="en x-huge x-center x-grad-dark" data-fade style="--fy:40px">Good questions</h2>
       <p class="x-center x-sub x-sub-light" data-fade style="--fd:.1s">התשובות לשאלות ששואלים אותנו הכי הרבה.</p>
       <div class="faq">
-        <details data-fade style="--fd:0.0s"><summary>באיזה אזורים אתם עובדים?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
-        <details data-fade style="--fd:0.1s"><summary>כמה זמן מראש צריך להזמין?</summary><p>תשובה <span class="fill">מהלקוח</span></p></details>
+        <details data-fade style="--fd:0.0s"><summary>באיזה אזורים אתם עובדים?</summary><p>בכל רחבי הארץ. מתאמים מראש, ומגיעים אליכם.</p></details>
+        <details data-fade style="--fd:0.1s"><summary>כמה זמן מראש צריך להזמין?</summary><p>תלוי באלמנט ובגודל שלו. ככל שנדבר מוקדם יותר, נוכל להתאים הכל בצורה הכי טובה.</p></details>
         <details data-fade style="--fd:0.2s"><summary>אפשר לשכור אלמנט, או שהכל נבנה מחדש?</summary><p>גם וגם. יש אלמנטים להשכרה בקטלוג, ואפשר להזמין משהו שנבנה במיוחד.</p></details>
         <details data-fade style="--fd:0.3s"><summary>אתם גם מעצבים, או רק בונים?</summary><p>גם וגם. מהרעיון ועד הביצוע.</p></details>
-        <details data-fade style="--fd:0.4s"><summary>אפשר למתג אלמנט עם הלוגו שלנו?</summary><p>כן. תשובה מלאה <span class="fill">מהלקוח</span></p></details>
+        <details data-fade style="--fd:0.4s"><summary>אפשר למתג אלמנט עם הלוגו שלנו?</summary><p>כן. אנחנו מעצבים כל אלמנט לפי המותג שלכם: הלוגו, הצבעים והסגנון, מדויק עד הפרט האחרון.</p></details>
       </div>
     </div>
   </section>
