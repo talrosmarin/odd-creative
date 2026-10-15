@@ -843,7 +843,7 @@ html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width
       <span class="eyebrow en x-center" data-fade>Events</span>
       <h2 class="en x-huge x-center x-ink" data-fade style="--fy:40px">Moments we built</h2>
       <p class="x-center x-sub" data-fade style="--fd:.1s">אירועים, השקות וסרטוני תדמית. ככה זה נראה בשטח.</p>
-      <div class="ev-car" data-fade style="--fd:.2s"><div class="ev-row" tabindex="0" aria-label="סרטונים מאירועים"><!-- real reels from ODD's Instagram; each appears twice so the endless row stays full on wide screens --><figure class="ev"><video src="video/reel-bali.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-makesense.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-premiere.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-rocknroll.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-mantra.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-bali.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-makesense.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-premiere.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-rocknroll.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video src="video/reel-mantra.mp4" muted loop playsinline preload="metadata" aria-hidden="true"></video></figure></div>
+      <div class="ev-car" data-fade style="--fd:.2s"><div class="ev-row" tabindex="0" aria-label="סרטונים מאירועים"><!-- real reels from ODD's Instagram; each appears twice so the endless row stays full on wide screens --><figure class="ev"><video data-ev src="video/reel-bali.mp4" muted playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video data-ev src="video/reel-makesense.mp4" muted playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video data-ev src="video/reel-premiere.mp4" muted playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video data-ev src="video/reel-rocknroll.mp4" muted playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video data-ev src="video/reel-mantra.mp4" muted playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video data-ev src="video/reel-bali.mp4" muted playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video data-ev src="video/reel-makesense.mp4" muted playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video data-ev src="video/reel-premiere.mp4" muted playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video data-ev src="video/reel-rocknroll.mp4" muted playsinline preload="metadata" aria-hidden="true"></video></figure><figure class="ev"><video data-ev src="video/reel-mantra.mp4" muted playsinline preload="metadata" aria-hidden="true"></video></figure></div>
         <div class="ev-nav"><button type="button" class="ev-prev" aria-label="הקודם"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><button type="button" class="ev-next" aria-label="הבא"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
       </div>
     </div>
@@ -1124,13 +1124,6 @@ document.querySelectorAll('#sketch .ba').forEach(ba => {
 })();
 </script>
 <script>
-// Events: each clip plays only while it is on screen; "stop animations" or reduced motion keeps them still
-(() => { const vids=[...document.querySelectorAll('#events video')]; if(!vids.length) return;
-  const still=()=>matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.contains('a11y-still');
-  const io=new IntersectionObserver(es=>es.forEach(e=>{ const v=e.target; if(e.isIntersecting&&!still()) v.play().catch(()=>{}); else v.pause(); }),{threshold:.35});
-  vids.forEach(v=>io.observe(v)); })();
-</script>
-<script>
 // Brands strip and review cards: they drift on their own and can be dragged or swiped either way, with momentum.
 // Moved by JavaScript (not a CSS animation), so a very wide strip still works on iPhone.
 (() => {
@@ -1160,29 +1153,35 @@ document.querySelectorAll('#sketch .ba').forEach(ba => {
   if(tm) loop(tm, 38);   // reviews drift right
   dispatchEvent(new Event('resize')); // let the card fitting re-measure with the new strip layout
 })();
-// Events: an endless row of videos. Arrows, swipe/drag and a slow auto-advance; after the last clip the first one comes again
+// Events: an endless row of videos with one clip in the middle. Only the middle clip plays; when it ends, the next one
+// slides to the middle and plays. Arrows and swipe/drag work too; after the last clip the first one comes again.
 (() => { const row=document.querySelector('#events .ev-row'); if(!row) return; const items=[...row.querySelectorAll('.ev')]; if(!items.length) return;
-  const GAP=14, reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let cw=0, total=0, x=0, goal=null, drag=false, px=0, lt=0, v=0, last=performance.now(), on=false, idle=0;
-  const measure=()=>{ const old=cw; cw=items[0].offsetWidth+GAP; total=cw*items.length; if(old&&cw) { x=Math.round(x/old)*cw; if(goal!==null) goal=Math.round(goal/old)*cw; } place(); };
-  const place=()=>{ if(!total) return; items.forEach((it,k)=>{ const p=((k*cw+x+cw)%total+total)%total-cw; it.style.transform='translate3d('+p.toFixed(1)+'px,0,0)'; }); };
-  const go=d=>{ const from=goal!==null?goal:Math.round(x/cw)*cw; goal=from-d*cw; if(reduce){ x=goal; goal=null; place(); } wake(); };
+  const vids=items.map(it=>it.querySelector('video')), N=items.length, GAP=14, reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const still=()=>reduce||document.documentElement.classList.contains('a11y-still');
+  let cw=0, total=0, off=0, x=0, goal=null, drag=false, px=0, lt=0, v=0, last=performance.now(), on=false, cur=-1, guard=0;
+  const measure=()=>{ const old=cw; cw=items[0].offsetWidth+GAP; total=cw*N; off=(row.clientWidth-items[0].offsetWidth)/2; if(old&&cw){ x=Math.round(x/old)*cw; if(goal!==null) goal=Math.round(goal/old)*cw; } place(); };
+  const place=()=>{ if(!total) return; items.forEach((it,k)=>{ const p=((k*cw+x+off+cw)%total+total)%total-cw; it.style.transform='translate3d('+p.toFixed(1)+'px,0,0)'; }); };
+  const active=()=>((Math.round(-(goal!==null?goal:x)/cw)%N)+N)%N;
+  function sync(){ const a=active(); // play only the middle clip, from its start
+    if(a!==cur){ vids.forEach((vd,k)=>{ if(k!==a){ vd.pause(); } }); cur=a; try{ vids[a].currentTime=0; }catch(_){} }
+    clearTimeout(guard); const vd=vids[a];
+    if(on&&!still()){ vd.play().catch(()=>{}); guard=setTimeout(()=>{ if(active()===a&&on&&!drag) go(1); },((vd.duration||20)+4)*1000); } else vd.pause(); }
+  const go=d=>{ const from=goal!==null?goal:Math.round(x/cw)*cw; goal=from-d*cw; if(reduce){ x=goal; goal=null; place(); } sync(); wake(); };
+  vids.forEach((vd,k)=>vd.addEventListener('ended',()=>{ if(k===active()&&!drag) go(1); }));
   function tick(t){ const dt=Math.min(.05,(t-last)/1000); last=t;
     if(!drag&&goal!==null){ x+=(goal-x)*Math.min(1,dt*7); if(Math.abs(goal-x)<.4){ x=goal; goal=null; } }
     if(total&&goal===null&&!drag){ const k=Math.round(x/total)*total; x-=k; } place();
     if(on&&(drag||goal!==null)) requestAnimationFrame(tick); else run=false; }
   let run=false; const wake=()=>{ if(!run){ run=true; last=performance.now(); requestAnimationFrame(tick); } };
-  const touch=()=>{ idle=performance.now(); };
-  document.querySelector('#events .ev-next').addEventListener('click',()=>{ touch(); go(1); });
-  document.querySelector('#events .ev-prev').addEventListener('click',()=>{ touch(); go(-1); });
-  row.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'){ e.preventDefault(); touch(); go(1); } if(e.key==='ArrowLeft'){ e.preventDefault(); touch(); go(-1); } });
-  row.addEventListener('pointerdown',e=>{ drag=true; goal=null; v=0; px=e.clientX; lt=performance.now(); touch(); row.classList.add('drag'); try{row.setPointerCapture(e.pointerId);}catch(_){} wake(); });
+  document.querySelector('#events .ev-next').addEventListener('click',()=>go(1));
+  document.querySelector('#events .ev-prev').addEventListener('click',()=>go(-1));
+  row.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'){ e.preventDefault(); go(1); } if(e.key==='ArrowLeft'){ e.preventDefault(); go(-1); } });
+  row.addEventListener('pointerdown',e=>{ drag=true; goal=null; v=0; px=e.clientX; lt=performance.now(); row.classList.add('drag'); try{row.setPointerCapture(e.pointerId);}catch(_){} wake(); });
   row.addEventListener('pointermove',e=>{ if(!drag) return; const dx=e.clientX-px, now=performance.now(); v=dx/Math.max(.008,(now-lt)/1000); x+=dx; px=e.clientX; lt=now; });
-  const end=()=>{ if(!drag) return; drag=false; row.classList.remove('drag'); touch(); goal=Math.round((x+Math.max(-1,Math.min(1,v/1500))*cw*.6)/cw)*cw; wake(); };
+  const end=()=>{ if(!drag) return; drag=false; row.classList.remove('drag'); goal=Math.round((x+Math.max(-1,Math.min(1,v/1500))*cw*.6)/cw)*cw; sync(); wake(); };
   row.addEventListener('pointerup',end); row.addEventListener('pointercancel',end);
   measure(); addEventListener('resize',measure); if('ResizeObserver' in window) new ResizeObserver(measure).observe(items[0]);
-  new IntersectionObserver(e=>{ on=e[0].isIntersecting; if(on&&goal!==null) wake(); }).observe(row);
-  setInterval(()=>{ if(!on||reduce||document.documentElement.classList.contains('a11y-still')||drag||performance.now()-idle<6000) return; go(1); },3200);
+  new IntersectionObserver(e=>{ on=e[0].isIntersecting; sync(); if(on&&goal!==null) wake(); },{threshold:.35}).observe(row);
 })();
 </script>
 <script type="importmap">
