@@ -85,7 +85,7 @@ header.over::after{opacity:0}
 .close{justify-self:start;background:none;border:none;width:48px;height:48px;font-size:34px;line-height:1;cursor:pointer;color:inherit;padding:0;text-align:start}
 
 .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--body);font-weight:700;font-size:16px;padding:12px 20px;border-radius:999px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);text-decoration:none;cursor:pointer}
-.btn.solid{background:var(--grad);border-color:transparent;color:var(--accent-ink)}
+.btn.solid{background:var(--grad) border-box;border-color:transparent;color:var(--accent-ink)}
 .btn:focus-visible,a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 .ph{background:var(--ph) repeating-linear-gradient(135deg,transparent 0 14px,rgba(0,0,0,.035) 14px 15px);color:var(--ph-ink);border-radius:14px;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;font-size:13px;font-family:var(--body);max-width:100%}
@@ -378,7 +378,10 @@ main.page .about-text .bts{justify-content:center}
 .legal h2{font-size:clamp(2rem,5vw,56px);font-weight:800;background:linear-gradient(90deg,var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;width:fit-content;padding-bottom:.08em}
 @media (prefers-reduced-motion:reduce){main.page > section{position:relative;transform:none}}
 /* About: the workshop video next to the text (it used to be a slide on the home page) */
-.about-video{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:clamp(22px,2.6vw,34px);background:#3b3935;box-shadow:0 24px 60px rgba(30,10,50,.18)}
+.about-video{width:100%;aspect-ratio:2.1/1;object-fit:cover;display:block;border-radius:0;background:#3b3935;margin-top:36px} /* edge to edge, like the photo on the contact page */
+#page-about{display:flex;flex-direction:column} #page-about .sec-about{flex:1;display:flex;flex-direction:column;padding-bottom:0!important;border-bottom:0}
+#page-about .about-video{flex:1 0 calc(100vw / 2.1);height:0;aspect-ratio:auto;min-height:calc(100vw / 2.1)} /* fills the rest of the screen, no empty band */ #page-about .sec-about > .wrap{margin-bottom:36px;width:100%;box-sizing:border-box} /* the video sits at the bottom and meets the footer */
+#page-about .about{grid-template-columns:1fr}
 /* Contact: the team photo in the ODD shirt, wide, under the form */
 #page-contact .sec-contact{padding-bottom:0!important;border-bottom:0} /* the photo meets the footer, no white strip */
 .contact-photo{display:block;width:100%;aspect-ratio:2.1/1;object-fit:cover;object-position:50% 31.5%;border-radius:0;margin-top:36px} /* edge to edge, wall to wall */
@@ -584,6 +587,7 @@ input,select,textarea{font:inherit;font-weight:400;padding:11px 12px;border:1px 
 .a11y-btn{position:fixed;left:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:30;width:52px;height:52px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(40,20,60,.25)}
 .a11y-btn{border:0;cursor:pointer;padding:0}
 .a11y-btn svg{width:28px;height:28px}
+.a11y-btn{z-index:46} /* above the open menu too */
 /* accessibility panel: opens from the floating button; choices are kept in this browser */
 .a11y-panel{position:fixed;left:20px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:45;width:min(300px,calc(100vw - 40px));background:#fff;color:#1b1b1b;border-radius:16px;padding:14px;box-shadow:0 18px 50px rgba(40,20,60,.28);font-family:var(--body)}
 .a11y-panel[hidden]{display:none}
@@ -642,6 +646,7 @@ footer .foot-apps svg{width:100%;height:100%;display:block}
 .item button.added{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 /* request list page: everything picked in the catalog, then one button that sends it all on WhatsApp */
 .req-page{max-width:720px}
+#page-request{display:flex;flex-direction:column} #page-request > .sec-request{flex:1} /* the white page runs down to the footer, no purple strip */
 .req-items{list-style:none;margin:0 0 28px;padding:0;display:flex;flex-direction:column}
 .req-items li{display:grid;grid-template-columns:64px minmax(0,1fr) 44px;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
 .req-items .ph{aspect-ratio:1;border-radius:10px;padding:4px;font-size:10px}
@@ -890,12 +895,10 @@ html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width
       <div class="about-text">
         <span class="eyebrow en">About</span>
         <h2 data-fade class="en">From idea to execution</h2>
-        <p class="about-sub">עיצוב ובנייה של חללים, אלמנטים וחוויות.</p>
-        <p>מהרעיון ועד הביצוע. אנחנו מעצבים, מתכננים ובונים הכל בסדנה שלנו. כל אירוע מקבל קונספט משלו.</p>
-        <p class="muted">כאן יבוא טקסט קצר על המייסדים והסדנה <span class="fill">מהלקוח</span></p>
+        <p>עיצוב ובנייה של חללים, אלמנטים וחוויות. מהרעיון ועד הביצוע. אנחנו מעצבים, מתכננים ובונים הכל בסדנה שלנו. כל אירוע מקבל קונספט משלו.</p>
       </div>
-      <video class="about-video" poster="img/hero-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="מהסדנה של ODD"><source src="video/odd-hero.mp4" type="video/mp4"></video>
     </div>
+    <video class="about-video" poster="img/hero-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="מהסדנה של ODD"><source src="video/odd-about.mp4" type="video/mp4"></video>
   </section>
 
 </main>
@@ -961,14 +964,14 @@ html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width
   <div class="wrap back"><a href="#top" class="muted" style="font-size:14px">→ חזרה לדף הבית</a></div>
   <section class="sec-request">
     <div class="wrap req-page">
-      <div class="sec-head"><h2 data-fade class="en">My request</h2></div>
+      <div class="sec-head"><span class="eyebrow en">Your list</span><h2 data-fade class="en">My request</h2></div>
       <ul class="req-items" id="reqList"></ul>
       <div class="req-empty" id="reqEmpty">
         <p class="muted">עוד לא בחרתם אלמנטים.</p>
         <a class="btn" href="#catalog">לקטלוג</a>
       </div>
       <div class="req-send" id="reqSendBox" hidden>
-        <a class="btn solid" id="reqSend" href="https://wa.me/972500000000">שליחה בוואטסאפ</a>
+        <a class="btn solid" id="reqSend" href="https://wa.me/972500000000">שליחת בקשה</a>
         <span class="muted" style="font-size:13px">ההודעה תכלול את רשימת האלמנטים.</span>
       </div>
     </div>
@@ -1053,7 +1056,6 @@ html #home > section[id] > *{min-width:0} html #home > section[id] > .wrap{width
       <button class="chip" data-c="rent" aria-pressed="false">For Rent</button>
       <button class="chip" data-c="custom" aria-pressed="false">Custom Made</button>
     </div>
-    <p class="muted" style="font-size:13px">* האלמנטים כאן הם דוגמאות. הרשימה האמיתית תגיע מהלקוח.</p>
   </div>
   <div class="wrap cat-layout">
     <div class="items" id="items"></div>
@@ -1312,8 +1314,7 @@ const projects=[ // photos: cropped from @odd__creative Instagram screenshots Ta
   {t:"ADAMO",d:"שער כניסה · הר החרמון",c:"party",img:"img/work/adamo-gate.jpg"},
   {t:"CLIQUE",d:"בית אגדות",c:"party",img:"img/work/clique-house.jpg"},
   {t:"Garmin FENIX 9",d:"השקה · שער ממותג",c:"brand",img:"img/work/garmin-gate.jpg"},
-  {t:"Candid",d:"פתיחת סניף · ראשון לציון",c:"brand",img:"img/work/candid-store.jpg"},
-  {t:"CLIQUE Wild West",d:"סלון מערבון · מסעדה",c:"party",img:"img/work/clique-saloon.jpg"}
+  {t:"Candid",d:"פתיחת סניף · ראשון לציון",c:"brand",img:"img/work/candid-store.jpg"}
 ];
 const tagName={wed:"Weddings",brand:"Brands",party:"Parties & Festivals",corp:"Corporate"};
 
@@ -1592,7 +1593,8 @@ const items=[ // photos: from @odd__creative on Instagram, each one shows that e
   {id:1,img:"img/work/wedding-stage.jpg",n:"שער קשתות טרקוטה",m:"מידות לדוגמה: 4×3 מ׳ · אפשר למתג",k:"rent"},
   {id:6,img:"img/work/adamo.jpg",n:"שער כניסה מעוצב",m:"מידות לפי הזמנה",k:"rent"},
   {id:10,img:"img/work/staywavey-dj.jpg",n:"עמדת DJ מעוצבת",m:"דוגמה למה שבנינו",k:"custom"},
-  {id:12,img:"img/work/trippers-neon.jpg",n:"מנהרת טבעות ניאון",m:"דוגמה למה שבנינו",k:"custom"}
+  {id:12,img:"img/work/trippers-neon.jpg",n:"מנהרת טבעות ניאון",m:"דוגמה למה שבנינו",k:"custom"},
+  {id:13,img:"img/work/clique-saloon-wide.jpg",n:"במה מעוצבת לפי קונספט",m:"דוגמה למה שבנינו",k:"custom"}
 ];
 const req=new Map();
 // the list is kept in this browser, so it is still there after a refresh or when coming back later
